@@ -1,4 +1,6 @@
 {
+    "helloWorld": "Hello , World",
     "welcome": "Welcome",
-    "o-health": "O-health"
+    "o-health": "O-health",
+    "changelang": "Switch lang"
 }

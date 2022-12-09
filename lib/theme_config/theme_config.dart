@@ -1,43 +1,61 @@
-import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ThemeConfig {
-  static final ThemeData lightTheme = FlexThemeData.light(
-    scheme: FlexScheme.flutterDash,
-    surfaceMode: FlexSurfaceMode.highScaffoldLowSurface,
-    blendLevel: 20,
-    appBarOpacity: 0.95,
-    swapColors: true,
-    subThemesData: const FlexSubThemesData(
-      blendOnLevel: 20,
-      blendOnColors: false,
-      toggleButtonsRadius: 10.0,
-      fabRadius: 38.0,
-      fabSchemeColor: SchemeColor.inversePrimary,
-      chipRadius: 4.0,
-      tabBarItemSchemeColor: SchemeColor.onPrimary,
-    ),
-    visualDensity: FlexColorScheme.comfortablePlatformDensity,
-    useMaterial3: true,
+  static final ThemeData lightTheme = ThemeData(
+    brightness: Brightness.light,
+    primaryColor: const Color(0xffDB4437),
+    secondaryHeaderColor: const Color(0xffF4B400),
+    appBarTheme: const AppBarTheme(color: Colors.red),
+    backgroundColor: Colors.white,
     fontFamily: GoogleFonts.openSans().fontFamily,
+    buttonTheme: const ButtonThemeData(buttonColor: Colors.amber),
+    switchTheme: SwitchThemeData(
+      thumbColor:
+          MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
+        if (states.contains(MaterialState.disabled)) {
+          return const Color.fromARGB(255, 255, 42, 0).withOpacity(.48);
+        }
+        return const Color.fromARGB(255, 255, 42, 0);
+      }),
+      trackColor:
+          MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
+        if (states.contains(MaterialState.disabled)) {
+          return const Color.fromARGB(238, 227, 130, 85).withOpacity(.48);
+        }
+        return const Color.fromARGB(238, 227, 130, 85);
+      }),
+    ),
+    floatingActionButtonTheme:
+        const FloatingActionButtonThemeData(backgroundColor: Colors.yellow),
+    useMaterial3: true,
   );
-
-  static final darkTheme = FlexThemeData.dark(
-    scheme: FlexScheme.flutterDash,
-    surfaceMode: FlexSurfaceMode.highScaffoldLowSurface,
-    blendLevel: 15,
-    appBarStyle: FlexAppBarStyle.background,
-    appBarOpacity: 0.90,
-    subThemesData: const FlexSubThemesData(
-      blendOnLevel: 30,
-      toggleButtonsRadius: 10.0,
-      fabRadius: 38.0,
-      fabSchemeColor: SchemeColor.inversePrimary,
-      chipRadius: 4.0,
-    ),
-    useMaterial3: true,
-    visualDensity: FlexColorScheme.comfortablePlatformDensity,
+  static final darkTheme = ThemeData(
+    brightness: Brightness.dark,
+    primaryColor: const Color(0xffDB4437),
+    appBarTheme: const AppBarTheme(color: Colors.red),
+    secondaryHeaderColor: const Color(0xffF4B400),
+    backgroundColor: Colors.grey.shade700,
     fontFamily: GoogleFonts.openSans().fontFamily,
+    buttonTheme: const ButtonThemeData(buttonColor: Colors.amber),
+    switchTheme: SwitchThemeData(
+      thumbColor:
+          MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
+        if (states.contains(MaterialState.disabled)) {
+          return const Color.fromARGB(255, 255, 42, 0).withOpacity(.48);
+        }
+        return const Color.fromARGB(255, 255, 42, 0);
+      }),
+      trackColor:
+          MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
+        if (states.contains(MaterialState.disabled)) {
+          return const Color.fromARGB(238, 227, 130, 85).withOpacity(.48);
+        }
+        return const Color.fromARGB(238, 227, 130, 85);
+      }),
+    ),
+    floatingActionButtonTheme:
+        const FloatingActionButtonThemeData(backgroundColor: Colors.yellow),
+    useMaterial3: true,
   );
 }

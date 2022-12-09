@@ -37,12 +37,14 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   animated_splash_screen: 
-  flex_color_scheme: 
   google_fonts:
-  flutter_localization:
+  adaptive_theme: 
   easy_localization: 
+  shared_preferences:
+  
 
 dev_dependencies:
+  flutter_native_splash:
   flutter_test:
     sdk: flutter
 
@@ -70,6 +72,7 @@ flutter:
   #   - images/a_dot_ham.jpeg
   assets: 
     - assets/langs/
+    - assets/images/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 
