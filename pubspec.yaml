@@ -41,6 +41,7 @@ dependencies:
   adaptive_theme: 
   easy_localization: 
   shared_preferences:
+  image_picker: ^0.8.6
   
 
 dev_dependencies:

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter/services.dart';
 import 'package:o_health/screens/home.dart';
+import 'package:o_health/screens/register.dart';
 import 'package:o_health/theme_config/theme_config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -61,7 +62,7 @@ class _AppState extends State<App> {
       locale: context.locale,
       //define routes
       routes: {
-        '/': (context) => const Home(),
+        '/': (context) => const Register(),
       },
     );
   }
