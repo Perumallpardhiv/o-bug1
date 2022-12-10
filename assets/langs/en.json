@@ -2,5 +2,13 @@
     "helloWorld": "Hello , World",
     "welcome": "Welcome",
     "o-health": "O-health",
-    "changelang": "Switch lang"
+    "changelang": "Switch lang",
+    "register" : "Register",
+    "uploadAadhar" : "UPLOAD AADHAR",
+    "submit" : "Submit",
+    "aadharNumber" : "Aadhar Number",
+    "fullName": "Full Name",
+    "password" : "Password",
+    "confirmPassword" : "Confirm Password",
+    "already" : "Already have an Account ?"
 }
