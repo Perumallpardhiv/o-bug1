@@ -58,5 +58,5 @@ class ThemeConfig {
         const FloatingActionButtonThemeData(backgroundColor: Colors.yellow),
     useMaterial3: true,
   );
-  static TextStyle textStyle = TextStyle(color: Colors.white);
+  static TextStyle textStyle = const TextStyle(color: Colors.white);
 }

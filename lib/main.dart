@@ -4,7 +4,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter/services.dart';
-import 'package:o_health/screens/home.dart';
 import 'package:o_health/screens/register.dart';
 import 'package:o_health/theme_config/theme_config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
