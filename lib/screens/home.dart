@@ -22,7 +22,19 @@ class _HomeState extends State<Home> {
       builder: (_, AdaptiveThemeMode mode, __) {
         return Scaffold(
           appBar: AppBar(
-            title: Text('o-health'.tr()),
+            title: Text(
+              'o-health'.tr(),
+              style: const TextStyle(
+                  fontWeight: FontWeight.bold, color: Colors.white),
+            ),
+            flexibleSpace: Container(
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(colors: [
+                  Color(0xffDB4437),
+                  Color.fromARGB(251, 248, 73, 67)
+                ]),
+              ),
+            ),
           ),
           drawer: Drawer(
             child: ListView(

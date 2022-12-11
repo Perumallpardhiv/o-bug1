@@ -8,7 +8,7 @@ class ThemeConfig {
     secondaryHeaderColor: const Color(0xffF4B400),
     appBarTheme: const AppBarTheme(color: Color(0xffDB4437)),
     backgroundColor: Colors.white,
-    fontFamily: GoogleFonts.openSans().fontFamily,
+    fontFamily: GoogleFonts.aBeeZee().fontFamily,
     buttonTheme: const ButtonThemeData(buttonColor: Colors.amber),
     switchTheme: SwitchThemeData(
       thumbColor:
@@ -36,7 +36,7 @@ class ThemeConfig {
     appBarTheme: const AppBarTheme(color: Color(0xffDB4437)),
     secondaryHeaderColor: const Color(0xffF4B400),
     backgroundColor: Colors.grey.shade700,
-    fontFamily: GoogleFonts.openSans().fontFamily,
+    fontFamily: GoogleFonts.aBeeZee().fontFamily,
     buttonTheme: const ButtonThemeData(buttonColor: Colors.amber),
     switchTheme: SwitchThemeData(
       thumbColor:

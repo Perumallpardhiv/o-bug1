@@ -11,18 +11,21 @@ import 'package:http_parser/http_parser.dart';
 
 class AuthServices {
   static register(username, password, aadharNumber) async {
-    http.post(
+    try {
+      var resp = await http.post(
         Uri.parse(
             "https://health-conscious.in/api/user/register/userRegistration"),
-        body: {
-          "user_name": username,
-          "user_aadhar_number": aadharNumber,
-          "user_password": password
-        }).then((resp) {
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode({
+          "user_name": 'abh',
+          "user_aadhar_number": '123123123123',
+          "user_password": 'password'
+        }),
+      );
       return resp;
-    }).catchError((err) {
-      return http.Response("$err", 500);
-    });
+    } catch (err) {
+      return null;
+    }
   }
 
   static login(String password, String aadharNumber) async {
@@ -69,7 +72,7 @@ class AuthServices {
       final response = await http.Response.fromStream(streamedResponse);
       return response;
     } catch (err) {
-      return err;
+      return null;
     }
   }
 }
@@ -87,5 +90,27 @@ class LoginResponse {
         hasError: json['hasError'],
         data: jsonDecode(json['data']),
         errorMsg: json['errorMsg']);
+  }
+}
+
+class UserDataModel {
+  final String lang;
+  final String id;
+  final String userName;
+  final String aadharNumber;
+
+  UserDataModel(
+      {required this.lang,
+      required this.aadharNumber,
+      required this.userName,
+      required this.id});
+
+  factory UserDataModel.fromJson(json) {
+    return UserDataModel(
+      lang: json['default_language'],
+      aadharNumber: json['user_aadhar_number'],
+      userName: json['user_name'],
+      id: json['id'],
+    );
   }
 }
