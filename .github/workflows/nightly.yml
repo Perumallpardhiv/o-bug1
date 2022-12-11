@@ -22,7 +22,7 @@ jobs:
 
       - run: |
           flutter pub get
-          flutter build apk
+          flutter build apk --split-per-abi
 
       - name: rename
         if: ${{ github.event_name != 'release' }}
