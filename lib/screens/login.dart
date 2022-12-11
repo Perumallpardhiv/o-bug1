@@ -1,17 +1,11 @@
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:o_health/methods/methods.dart';
 import 'package:o_health/screens/register.dart';
-import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import '../constants/input_decorations.dart';
 import '../services/auth_services.dart';
 import '../theme_config/theme_config.dart';
-import 'package:dio/dio.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
