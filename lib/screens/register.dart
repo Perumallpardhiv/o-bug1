@@ -8,9 +8,10 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'package:o_health/constants/input_decorations.dart';
+import 'package:o_health/screens/login.dart';
 import 'package:o_health/theme_config/theme_config.dart';
 
-enum ImageSourceType { gallery, camera }
+// enum ImageSourceType { gallery, camera }
 
 class Register extends StatefulWidget {
   const Register({super.key});
@@ -20,7 +21,7 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
-  var type;
+  // var type;
 
   @override
   Widget build(BuildContext context) {
@@ -145,12 +146,13 @@ class _RegisterState extends State<Register> {
                         width: 20,
                       ),
                       GestureDetector(
-                        child: Text(
+                        child: const Text(
                           "Log-In",
                           style: TextStyle(color: Colors.red),
                         ),
                         onTap: () {
-                          print("hi");
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: ((context) => Login())));
                         },
                       )
                     ],
