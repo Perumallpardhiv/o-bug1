@@ -152,7 +152,7 @@ class _RegisterState extends State<Register> {
                         ),
                         onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(
-                              builder: ((context) => Login())));
+                              builder: ((context) => const Login())));
                         },
                       )
                     ],

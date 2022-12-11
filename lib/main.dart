@@ -4,6 +4,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter/services.dart';
+import 'package:o_health/screens/home.dart';
+import 'package:o_health/screens/login.dart';
 import 'package:o_health/screens/register.dart';
 import 'package:o_health/theme_config/theme_config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -21,6 +23,7 @@ void main() async {
   });
   SharedPreferences pref = await SharedPreferences.getInstance();
   pref.getBool('isDarkTheme') ?? pref.setBool('isDarkTheme', false);
+  pref.getBool('isLoggedIn') ?? pref.setBool('isLoggedIn', false);
   runApp(
     EasyLocalization(
       supportedLocales: const [Locale('en'), Locale('kn')],
@@ -35,6 +38,7 @@ void main() async {
         builder: ((light, dark) => App(
               light: light,
               dark: dark,
+              pref: pref,
             )),
       ),
     ),
@@ -44,7 +48,9 @@ void main() async {
 class App extends StatefulWidget {
   final ThemeData light;
   final ThemeData dark;
-  const App({super.key, required this.light, required this.dark});
+  final SharedPreferences pref;
+  const App(
+      {super.key, required this.light, required this.dark, required this.pref});
 
   @override
   State<App> createState() => _AppState();
@@ -62,7 +68,12 @@ class _AppState extends State<App> {
       locale: context.locale,
       //define routes
       routes: {
-        '/': (context) => const Register(),
+        '/': (context) => widget.pref.getBool('isLoggedIn') == true
+            ? const Home()
+            : const Login(),
+        '/login': (context) => const Login(),
+        '/register': (context) => const Register(),
+        '/home': (context) => const Home()
       },
     );
   }

@@ -1,11 +1,16 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:o_health/methods/methods.dart';
 import 'package:o_health/screens/register.dart';
-
+import 'package:http/http.dart' as http;
 import '../constants/input_decorations.dart';
+import '../services/auth_services.dart';
 import '../theme_config/theme_config.dart';
+import 'package:dio/dio.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -15,22 +20,29 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  TextEditingController _aadharController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+  final _key = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(
-            "logIn".tr(),
-            style: const TextStyle(color: Colors.white),
-          ),
+      appBar: AppBar(
+        title: Text(
+          "logIn".tr(),
+          style: const TextStyle(color: Colors.white),
         ),
-        body: Padding(
-          padding: const EdgeInsets.all(15.0),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(15.0),
+        child: Form(
+          key: _key,
           child: SingleChildScrollView(
               child: Column(
             children: [
               Card(
                 child: TextFormField(
+                    controller: _aadharController,
                     decoration: inputDecoration.copyWith(
                         hintText: 'aadharNumber'.tr())),
               ),
@@ -39,6 +51,7 @@ class _LoginState extends State<Login> {
               ),
               Card(
                 child: TextFormField(
+                    controller: _passwordController,
                     decoration:
                         inputDecoration.copyWith(hintText: 'password'.tr())),
               ),
@@ -46,8 +59,12 @@ class _LoginState extends State<Login> {
                 height: MediaQuery.of(context).size.width / 60,
               ),
               MaterialButton(
-                onPressed: () {},
-                color: Color(0xffDB4437),
+                onPressed: () async {
+                  AuthServices.login(
+                          _passwordController.text, _aadharController.text)
+                      .then((val) {});
+                },
+                color: const Color(0xffDB4437),
                 minWidth: MediaQuery.of(context).size.width,
                 shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(10))),
@@ -68,7 +85,7 @@ class _LoginState extends State<Login> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Center(child: Text("don'tHave".tr())),
-                  SizedBox(
+                  const SizedBox(
                     width: 20,
                   ),
                   GestureDetector(
@@ -78,13 +95,16 @@ class _LoginState extends State<Login> {
                     ),
                     onTap: () {
                       Navigator.of(context).push(MaterialPageRoute(
-                          builder: ((context) => Register())));
+                        builder: ((context) => const Register()),
+                      ));
                     },
                   )
                 ],
               )
             ],
           )),
-        ));
+        ),
+      ),
+    );
   }
 }
