@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:o_health/screens/register.dart';
 import 'package:o_health/theme_config/theme_config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 void main() async {
   var widgetsBinding = WidgetsFlutterBinding.ensureInitialized();

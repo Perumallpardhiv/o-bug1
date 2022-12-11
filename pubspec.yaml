@@ -41,8 +41,9 @@ dependencies:
   adaptive_theme: 
   easy_localization: 
   shared_preferences:
-  image_picker: ^0.8.6
-  flutter_native_splash: 
+  image_picker: 
+  http:
+  mime: ^1.0.3
   
 
 dev_dependencies:

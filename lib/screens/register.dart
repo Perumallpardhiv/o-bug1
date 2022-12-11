@@ -39,7 +39,7 @@ class _RegisterState extends State<Register> {
               child: Column(
                 children: [
                   MaterialButton(
-                    color: Color(0xffDB4437),
+                    color: const Color(0xffDB4437),
                     minWidth: MediaQuery.of(context).size.width,
                     shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10))),
@@ -142,7 +142,7 @@ class _RegisterState extends State<Register> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Center(child: Text("already".tr())),
-                      SizedBox(
+                      const SizedBox(
                         width: 20,
                       ),
                       GestureDetector(
