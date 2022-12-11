@@ -17,4 +17,9 @@ const InputDecoration inputDecoration = InputDecoration(
       color: Colors.transparent,
     ),
   ),
+  disabledBorder: OutlineInputBorder(
+    borderSide: BorderSide(
+      color: Colors.transparent,
+    ),
+  ),
 );

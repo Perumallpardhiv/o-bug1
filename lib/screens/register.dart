@@ -1,14 +1,14 @@
-import 'dart:ui';
+import 'dart:convert';
+import 'dart:io';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
 import 'package:image_picker/image_picker.dart';
 
 import 'package:o_health/constants/input_decorations.dart';
 import 'package:o_health/screens/login.dart';
+import 'package:o_health/services/auth_services.dart';
 import 'package:o_health/theme_config/theme_config.dart';
 
 // enum ImageSourceType { gallery, camera }
@@ -22,7 +22,10 @@ class Register extends StatefulWidget {
 
 class _RegisterState extends State<Register> {
   // var type;
-
+  ImagePicker imagePicker = ImagePicker();
+  TextEditingController _aadharController = TextEditingController();
+  TextEditingController _nameController = TextEditingController();
+  bool isLoading = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,16 +47,20 @@ class _RegisterState extends State<Register> {
                     shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10))),
                     child: SizedBox(
-                      height: 50,
+                      height: 80,
                       child: Center(
-                        child: Text(
-                          "uploadAadhar".tr(),
-                          style: ThemeConfig.textStyle,
-                        ),
-                      ),
+                          child: isLoading
+                              ? CircularProgressIndicator(
+                                  color: Colors.white,
+                                  strokeWidth: 6,
+                                )
+                              : Text(
+                                  "uploadAadhar".tr(),
+                                  style: ThemeConfig.textStyle,
+                                )),
                     ),
                     onPressed: () async {
-                      showDialog(
+                      var path = await showDialog(
                           context: context,
                           builder: (context) {
                             return AlertDialog(
@@ -61,21 +68,36 @@ class _RegisterState extends State<Register> {
                               actions: [
                                 ElevatedButton(
                                     onPressed: () async {
-                                      var path = await ImagePicker.platform
-                                          .pickImage(
-                                              source: ImageSource.camera);
+                                      imagePicker
+                                          .pickImage(source: ImageSource.camera)
+                                          .then((xFile) => Navigator.of(context)
+                                              .pop(xFile!.path));
                                     },
                                     child: Text('camera'.tr())),
                                 ElevatedButton(
                                     onPressed: () async {
-                                      var path = await ImagePicker.platform
+                                      imagePicker
                                           .pickImage(
-                                              source: ImageSource.gallery);
+                                              source: ImageSource.gallery)
+                                          .then((xFile) => Navigator.of(context)
+                                              .pop(xFile!.path));
                                     },
                                     child: Text('gallery'.tr())),
                               ],
                             );
                           });
+                      setState(() {
+                        isLoading = true;
+                      });
+                      var resp = await AuthServices.sendAadharImage(File(path));
+
+                      setState(() {
+                        _aadharController.text =
+                            jsonDecode(resp.body)['aadhaarNumber'].toString();
+                        _nameController.text =
+                            jsonDecode(resp.body)['userName'];
+                        isLoading = false;
+                      });
                     },
                   ),
                   SizedBox(
@@ -86,6 +108,8 @@ class _RegisterState extends State<Register> {
                     // elevation: 6,
                     // shadowColor: Colors.black,
                     child: TextFormField(
+                        enabled: false,
+                        controller: _aadharController,
                         decoration: inputDecoration.copyWith(
                             hintText: 'aadharNumber'.tr())),
                   ),
@@ -94,6 +118,8 @@ class _RegisterState extends State<Register> {
                   ),
                   Card(
                     child: TextFormField(
+                      enabled: false,
+                      controller: _nameController,
                       decoration:
                           inputDecoration.copyWith(hintText: 'fullName'.tr()),
                     ),
@@ -121,7 +147,7 @@ class _RegisterState extends State<Register> {
                   ),
                   MaterialButton(
                     onPressed: () {},
-                    color: Color(0xffDB4437),
+                    color: const Color(0xffDB4437),
                     minWidth: MediaQuery.of(context).size.width,
                     shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10))),
@@ -151,8 +177,7 @@ class _RegisterState extends State<Register> {
                           style: TextStyle(color: Colors.red),
                         ),
                         onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: ((context) => const Login())));
+                          Navigator.of(context).pop();
                         },
                       )
                     ],
