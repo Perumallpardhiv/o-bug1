@@ -10,5 +10,8 @@
     "fullName": "Full Name",
     "password" : "Password",
     "confirmPassword" : "Confirm Password",
-    "already" : "Already have an Account ?"
+    "already" : "Already have an Account ?",
+    "don'tHave" : "Don't have an Account ?",
+    "login" : "Log-In",
+    "signUp" : "Sign-Up"
 }
