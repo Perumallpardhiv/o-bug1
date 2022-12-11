@@ -1,6 +1,9 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'login.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -24,6 +27,18 @@ class _HomeState extends State<Home> {
           drawer: Drawer(
             child: ListView(
               children: [
+                ListTile(
+                  title: const Text('Logout'),
+                  onTap: () async {
+                    SharedPreferences pref =
+                        await SharedPreferences.getInstance();
+                    pref.setBool('isLoggedIn', false).then((value) =>
+                        Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(
+                                builder: (context) => const Login()),
+                            (route) => false));
+                  },
+                ),
                 ListTile(
                   title: const Text('Night Mode'),
                   trailing: Switch(

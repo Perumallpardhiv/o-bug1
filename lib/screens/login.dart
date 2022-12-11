@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:o_health/methods/methods.dart';
 import 'package:o_health/screens/register.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import '../constants/input_decorations.dart';
 import '../services/auth_services.dart';
 import '../theme_config/theme_config.dart';
@@ -62,7 +63,19 @@ class _LoginState extends State<Login> {
                 onPressed: () async {
                   AuthServices.login(
                           _passwordController.text, _aadharController.text)
-                      .then((val) {});
+                      .then((val) async {
+                    if (val.hasError) {
+                    } else {
+                      SharedPreferences pref =
+                          await SharedPreferences.getInstance();
+                      pref.setBool('isLoggedIn', true);
+                      // ignore: use_build_context_synchronously
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                          '/home', (Route<dynamic> route) => false);
+                      // ignore: use_build_context_synchronously
+                      showSnackBar(context, false, 'Logged in successfully');
+                    }
+                  });
                 },
                 color: const Color(0xffDB4437),
                 minWidth: MediaQuery.of(context).size.width,
