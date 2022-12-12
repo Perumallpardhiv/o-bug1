@@ -15,5 +15,6 @@
     "logIn": "Log-In",
     "signUp": "Sign-Up",
     "noImageChosen": "No image chosen",
-    "loggedIn": "Logged in successfully"
+    "loggedIn": "Logged in successfully",
+    "invalidAadharPswd": "Invalid aadhar name or password"
 }

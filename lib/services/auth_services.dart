@@ -37,11 +37,17 @@ class AuthServices {
             {"user_aadhar_number": aadharNumber, "user_password": password}),
       );
 
-      return LoginResponse.fromJson(
-          {'hasError': false, 'data': resp.body, 'errorMsg': ''});
+      return resp.statusCode == 200
+          ? LoginResponse.fromJson(
+              {'hasError': false, 'data': resp.body, 'errorMsg': ''})
+          : LoginResponse.fromJson({
+              'hasError': true,
+              'data': Response('{}', resp.statusCode).body,
+              'errorMsg': jsonDecode(resp.body)['error']
+            });
     } catch (error) {
       return LoginResponse.fromJson({
-        'hasError': false,
+        'hasError': true,
         'data': Response('{}', 500).body,
         'errorMsg': error.toString()
       });
