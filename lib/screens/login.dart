@@ -69,6 +69,7 @@ class _LoginState extends State<Login> {
                             _passwordController.text, _aadharController.text)
                         .then((val) async {
                       if (val.hasError) {
+                        showSnackBar(context, false, 'invalidAadharPswd'.tr());
                       } else {
                         SharedPreferences pref =
                             await SharedPreferences.getInstance();

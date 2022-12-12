@@ -4,5 +4,6 @@
     "o-health": "ಒ-ಹೆಲ್ತ್",
     "changelang": "ಭಾಷೆ ಬದಲಾಯಿಸಿ",
     "register": "ನೋಂದಣಿ",
-    "uploadAadhar": "ಆಧಾರ್ ಅಪ್ಲೋಡ್ ಮಾಡಿ"
+    "uploadAadhar": "ಆಧಾರ್ ಅಪ್ಲೋಡ್ ಮಾಡಿ",
+    "invalidAadharPswd": "ಅಮಾನ್ಯವಾದ ಆಧಾರ್ ಹೆಸರು ಅಥವಾ ಪಾಸ್‌ವರ್ಡ್"
 }
