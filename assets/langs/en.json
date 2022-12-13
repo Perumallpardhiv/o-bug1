@@ -16,6 +16,6 @@
     "signUp": "Sign-Up",
     "noImageChosen": "No image chosen",
     "loggedIn": "Logged in successfully",
-    "welcomeBack" : "WELCOME BACK!"
+    "welcomeBack": "WELCOME BACK!",
     "invalidAadharPswd": "Invalid aadhar name or password"
 }

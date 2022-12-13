@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:o_health/screens/register.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -18,6 +19,7 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   final TextEditingController _aadharController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final Box hiveObj = Hive.box('data');
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,14 +70,13 @@ class _LoginState extends State<Login> {
                     if (val.hasError) {
                       showSnackBar(context, false, 'invalidAadharPswd'.tr());
                     } else {
-                      SharedPreferences pref =
-                          await SharedPreferences.getInstance();
-                      pref.setBool('isLoggedIn', true);
-                      // ignore: use_build_context_synchronously
-                      Navigator.of(context).pushNamedAndRemoveUntil(
-                          '/home', (Route<dynamic> route) => false);
-                      // ignore: use_build_context_synchronously
-                      showSnackBar(context, false, 'loggedIn'.tr());
+                      hiveObj
+                          .put('isLoggedIn', true)
+                          .then((value) => Navigator.of(context)
+                              .pushNamedAndRemoveUntil(
+                                  '/home', (Route<dynamic> route) => false))
+                          .then((value) =>
+                              showSnackBar(context, false, 'loggedIn'.tr()));
                     }
                   });
                 },

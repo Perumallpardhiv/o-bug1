@@ -1,6 +1,7 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:hive/hive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'login.dart';
@@ -14,7 +15,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   bool isEng = true;
-  bool isDark = false;
+  final Box hiveObj = Hive.box('data');
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
@@ -41,10 +42,8 @@ class _HomeState extends State<Home> {
               children: [
                 ListTile(
                   title: const Text('Logout'),
-                  onTap: () async {
-                    SharedPreferences pref =
-                        await SharedPreferences.getInstance();
-                    pref.setBool('isLoggedIn', false).then((value) =>
+                  onTap: () {
+                    hiveObj.put('isLoggedIn', false).then((value) =>
                         Navigator.of(context).pushAndRemoveUntil(
                             MaterialPageRoute(
                                 builder: (context) => const Login()),
@@ -54,10 +53,10 @@ class _HomeState extends State<Home> {
                 ListTile(
                   title: const Text('Night Mode'),
                   trailing: Switch(
-                    value: isDark,
-                    onChanged: (v) {
-                      isDark = v;
-                      if (v) {
+                    value: hiveObj.get('isDarkTheme') ? true : false,
+                    onChanged: (isDark) {
+                      hiveObj.put('isDarkTheme', isDark);
+                      if (isDark) {
                         AdaptiveTheme.of(context).setDark();
                       } else {
                         AdaptiveTheme.of(context).setLight();
