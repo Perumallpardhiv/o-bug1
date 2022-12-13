@@ -9,21 +9,24 @@ import 'package:o_health/screens/login.dart';
 import 'package:o_health/screens/register.dart';
 import 'package:o_health/theme_config/theme_config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:hive/hive.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
 
 void main() async {
   var widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await EasyLocalization.ensureInitialized();
-
   //add license file
   LicenseRegistry.addLicense(() async* {
     final license = await rootBundle.loadString('google_fonts/OFL.txt');
     yield LicenseEntryWithLineBreaks(['google_fonts'], license);
   });
-  SharedPreferences pref = await SharedPreferences.getInstance();
-  pref.getBool('isDarkTheme') ?? pref.setBool('isDarkTheme', false);
-  pref.getBool('isLoggedIn') ?? pref.setBool('isLoggedIn', false);
+
+  Hive.init((await getApplicationDocumentsDirectory()).path);
+  Box hive = await Hive.openBox('data');
+  hive.get('isDarkTheme') ?? hive.put('isDarkTheme', false);
+  hive.get('isLoggedIn') ?? hive.put('isLoggedIn', false);
   runApp(
     EasyLocalization(
       supportedLocales: const [Locale('en'), Locale('kn')],
@@ -32,13 +35,13 @@ void main() async {
       child: AdaptiveTheme(
         light: ThemeConfig.lightTheme,
         dark: ThemeConfig.darkTheme,
-        initial: pref.getBool('isDarkTheme') == true
+        initial: hive.get('isDarkTheme') == true
             ? AdaptiveThemeMode.dark
             : AdaptiveThemeMode.light,
         builder: ((light, dark) => App(
               light: light,
               dark: dark,
-              pref: pref,
+              hiveObj: hive,
             )),
       ),
     ),
@@ -48,9 +51,13 @@ void main() async {
 class App extends StatefulWidget {
   final ThemeData light;
   final ThemeData dark;
-  final SharedPreferences pref;
-  const App(
-      {super.key, required this.light, required this.dark, required this.pref});
+  final Box hiveObj;
+  const App({
+    super.key,
+    required this.light,
+    required this.dark,
+    required this.hiveObj,
+  });
 
   @override
   State<App> createState() => _AppState();
@@ -68,7 +75,7 @@ class _AppState extends State<App> {
       locale: context.locale,
       //define routes
       routes: {
-        '/': (context) => widget.pref.getBool('isLoggedIn') == true
+        '/': (context) => widget.hiveObj.get('isLoggedIn') == true
             ? const Home()
             : const Login(),
         '/login': (context) => const Login(),

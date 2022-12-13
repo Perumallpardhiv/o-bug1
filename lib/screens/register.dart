@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:o_health/constants/input_decorations.dart';
 import 'package:o_health/methods/methods.dart';
@@ -29,6 +30,7 @@ class _RegisterState extends State<Register> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _retypePasswordController =
       TextEditingController();
+  final Box hiveObj = Hive.box('data');
   bool isLoading = false;
   @override
   Widget build(BuildContext context) {
@@ -153,9 +155,9 @@ class _RegisterState extends State<Register> {
                       );
 
                       if (resp != null) {
-                        (SharedPreferences.getInstance())
-                            .then((pref) => pref.setBool('isLoggedIn', true));
+                        hiveObj.put('isLoggedInt', true);
                       } else {
+                        // ignore: use_build_context_synchronously
                         showSnackBar(context, true, 'Some error');
                       }
                     },
@@ -189,7 +191,7 @@ class _RegisterState extends State<Register> {
                       GestureDetector(
                         child: Text(
                           "Log-In".tr(),
-                          style: TextStyle(color: Colors.red),
+                          style: const TextStyle(color: Colors.red),
                         ),
                         onTap: () {
                           Navigator.of(context).pop();
