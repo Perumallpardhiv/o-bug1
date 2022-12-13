@@ -22,4 +22,10 @@ const InputDecoration inputDecoration = InputDecoration(
       color: Colors.transparent,
     ),
   ),
+  errorBorder: UnderlineInputBorder(
+    borderSide: BorderSide(color: Colors.transparent),
+  ),
+  focusedErrorBorder: UnderlineInputBorder(
+    borderSide: BorderSide(color: Colors.transparent),
+  ),
 );

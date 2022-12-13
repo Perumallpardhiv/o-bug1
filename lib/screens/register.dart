@@ -9,8 +9,7 @@ import 'package:o_health/constants/input_decorations.dart';
 import 'package:o_health/methods/methods.dart';
 import 'package:o_health/services/auth_services.dart';
 import 'package:o_health/theme_config/theme_config.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:form_field_validator/form_field_validator.dart';
 import 'login.dart';
 
 // enum ImageSourceType { gallery, camera }
@@ -30,6 +29,7 @@ class _RegisterState extends State<Register> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _retypePasswordController =
       TextEditingController();
+  final _key = GlobalKey<FormState>();
   final Box hiveObj = Hive.box('data');
   bool isLoading = false;
   @override
@@ -60,6 +60,7 @@ class _RegisterState extends State<Register> {
         body: Padding(
           padding: const EdgeInsets.all(15.0),
           child: Form(
+            key: _key,
             child: SingleChildScrollView(
               child: Column(
                 children: [
@@ -100,12 +101,17 @@ class _RegisterState extends State<Register> {
                     height: MediaQuery.of(context).size.height / 40,
                   ),
                   Card(
-                    child: TextFormField(
-                      enabled: false,
-                      cursorColor: Colors.redAccent,
-                      controller: _aadharController,
-                      decoration: inputDecoration.copyWith(
-                        hintText: 'aadharNumber'.tr(),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 8, right: 8),
+                      child: TextFormField(
+                        enabled: false,
+                        validator: RequiredValidator(
+                            errorText: 'Aadhar number is required'),
+                        cursorColor: Colors.redAccent,
+                        controller: _aadharController,
+                        decoration: inputDecoration.copyWith(
+                          hintText: 'aadharNumber'.tr(),
+                        ),
                       ),
                     ),
                   ),
@@ -113,34 +119,55 @@ class _RegisterState extends State<Register> {
                     height: MediaQuery.of(context).size.height / 60,
                   ),
                   Card(
-                    child: TextFormField(
-                      enabled: false,
-                      cursorColor: Colors.redAccent,
-                      controller: _nameController,
-                      decoration:
-                          inputDecoration.copyWith(hintText: 'fullName'.tr()),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 8, right: 8),
+                      child: TextFormField(
+                        validator: RequiredValidator(
+                            errorText: 'Full name is required'),
+                        enabled: false,
+                        cursorColor: Colors.redAccent,
+                        controller: _nameController,
+                        decoration:
+                            inputDecoration.copyWith(hintText: 'fullName'.tr()),
+                      ),
                     ),
                   ),
                   SizedBox(
                     height: MediaQuery.of(context).size.height / 60,
                   ),
                   Card(
-                    child: TextFormField(
-                      cursorColor: Colors.redAccent,
-                      controller: _passwordController,
-                      decoration:
-                          inputDecoration.copyWith(hintText: 'password'.tr()),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 8, right: 8),
+                      child: TextFormField(
+                        validator: MultiValidator([
+                          RequiredValidator(errorText: 'Password is required'),
+                          MinLengthValidator(6,
+                              errorText: 'Minimum length is 8'),
+                        ]),
+                        cursorColor: Colors.redAccent,
+                        controller: _passwordController,
+                        decoration:
+                            inputDecoration.copyWith(hintText: 'password'.tr()),
+                      ),
                     ),
                   ),
                   SizedBox(
                     height: MediaQuery.of(context).size.height / 60,
                   ),
                   Card(
-                    child: TextFormField(
-                      cursorColor: Colors.redAccent,
-                      controller: _retypePasswordController,
-                      decoration: inputDecoration.copyWith(
-                          hintText: 'confirmPassword'.tr()),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 8, right: 8),
+                      child: TextFormField(
+                        validator: (val) {
+                          if (val.toString() != _passwordController.text) {
+                            return 'Passwords do not match';
+                          }
+                        },
+                        cursorColor: Colors.redAccent,
+                        controller: _retypePasswordController,
+                        decoration: inputDecoration.copyWith(
+                            hintText: 'confirmPassword'.tr()),
+                      ),
                     ),
                   ),
                   SizedBox(
@@ -148,17 +175,19 @@ class _RegisterState extends State<Register> {
                   ),
                   GestureDetector(
                     onTap: () async {
-                      var resp = await AuthServices.register(
-                        _nameController.text.trim(),
-                        _passwordController.text.trim(),
-                        _aadharController.text.trim(),
-                      );
+                      if (_key.currentState!.validate()) {
+                        var resp = await AuthServices.register(
+                          _nameController.text.trim(),
+                          _passwordController.text.trim(),
+                          _aadharController.text.trim(),
+                        );
 
-                      if (resp != null) {
-                        hiveObj.put('isLoggedInt', true);
-                      } else {
-                        // ignore: use_build_context_synchronously
-                        showSnackBar(context, true, 'Some error');
+                        if (resp != null) {
+                          hiveObj.put('isLoggedInt', true);
+                        } else {
+                          // ignore: use_build_context_synchronously
+                          showSnackBar(context, true, 'Some error');
+                        }
                       }
                     },
                     child: Card(
