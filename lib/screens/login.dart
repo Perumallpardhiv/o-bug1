@@ -1,10 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:o_health/screens/register.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constants/input_decorations.dart';
+import '../methods/methods.dart';
+import '../services/auth_services.dart';
 import '../theme_config/theme_config.dart';
 
 class Login extends StatefulWidget {
@@ -15,20 +16,22 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  final TextEditingController _aadharController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(
-            "logIn".tr(),
-            style: const TextStyle(color: Colors.white),
-          ),
+      appBar: AppBar(
+        title: Text(
+          "logIn".tr(),
+          style: const TextStyle(color: Colors.white),
         ),
-        body: Padding(
-          padding: const EdgeInsets.all(15.0),
-          child: SingleChildScrollView(
-
-              child: Column(
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(15.0),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(
                 height: MediaQuery.of(context).size.width / 5,
@@ -37,90 +40,50 @@ class _LoginState extends State<Login> {
               SizedBox(
                 height: MediaQuery.of(context).size.width / 50,
               ),
-              Text(
-                "welcomeBack".tr(),
-                textAlign: TextAlign.right,
-                style: TextStyle(fontSize: 35, color: Colors.red),
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.width / 30,
-              ),
               Card(
                 child: TextFormField(
+                    cursorColor: Colors.redAccent,
+                    controller: _aadharController,
                     decoration: inputDecoration.copyWith(
                         hintText: 'aadharNumber'.tr())),
               ),
               SizedBox(
-                height: MediaQuery.of(context).size.width / 50,
+                height: MediaQuery.of(context).size.width / 60,
               ),
               Card(
                 child: TextFormField(
+                    cursorColor: Colors.redAccent,
+                    controller: _passwordController,
                     decoration:
                         inputDecoration.copyWith(hintText: 'password'.tr())),
               ),
               SizedBox(
-                height: MediaQuery.of(context).size.width / 30,
+                height: MediaQuery.of(context).size.width / 10,
               ),
-              MaterialButton(
-                onPressed: () {},
-                color: Color(0xffDB4437),
-                minWidth: MediaQuery.of(context).size.width,
-                shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10))),
-                child: SizedBox(
-                  height: 50,
-                  child: Center(
-                    child: Text(
-                      "submit".tr(),
-                      style: ThemeConfig.textStyle,
-
-              child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Card(
-                  child: TextFormField(
-                      cursorColor: Colors.redAccent,
-                      controller: _aadharController,
-                      decoration: inputDecoration.copyWith(
-                          hintText: 'aadharNumber'.tr())),
-                ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.width / 60,
-                ),
-                Card(
-                  child: TextFormField(
-                      cursorColor: Colors.redAccent,
-                      controller: _passwordController,
-                      decoration:
-                          inputDecoration.copyWith(hintText: 'password'.tr())),
-                ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.width / 60,
-                ),
-                MaterialButton(
-                  onPressed: () async {
-                    AuthServices.login(
-                            _passwordController.text, _aadharController.text)
-                        .then((val) async {
-                      if (val.hasError) {
-                        showSnackBar(context, false, 'invalidAadharPswd'.tr());
-                      } else {
-                        SharedPreferences pref =
-                            await SharedPreferences.getInstance();
-                        pref.setBool('isLoggedIn', true);
-                        // ignore: use_build_context_synchronously
-                        Navigator.of(context).pushNamedAndRemoveUntil(
-                            '/home', (Route<dynamic> route) => false);
-                        // ignore: use_build_context_synchronously
-                        showSnackBar(context, false, 'loggedIn'.tr());
-                      }
-                    });
-                  },
-                  color: const Color(0xffDB4437),
-                  minWidth: MediaQuery.of(context).size.width,
-                  shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10))),
+              GestureDetector(
+                onTap: () async {
+                  AuthServices.login(
+                          _passwordController.text, _aadharController.text)
+                      .then((val) async {
+                    if (val.hasError) {
+                      showSnackBar(context, false, 'invalidAadharPswd'.tr());
+                    } else {
+                      SharedPreferences pref =
+                          await SharedPreferences.getInstance();
+                      pref.setBool('isLoggedIn', true);
+                      // ignore: use_build_context_synchronously
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                          '/home', (Route<dynamic> route) => false);
+                      // ignore: use_build_context_synchronously
+                      showSnackBar(context, false, 'loggedIn'.tr());
+                    }
+                  });
+                },
+                child: Card(
+                  color: Colors.red,
+                  elevation: 4,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16)),
                   child: SizedBox(
                     height: 50,
                     child: Center(
@@ -128,7 +91,6 @@ class _LoginState extends State<Login> {
                         "submit".tr(),
                         style: ThemeConfig.textStyle,
                       ),
-
                     ),
                   ),
                 ),
@@ -140,23 +102,26 @@ class _LoginState extends State<Login> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Center(child: Text("don'tHave".tr())),
-                  SizedBox(
+                  const SizedBox(
                     width: 20,
                   ),
                   GestureDetector(
                     child: Text(
                       "signUp".tr(),
-                      style: TextStyle(color: Colors.red),
+                      style: const TextStyle(color: Colors.red),
                     ),
                     onTap: () {
                       Navigator.of(context).push(MaterialPageRoute(
-                          builder: ((context) => Register())));
+                        builder: ((context) => const Register()),
+                      ));
                     },
                   )
                 ],
               )
             ],
-          )),
-        ));
+          ),
+        ),
+      ),
+    );
   }
 }

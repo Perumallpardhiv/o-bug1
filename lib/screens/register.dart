@@ -10,6 +10,8 @@ import 'package:o_health/services/auth_services.dart';
 import 'package:o_health/theme_config/theme_config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'login.dart';
+
 // enum ImageSourceType { gallery, camera }
 
 class Register extends StatefulWidget {
@@ -46,7 +48,9 @@ class _RegisterState extends State<Register> {
           ),
           leading: BackButton(
             onPressed: () {
-              Navigator.of(context).pop();
+              Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) => const Login()),
+                  (route) => false);
             },
             color: Colors.white,
           ),
@@ -57,17 +61,12 @@ class _RegisterState extends State<Register> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  SizedBox(
-                    height: MediaQuery.of(context).size.width / 5,
+                  Image.asset(
+                    'assets/images/logo.png',
+                    height: 60,
                   ),
-                  Image.asset('assets/images/logo.png'),
                   SizedBox(
                     height: MediaQuery.of(context).size.width / 50,
-                  ),
-                  Text(
-                    "welcomeBack".tr(),
-                    textAlign: TextAlign.right,
-                    style: TextStyle(fontSize: 35, color: Colors.red),
                   ),
                   SizedBox(
                     height: MediaQuery.of(context).size.width / 30,
@@ -78,7 +77,7 @@ class _RegisterState extends State<Register> {
                     shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10))),
                     child: SizedBox(
-                      height: 80,
+                      height: 60,
                       child: Center(
                         child: isLoading
                             ? const CircularProgressIndicator(
@@ -145,8 +144,8 @@ class _RegisterState extends State<Register> {
                   SizedBox(
                     height: MediaQuery.of(context).size.height / 40,
                   ),
-                  MaterialButton(
-                    onPressed: () async {
+                  GestureDetector(
+                    onTap: () async {
                       var resp = await AuthServices.register(
                         _nameController.text.trim(),
                         _passwordController.text.trim(),
@@ -160,16 +159,19 @@ class _RegisterState extends State<Register> {
                         showSnackBar(context, true, 'Some error');
                       }
                     },
-                    color: const Color(0xffDB4437),
-                    minWidth: MediaQuery.of(context).size.width,
-                    shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10))),
-                    child: SizedBox(
-                      height: 50,
-                      child: Center(
-                        child: Text(
-                          "submit".tr(),
-                          style: ThemeConfig.textStyle,
+                    child: Card(
+                      color: Colors.red,
+                      elevation: 4,
+                      shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(16))),
+                      child: SizedBox(
+                        // width: MediaQuery.of(context).size.width / 2,
+                        height: 50,
+                        child: Center(
+                          child: Text(
+                            "submit".tr(),
+                            style: ThemeConfig.textStyle,
+                          ),
                         ),
                       ),
                     ),
