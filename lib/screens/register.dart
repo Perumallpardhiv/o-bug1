@@ -57,6 +57,21 @@ class _RegisterState extends State<Register> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
+                  SizedBox(
+                    height: MediaQuery.of(context).size.width / 5,
+                  ),
+                  Image.asset('assets/images/logo.png'),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.width / 50,
+                  ),
+                  Text(
+                    "welcomeBack".tr(),
+                    textAlign: TextAlign.right,
+                    style: TextStyle(fontSize: 35, color: Colors.red),
+                  ),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.width / 30,
+                  ),
                   MaterialButton(
                     color: const Color(0xffDB4437),
                     minWidth: MediaQuery.of(context).size.width,
@@ -170,8 +185,8 @@ class _RegisterState extends State<Register> {
                         width: 20,
                       ),
                       GestureDetector(
-                        child: const Text(
-                          "Log-In",
+                        child: Text(
+                          "Log-In".tr(),
                           style: TextStyle(color: Colors.red),
                         ),
                         onTap: () {
