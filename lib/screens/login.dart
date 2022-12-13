@@ -27,6 +27,7 @@ class _LoginState extends State<Login> {
         body: Padding(
           padding: const EdgeInsets.all(15.0),
           child: SingleChildScrollView(
+
               child: Column(
             children: [
               SizedBox(
@@ -72,6 +73,62 @@ class _LoginState extends State<Login> {
                     child: Text(
                       "submit".tr(),
                       style: ThemeConfig.textStyle,
+
+              child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Card(
+                  child: TextFormField(
+                      cursorColor: Colors.redAccent,
+                      controller: _aadharController,
+                      decoration: inputDecoration.copyWith(
+                          hintText: 'aadharNumber'.tr())),
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.width / 60,
+                ),
+                Card(
+                  child: TextFormField(
+                      cursorColor: Colors.redAccent,
+                      controller: _passwordController,
+                      decoration:
+                          inputDecoration.copyWith(hintText: 'password'.tr())),
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.width / 60,
+                ),
+                MaterialButton(
+                  onPressed: () async {
+                    AuthServices.login(
+                            _passwordController.text, _aadharController.text)
+                        .then((val) async {
+                      if (val.hasError) {
+                        showSnackBar(context, false, 'invalidAadharPswd'.tr());
+                      } else {
+                        SharedPreferences pref =
+                            await SharedPreferences.getInstance();
+                        pref.setBool('isLoggedIn', true);
+                        // ignore: use_build_context_synchronously
+                        Navigator.of(context).pushNamedAndRemoveUntil(
+                            '/home', (Route<dynamic> route) => false);
+                        // ignore: use_build_context_synchronously
+                        showSnackBar(context, false, 'loggedIn'.tr());
+                      }
+                    });
+                  },
+                  color: const Color(0xffDB4437),
+                  minWidth: MediaQuery.of(context).size.width,
+                  shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10))),
+                  child: SizedBox(
+                    height: 50,
+                    child: Center(
+                      child: Text(
+                        "submit".tr(),
+                        style: ThemeConfig.textStyle,
+                      ),
+
                     ),
                   ),
                 ),
