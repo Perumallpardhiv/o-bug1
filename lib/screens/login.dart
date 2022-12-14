@@ -40,9 +40,12 @@ class _LoginState extends State<Login> {
                 SizedBox(
                   height: MediaQuery.of(context).size.width / 5,
                 ),
-                Image.asset('assets/images/logo.png'),
+                Image.asset(
+                  'assets/images/logo.png',
+                  height: 70,
+                ),
                 SizedBox(
-                  height: MediaQuery.of(context).size.width / 50,
+                  height: MediaQuery.of(context).size.width / 20,
                 ),
                 Card(
                   child: Padding(
@@ -63,12 +66,14 @@ class _LoginState extends State<Login> {
                   child: Padding(
                     padding: const EdgeInsets.only(left: 8, right: 8),
                     child: TextFormField(
-                        validator: RequiredValidator(
-                            errorText: 'Password is required'),
-                        cursorColor: Colors.redAccent,
-                        controller: _passwordController,
-                        decoration: inputDecoration.copyWith(
-                            hintText: 'password'.tr())),
+                      validator:
+                          RequiredValidator(errorText: 'Password is required'),
+                      cursorColor: Colors.redAccent,
+                      controller: _passwordController,
+                      obscureText: true,
+                      decoration:
+                          inputDecoration.copyWith(hintText: 'password'.tr()),
+                    ),
                   ),
                 ),
                 SizedBox(
@@ -124,9 +129,18 @@ class _LoginState extends State<Login> {
                       width: 20,
                     ),
                     GestureDetector(
-                      child: Text(
-                        "signUp".tr(),
-                        style: const TextStyle(color: Colors.red),
+                      child: Card(
+                        color: Colors.red,
+                        child: SizedBox(
+                          width: 70,
+                          height: 30,
+                          child: Center(
+                            child: Text(
+                              "signUp".tr(),
+                              style: const TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        ),
                       ),
                       onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(
