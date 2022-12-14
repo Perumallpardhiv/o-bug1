@@ -75,10 +75,10 @@ class _RegisterState extends State<Register> {
                     height: MediaQuery.of(context).size.width / 30,
                   ),
                   MaterialButton(
-                    color: const Color(0xffDB4437),
+                    color: Colors.red,
                     minWidth: MediaQuery.of(context).size.width,
                     shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10))),
+                        borderRadius: BorderRadius.all(Radius.circular(20))),
                     child: SizedBox(
                       height: 60,
                       child: Center(
@@ -218,9 +218,15 @@ class _RegisterState extends State<Register> {
                         width: 20,
                       ),
                       GestureDetector(
-                        child: Text(
-                          "Log-In".tr(),
-                          style: const TextStyle(color: Colors.red),
+                        child: Card(
+                          color: Colors.red,
+                          child: SizedBox(
+                              width: 60,
+                              height: 30,
+                              child: Center(
+                                child: Text("Log-In".tr(),
+                                    style: ThemeConfig.textStyle),
+                              )),
                         ),
                         onTap: () {
                           Navigator.of(context).pop();
