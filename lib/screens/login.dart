@@ -40,12 +40,9 @@ class _LoginState extends State<Login> {
                 SizedBox(
                   height: MediaQuery.of(context).size.width / 5,
                 ),
-                Image.asset(
-                  'assets/images/logo.png',
-                  height: 70,
-                ),
+                Image.asset('assets/images/logo.png'),
                 SizedBox(
-                  height: MediaQuery.of(context).size.width / 20,
+                  height: MediaQuery.of(context).size.width / 50,
                 ),
                 Card(
                   child: Padding(
