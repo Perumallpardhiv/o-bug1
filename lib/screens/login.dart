@@ -77,20 +77,19 @@ class _LoginState extends State<Login> {
                 GestureDetector(
                   onTap: () async {
                     if (_key.currentState!.validate()) {
-                      AuthServices.login(
-                              _passwordController.text, _aadharController.text)
+                      AuthServices.login(_passwordController.text.trim(),
+                              _aadharController.text.trim())
                           .then(
                         (val) async {
                           if (val.hasError) {
-                            showSnackBar(
-                                context, false, 'invalidAadharPswd'.tr());
+                            showSnackBar(context, false, val.errorMsg);
                           } else {
                             hiveObj
                                 .put('isLoggedIn', true)
-                                .then((value) => Navigator.of(context)
+                                .then((_) => Navigator.of(context)
                                     .pushNamedAndRemoveUntil('/home',
                                         (Route<dynamic> route) => false))
-                                .then((value) => showSnackBar(
+                                .then((_) => showSnackBar(
                                     context, false, 'loggedIn'.tr()));
                           }
                         },

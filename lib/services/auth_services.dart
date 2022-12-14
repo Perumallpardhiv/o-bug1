@@ -3,6 +3,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 
@@ -36,14 +37,13 @@ class AuthServices {
         body: json.encode(
             {"user_aadhar_number": aadharNumber, "user_password": password}),
       );
-
       return resp.statusCode == 200
           ? LoginResponse.fromJson(
               {'hasError': false, 'data': resp.body, 'errorMsg': ''})
           : LoginResponse.fromJson({
               'hasError': true,
               'data': Response('{}', resp.statusCode).body,
-              'errorMsg': jsonDecode(resp.body)['error']
+              'errorMsg': 'invalidAadharPswd'.tr()
             });
     } catch (error) {
       return LoginResponse.fromJson({
