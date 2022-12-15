@@ -58,28 +58,28 @@ class _RegisterState extends State<Register> {
             color: Colors.white,
           ),
         ),
-        body: Padding(
-          padding: const EdgeInsets.all(15.0),
-          child: Form(
-            key: _key,
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Image.asset(
-                    'assets/images/logo.png',
-                    height: 60,
-                  ),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.width / 50,
-                  ),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.width / 30,
-                  ),
-                  MaterialButton(
+        body: Form(
+          key: _key,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Image.asset(
+                  'assets/images/logo.png',
+                  height: 60,
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.width / 50,
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.width / 30,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 14.0, right: 14),
+                  child: MaterialButton(
                     color: Colors.red.shade400,
                     minWidth: MediaQuery.of(context).size.width,
                     shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(24))),
+                        borderRadius: BorderRadius.all(Radius.circular(20))),
                     child: SizedBox(
                       height: 60,
                       child: Center(
@@ -98,95 +98,102 @@ class _RegisterState extends State<Register> {
                       await handleAutoFill();
                     },
                   ),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height / 40,
-                  ),
-                  Container(
-                    decoration: boxDecoration,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 8, right: 8),
-                      child: TextFormField(
-                        enabled: false,
-                        validator: RequiredValidator(
-                            errorText: 'Aadhar number is required'),
-                        cursorColor: Colors.redAccent,
-                        controller: _aadharController,
-                        decoration: inputDecoration.copyWith(
-                          prefixIcon: const Icon(Icons.numbers),
-                          hintText: 'aadharNumber'.tr(),
-                        ),
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height / 40,
+                ),
+                Container(
+                  decoration: boxDecoration,
+                  width: MediaQuery.of(context).size.width - 28,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 8, right: 8),
+                    child: TextFormField(
+                      enabled: false,
+                      validator: RequiredValidator(
+                          errorText: 'Aadhar number is required'),
+                      cursorColor: Colors.redAccent,
+                      controller: _aadharController,
+                      decoration: inputDecoration.copyWith(
+                        prefixIcon: const Icon(Icons.numbers),
+                        hintText: 'aadharNumber'.tr(),
                       ),
                     ),
                   ),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height / 60,
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height / 60,
+                ),
+                Container(
+                  decoration: boxDecoration,
+                  width: MediaQuery.of(context).size.width - 28,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 8, right: 8),
+                    child: TextFormField(
+                      validator:
+                          RequiredValidator(errorText: 'Full name is required'),
+                      enabled: false,
+                      cursorColor: Colors.redAccent,
+                      controller: _nameController,
+                      decoration: inputDecoration.copyWith(
+                          hintText: 'fullName'.tr(),
+                          prefixIcon: const Icon(Icons.text_fields_rounded)),
+                    ),
                   ),
-                  Container(
-                    decoration: boxDecoration,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 8, right: 8),
-                      child: TextFormField(
-                        validator: RequiredValidator(
-                            errorText: 'Full name is required'),
-                        enabled: false,
-                        cursorColor: Colors.redAccent,
-                        controller: _nameController,
-                        decoration: inputDecoration.copyWith(
-                            hintText: 'fullName'.tr(),
-                            prefixIcon: const Icon(Icons.text_fields_rounded)),
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height / 60,
+                ),
+                Container(
+                  decoration: boxDecoration,
+                  width: MediaQuery.of(context).size.width - 28,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 8, right: 8),
+                    child: TextFormField(
+                      validator: MultiValidator([
+                        RequiredValidator(errorText: 'Password is required'),
+                        MinLengthValidator(6, errorText: 'Minimum length is 8'),
+                      ]),
+                      cursorColor: Colors.redAccent,
+                      controller: _passwordController,
+                      decoration: inputDecoration.copyWith(
+                        hintText: 'password'.tr(),
+                        prefixIcon: const Icon(Icons.password_rounded),
                       ),
                     ),
                   ),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height / 60,
-                  ),
-                  Container(
-                    decoration: boxDecoration,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 8, right: 8),
-                      child: TextFormField(
-                        validator: MultiValidator([
-                          RequiredValidator(errorText: 'Password is required'),
-                          MinLengthValidator(6,
-                              errorText: 'Minimum length is 8'),
-                        ]),
-                        cursorColor: Colors.redAccent,
-                        controller: _passwordController,
-                        decoration: inputDecoration.copyWith(
-                          hintText: 'password'.tr(),
-                          prefixIcon: const Icon(Icons.password_rounded),
-                        ),
-                      ),
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height / 60,
+                ),
+                Container(
+                  decoration: boxDecoration,
+                  width: MediaQuery.of(context).size.width - 28,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 8, right: 8),
+                    child: TextFormField(
+                      validator: (val) {
+                        if (val.toString() != _passwordController.text) {
+                          return 'Passwords do not match';
+                        }
+                      },
+                      cursorColor: Colors.redAccent,
+                      controller: _retypePasswordController,
+                      decoration: inputDecoration.copyWith(
+                          hintText: 'confirmPassword'.tr(),
+                          prefixIcon: const Icon(Icons.password_rounded)),
                     ),
                   ),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height / 60,
-                  ),
-                  Container(
-                    decoration: boxDecoration,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 8, right: 8),
-                      child: TextFormField(
-                        validator: (val) {
-                          if (val.toString() != _passwordController.text) {
-                            return 'Passwords do not match';
-                          }
-                        },
-                        cursorColor: Colors.redAccent,
-                        controller: _retypePasswordController,
-                        decoration: inputDecoration.copyWith(
-                            hintText: 'confirmPassword'.tr(),
-                            prefixIcon: const Icon(Icons.password_rounded)),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height / 40,
-                  ),
-                  StatefulBuilder(builder: (context, StateSetter innerState) {
-                    return isLoadingSubmit
-                        ? Lottie.asset('assets/lottie/loader.json')
-                        : GestureDetector(
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height / 40,
+                ),
+                StatefulBuilder(builder: (context, StateSetter innerState) {
+                  return isLoadingSubmit
+                      ? Lottie.asset('assets/lottie/loader.json')
+                      : Padding(
+                          padding:
+                              const EdgeInsets.only(left: 12.0, right: 12.0),
+                          child: GestureDetector(
                             onTap: () async {
                               innerState(() {
                                 isLoadingSubmit = true;
@@ -230,43 +237,43 @@ class _RegisterState extends State<Register> {
                                 ),
                               ),
                             ),
-                          );
-                  }),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height / 60,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Center(child: Text("already".tr())),
-                      const SizedBox(
-                        width: 20,
+                          ),
+                        );
+                }),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height / 60,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Center(child: Text("already".tr())),
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    GestureDetector(
+                      child: Card(
+                        color: Colors.red,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15)),
+                        elevation: 4,
+                        child: SizedBox(
+                            width: 70,
+                            height: 36,
+                            child: Center(
+                              child: Text(
+                                "Log-In".tr(),
+                                style: ThemeConfig.textStyle
+                                    .copyWith(fontWeight: FontWeight.bold),
+                              ),
+                            )),
                       ),
-                      GestureDetector(
-                        child: Card(
-                          color: Colors.red,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15)),
-                          elevation: 4,
-                          child: SizedBox(
-                              width: 70,
-                              height: 36,
-                              child: Center(
-                                child: Text(
-                                  "Log-In".tr(),
-                                  style: ThemeConfig.textStyle
-                                      .copyWith(fontWeight: FontWeight.bold),
-                                ),
-                              )),
-                        ),
-                        onTap: () {
-                          Navigator.of(context).pop();
-                        },
-                      )
-                    ],
-                  )
-                ],
-              ),
+                      onTap: () {
+                        Navigator.of(context).pop();
+                      },
+                    )
+                  ],
+                )
+              ],
             ),
           ),
         ));
