@@ -40,7 +40,6 @@ dependencies:
   google_fonts:
   adaptive_theme: 
   easy_localization: 
-  shared_preferences:
   image_picker: 
   http:
   mime: ^1.0.3
@@ -48,6 +47,7 @@ dependencies:
   hive:
   path_provider: 
   form_field_validator:
+  lottie:
   
 
 dev_dependencies:
@@ -80,6 +80,7 @@ flutter:
   assets: 
     - assets/langs/
     - assets/images/
+    - assets/lottie/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 

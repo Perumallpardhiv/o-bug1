@@ -2,7 +2,6 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:hive/hive.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'login.dart';
 
@@ -30,11 +29,10 @@ class _HomeState extends State<Home> {
             ),
             flexibleSpace: Container(
               decoration: const BoxDecoration(
-                gradient: LinearGradient(colors: [
-                  Color(0xffDB4437),
-                  Color.fromARGB(251, 248, 73, 67)
-                ]),
-              ),
+                  gradient: LinearGradient(colors: [
+                Color.fromARGB(223, 227, 58, 58),
+                Color.fromARGB(224, 238, 90, 102)
+              ])),
             ),
           ),
           drawer: Drawer(
