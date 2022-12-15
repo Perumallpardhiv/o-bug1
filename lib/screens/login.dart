@@ -39,7 +39,7 @@ class _LoginState extends State<Login> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(15.0),
+        padding: const EdgeInsets.all(0.0),
         child: SingleChildScrollView(
           child: Form(
             key: _key,
@@ -58,6 +58,7 @@ class _LoginState extends State<Login> {
                 ),
                 Container(
                   decoration: boxDecoration,
+                  width: MediaQuery.of(context).size.width - 28,
                   child: Padding(
                     padding: const EdgeInsets.only(left: 8, right: 8),
                     child: TextFormField(
@@ -76,6 +77,7 @@ class _LoginState extends State<Login> {
                 ),
                 Container(
                   decoration: boxDecoration,
+                  width: MediaQuery.of(context).size.width - 28,
                   child: Padding(
                     padding: const EdgeInsets.only(left: 8, right: 8),
                     child: TextFormField(
