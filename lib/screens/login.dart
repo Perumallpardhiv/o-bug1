@@ -100,50 +100,54 @@ class _LoginState extends State<Login> {
                       ? Center(
                           child: Lottie.asset('assets/lottie/loader.json',
                               width: 50, height: 50))
-                      : GestureDetector(
-                          onTap: () async {
-                            innerState(() {
-                              isLoading = true;
-                            });
-                            if (_key.currentState!.validate()) {
-                              AuthServices.login(
-                                _passwordController.text.trim(),
-                                _aadharController.text.trim(),
-                              ).then(
-                                (val) async {
-                                  if (val.hasError) {
-                                    showSnackBar(context, false, val.errorMsg);
-                                  } else {
-                                    hiveObj
-                                        .put('isLoggedIn', true)
-                                        .then((_) => Navigator.of(context)
-                                            .pushNamedAndRemoveUntil(
-                                                '/home',
-                                                (Route<dynamic> route) =>
-                                                    false))
-                                        .then((_) => showSnackBar(
-                                            context, false, 'loggedIn'.tr()));
-                                  }
-                                },
-                              );
-                            }
-                            innerState(() {
-                              isLoading = false;
-                            });
-                          },
-                          child: Card(
-                            color: Colors.red,
-                            elevation: 4,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(16)),
-                            child: SizedBox(
-                              height: 50,
-                              child: Center(
-                                child: Text(
-                                  "submit".tr(),
-                                  style: ThemeConfig.textStyle.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16,
+                      : Padding(
+                          padding: const EdgeInsets.only(left: 14.0, right: 14),
+                          child: GestureDetector(
+                            onTap: () async {
+                              innerState(() {
+                                isLoading = true;
+                              });
+                              if (_key.currentState!.validate()) {
+                                AuthServices.login(
+                                  _passwordController.text.trim(),
+                                  _aadharController.text.trim(),
+                                ).then(
+                                  (val) async {
+                                    if (val.hasError) {
+                                      showSnackBar(
+                                          context, false, val.errorMsg);
+                                    } else {
+                                      hiveObj
+                                          .put('isLoggedIn', true)
+                                          .then((_) => Navigator.of(context)
+                                              .pushNamedAndRemoveUntil(
+                                                  '/home',
+                                                  (Route<dynamic> route) =>
+                                                      false))
+                                          .then((_) => showSnackBar(
+                                              context, false, 'loggedIn'.tr()));
+                                    }
+                                  },
+                                );
+                              }
+                              innerState(() {
+                                isLoading = false;
+                              });
+                            },
+                            child: Card(
+                              color: Colors.red,
+                              elevation: 4,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(16)),
+                              child: SizedBox(
+                                height: 50,
+                                child: Center(
+                                  child: Text(
+                                    "submit".tr(),
+                                    style: ThemeConfig.textStyle.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+                                    ),
                                   ),
                                 ),
                               ),
