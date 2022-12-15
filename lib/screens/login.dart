@@ -79,9 +79,10 @@ class _LoginState extends State<Login> {
                 GestureDetector(
                   onTap: () async {
                     if (_key.currentState!.validate()) {
-                      AuthServices.login(_passwordController.text.trim(),
-                              _aadharController.text.trim())
-                          .then(
+                      AuthServices.login(
+                        _passwordController.text.trim(),
+                        _aadharController.text.trim(),
+                      ).then(
                         (val) async {
                           if (val.hasError) {
                             showSnackBar(context, false, val.errorMsg);
