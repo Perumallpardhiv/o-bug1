@@ -26,6 +26,10 @@ class ThemeConfig {
         return const Color.fromARGB(238, 227, 130, 85);
       }),
     ),
+    iconTheme: const IconThemeData(color: Colors.redAccent),
+    inputDecorationTheme: const InputDecorationTheme(
+      iconColor: Colors.redAccent,
+    ),
     floatingActionButtonTheme:
         const FloatingActionButtonThemeData(backgroundColor: Colors.yellow),
     useMaterial3: true,
@@ -54,6 +58,9 @@ class ThemeConfig {
         return const Color.fromARGB(238, 227, 130, 85);
       }),
     ),
+    iconTheme: const IconThemeData(color: Colors.redAccent),
+    inputDecorationTheme:
+        const InputDecorationTheme(iconColor: Colors.redAccent),
     floatingActionButtonTheme:
         const FloatingActionButtonThemeData(backgroundColor: Colors.yellow),
     useMaterial3: true,

@@ -2,16 +2,15 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+// ignore: depend_on_referenced_packages
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter/services.dart';
 import 'package:o_health/screens/home.dart';
 import 'package:o_health/screens/login.dart';
 import 'package:o_health/screens/register.dart';
 import 'package:o_health/theme_config/theme_config.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:http/http.dart' as http;
 
 void main() async {
   var widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -68,6 +67,7 @@ class _AppState extends State<App> {
   Widget build(BuildContext context) {
     FlutterNativeSplash.remove();
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: widget.light,
       darkTheme: widget.dark,
       localizationsDelegates: context.localizationDelegates,

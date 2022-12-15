@@ -5,7 +5,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:o_health/constants/input_decorations.dart';
+import 'package:lottie/lottie.dart';
+import 'package:o_health/constants/decorations.dart';
 import 'package:o_health/methods/methods.dart';
 import 'package:o_health/services/auth_services.dart';
 import 'package:o_health/theme_config/theme_config.dart';
@@ -32,6 +33,7 @@ class _RegisterState extends State<Register> {
   final _key = GlobalKey<FormState>();
   final Box hiveObj = Hive.box('data');
   bool isLoading = false;
+  bool isLoadingSubmit = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,11 +44,10 @@ class _RegisterState extends State<Register> {
           ),
           flexibleSpace: Container(
             decoration: const BoxDecoration(
-              gradient: LinearGradient(colors: [
-                Color(0xffDB4437),
-                Color.fromARGB(255, 228, 92, 71)
-              ]),
-            ),
+                gradient: LinearGradient(colors: [
+              Color.fromARGB(223, 227, 58, 58),
+              Color.fromARGB(224, 238, 90, 102)
+            ])),
           ),
           leading: BackButton(
             onPressed: () {
@@ -75,10 +76,10 @@ class _RegisterState extends State<Register> {
                     height: MediaQuery.of(context).size.width / 30,
                   ),
                   MaterialButton(
-                    color: Colors.red,
+                    color: Colors.red.shade400,
                     minWidth: MediaQuery.of(context).size.width,
                     shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(20))),
+                        borderRadius: BorderRadius.all(Radius.circular(24))),
                     child: SizedBox(
                       height: 60,
                       child: Center(
@@ -100,7 +101,8 @@ class _RegisterState extends State<Register> {
                   SizedBox(
                     height: MediaQuery.of(context).size.height / 40,
                   ),
-                  Card(
+                  Container(
+                    decoration: boxDecoration,
                     child: Padding(
                       padding: const EdgeInsets.only(left: 8, right: 8),
                       child: TextFormField(
@@ -110,6 +112,7 @@ class _RegisterState extends State<Register> {
                         cursorColor: Colors.redAccent,
                         controller: _aadharController,
                         decoration: inputDecoration.copyWith(
+                          prefixIcon: const Icon(Icons.numbers),
                           hintText: 'aadharNumber'.tr(),
                         ),
                       ),
@@ -118,7 +121,8 @@ class _RegisterState extends State<Register> {
                   SizedBox(
                     height: MediaQuery.of(context).size.height / 60,
                   ),
-                  Card(
+                  Container(
+                    decoration: boxDecoration,
                     child: Padding(
                       padding: const EdgeInsets.only(left: 8, right: 8),
                       child: TextFormField(
@@ -127,15 +131,17 @@ class _RegisterState extends State<Register> {
                         enabled: false,
                         cursorColor: Colors.redAccent,
                         controller: _nameController,
-                        decoration:
-                            inputDecoration.copyWith(hintText: 'fullName'.tr()),
+                        decoration: inputDecoration.copyWith(
+                            hintText: 'fullName'.tr(),
+                            prefixIcon: const Icon(Icons.text_fields_rounded)),
                       ),
                     ),
                   ),
                   SizedBox(
                     height: MediaQuery.of(context).size.height / 60,
                   ),
-                  Card(
+                  Container(
+                    decoration: boxDecoration,
                     child: Padding(
                       padding: const EdgeInsets.only(left: 8, right: 8),
                       child: TextFormField(
@@ -146,15 +152,18 @@ class _RegisterState extends State<Register> {
                         ]),
                         cursorColor: Colors.redAccent,
                         controller: _passwordController,
-                        decoration:
-                            inputDecoration.copyWith(hintText: 'password'.tr()),
+                        decoration: inputDecoration.copyWith(
+                          hintText: 'password'.tr(),
+                          prefixIcon: const Icon(Icons.password_rounded),
+                        ),
                       ),
                     ),
                   ),
                   SizedBox(
                     height: MediaQuery.of(context).size.height / 60,
                   ),
-                  Card(
+                  Container(
+                    decoration: boxDecoration,
                     child: Padding(
                       padding: const EdgeInsets.only(left: 8, right: 8),
                       child: TextFormField(
@@ -166,47 +175,63 @@ class _RegisterState extends State<Register> {
                         cursorColor: Colors.redAccent,
                         controller: _retypePasswordController,
                         decoration: inputDecoration.copyWith(
-                            hintText: 'confirmPassword'.tr()),
+                            hintText: 'confirmPassword'.tr(),
+                            prefixIcon: const Icon(Icons.password_rounded)),
                       ),
                     ),
                   ),
                   SizedBox(
                     height: MediaQuery.of(context).size.height / 40,
                   ),
-                  GestureDetector(
-                    onTap: () async {
-                      if (_key.currentState!.validate()) {
-                        var resp = await AuthServices.register(
-                          _nameController.text.trim(),
-                          _passwordController.text.trim(),
-                          _aadharController.text.trim(),
-                        );
+                  StatefulBuilder(builder: (context, StateSetter innerState) {
+                    return isLoadingSubmit
+                        ? Lottie.asset('assets/lottie/loader.json')
+                        : GestureDetector(
+                            onTap: () async {
+                              innerState(() {
+                                isLoadingSubmit = true;
+                              });
 
-                        if (resp != null) {
-                          hiveObj.put('isLoggedInt', true);
-                        } else {
-                          // ignore: use_build_context_synchronously
-                          showSnackBar(context, true, 'Some error');
-                        }
-                      }
-                    },
-                    child: Card(
-                      color: Colors.red,
-                      elevation: 4,
-                      shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(16))),
-                      child: SizedBox(
-                        // width: MediaQuery.of(context).size.width / 2,
-                        height: 50,
-                        child: Center(
-                          child: Text(
-                            "submit".tr(),
-                            style: ThemeConfig.textStyle,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
+                              if (_key.currentState!.validate()) {
+                                var resp = await AuthServices.register(
+                                  _nameController.text.trim(),
+                                  _passwordController.text.trim(),
+                                  _aadharController.text.trim(),
+                                );
+
+                                if (resp != null) {
+                                  hiveObj.put('isLoggedInt', true);
+                                } else {
+                                  // ignore: use_build_context_synchronously
+                                  showSnackBar(context, true, 'Some error');
+                                }
+                              }
+                              innerState(() {
+                                isLoadingSubmit = false;
+                              });
+                            },
+                            child: Card(
+                              color: Colors.red,
+                              elevation: 4,
+                              shape: const RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(16))),
+                              child: SizedBox(
+                                // width: MediaQuery.of(context).size.width / 2,
+                                height: 56,
+                                child: Center(
+                                  child: Text(
+                                    "submit".tr(),
+                                    style: ThemeConfig.textStyle.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          );
+                  }),
                   SizedBox(
                     height: MediaQuery.of(context).size.height / 60,
                   ),
@@ -220,12 +245,18 @@ class _RegisterState extends State<Register> {
                       GestureDetector(
                         child: Card(
                           color: Colors.red,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15)),
+                          elevation: 4,
                           child: SizedBox(
-                              width: 60,
-                              height: 30,
+                              width: 70,
+                              height: 36,
                               child: Center(
-                                child: Text("Log-In".tr(),
-                                    style: ThemeConfig.textStyle),
+                                child: Text(
+                                  "Log-In".tr(),
+                                  style: ThemeConfig.textStyle
+                                      .copyWith(fontWeight: FontWeight.bold),
+                                ),
                               )),
                         ),
                         onTap: () {
