@@ -34,6 +34,8 @@ class _RegisterState extends State<Register> {
   final Box hiveObj = Hive.box('data');
   bool isLoading = false;
   bool isLoadingSubmit = false;
+  bool _obscureText1 = true;
+  bool _obscureText2 = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -148,17 +150,35 @@ class _RegisterState extends State<Register> {
                   width: MediaQuery.of(context).size.width - 28,
                   child: Padding(
                     padding: const EdgeInsets.only(left: 8, right: 8),
-                    child: TextFormField(
-                      validator: MultiValidator([
-                        RequiredValidator(errorText: 'Password is required'),
-                        MinLengthValidator(6, errorText: 'Minimum length is 8'),
-                      ]),
-                      cursorColor: Colors.redAccent,
-                      controller: _passwordController,
-                      decoration: inputDecoration.copyWith(
-                        hintText: 'password'.tr(),
-                        prefixIcon: const Icon(Icons.password_rounded),
-                      ),
+                    child: StatefulBuilder(
+                      builder: (BuildContext context, StateSetter innerState) {
+                        return TextFormField(
+                          validator: MultiValidator([
+                            RequiredValidator(
+                                errorText: 'Password is required'),
+                            MinLengthValidator(6,
+                                errorText: 'Minimum length is 8'),
+                          ]),
+                          cursorColor: Colors.redAccent,
+                          controller: _passwordController,
+                          obscureText: _obscureText1,
+                          decoration: inputDecoration.copyWith(
+                              hintText: 'password'.tr(),
+                              prefixIcon: const Icon(Icons.password_rounded),
+                              suffixIcon: GestureDetector(
+                                onTap: () {
+                                  innerState(
+                                    () {
+                                      _obscureText1 = !_obscureText1;
+                                    },
+                                  );
+                                },
+                                child: Icon(_obscureText1
+                                    ? Icons.visibility
+                                    : Icons.visibility_off),
+                              )),
+                        );
+                      },
                     ),
                   ),
                 ),
@@ -170,17 +190,34 @@ class _RegisterState extends State<Register> {
                   width: MediaQuery.of(context).size.width - 28,
                   child: Padding(
                     padding: const EdgeInsets.only(left: 8, right: 8),
-                    child: TextFormField(
-                      validator: (val) {
-                        if (val.toString() != _passwordController.text) {
-                          return 'Passwords do not match';
-                        }
+                    child: StatefulBuilder(
+                      builder: (BuildContext context, inState) {
+                        return TextFormField(
+                          validator: (val) {
+                            if (val.toString() != _passwordController.text) {
+                              return 'Passwords do not match';
+                            }
+                          },
+                          cursorColor: Colors.redAccent,
+                          controller: _retypePasswordController,
+                          obscureText: _obscureText2,
+                          decoration: inputDecoration.copyWith(
+                              hintText: 'confirmPassword'.tr(),
+                              prefixIcon: const Icon(Icons.password_rounded),
+                              suffixIcon: GestureDetector(
+                                onTap: () {
+                                  inState(
+                                    () {
+                                      _obscureText2 = !_obscureText2;
+                                    },
+                                  );
+                                },
+                                child: Icon(_obscureText1
+                                    ? Icons.visibility
+                                    : Icons.visibility_off),
+                              )),
+                        );
                       },
-                      cursorColor: Colors.redAccent,
-                      controller: _retypePasswordController,
-                      decoration: inputDecoration.copyWith(
-                          hintText: 'confirmPassword'.tr(),
-                          prefixIcon: const Icon(Icons.password_rounded)),
                     ),
                   ),
                 ),

@@ -22,6 +22,7 @@ class _LoginState extends State<Login> {
   final _key = GlobalKey<FormState>();
   final Box hiveObj = Hive.box('data');
   bool isLoading = false;
+  bool _obscureText = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -80,15 +81,30 @@ class _LoginState extends State<Login> {
                   width: MediaQuery.of(context).size.width - 28,
                   child: Padding(
                     padding: const EdgeInsets.only(left: 8, right: 8),
-                    child: TextFormField(
-                      validator:
-                          RequiredValidator(errorText: 'Password is required'),
-                      cursorColor: Colors.redAccent,
-                      controller: _passwordController,
-                      obscureText: true,
-                      decoration: inputDecoration.copyWith(
-                          hintText: 'password'.tr(),
-                          prefixIcon: const Icon(Icons.password)),
+                    child: StatefulBuilder(
+                      builder: (BuildContext context, StateSetter innerState) {
+                        return TextFormField(
+                          validator: RequiredValidator(
+                              errorText: 'Password is required'),
+                          cursorColor: Colors.redAccent,
+                          controller: _passwordController,
+                          obscureText: _obscureText,
+                          decoration: inputDecoration.copyWith(
+                            hintText: 'password'.tr(),
+                            prefixIcon: const Icon(Icons.password),
+                            suffixIcon: GestureDetector(
+                              onTap: () {
+                                innerState(() {
+                                  _obscureText = !_obscureText;
+                                });
+                              },
+                              child: Icon(_obscureText
+                                  ? Icons.visibility
+                                  : Icons.visibility_off),
+                            ),
+                          ),
+                        );
+                      },
                     ),
                   ),
                 ),
