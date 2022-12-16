@@ -58,7 +58,11 @@ class _LoginState extends State<Login> {
                   height: MediaQuery.of(context).size.height / 20,
                 ),
                 Container(
-                  decoration: boxDecoration,
+                  decoration: boxDecoration.copyWith(
+                    color: hiveObj.get('isDarkTheme')
+                        ? const Color.fromARGB(255, 67, 67, 67)
+                        : Colors.white,
+                  ),
                   width: MediaQuery.of(context).size.width - 28,
                   child: Padding(
                     padding: const EdgeInsets.only(left: 8, right: 8),
@@ -77,7 +81,11 @@ class _LoginState extends State<Login> {
                   height: MediaQuery.of(context).size.width / 26,
                 ),
                 Container(
-                  decoration: boxDecoration,
+                  decoration: boxDecoration.copyWith(
+                    color: hiveObj.get('isDarkTheme')
+                        ? const Color.fromARGB(255, 67, 67, 67)
+                        : Colors.white,
+                  ),
                   width: MediaQuery.of(context).size.width - 28,
                   child: Padding(
                     padding: const EdgeInsets.only(left: 8, right: 8),
@@ -124,27 +132,22 @@ class _LoginState extends State<Login> {
                                 isLoading = true;
                               });
                               if (_key.currentState!.validate()) {
-                                AuthServices.login(
+                                var resp = await AuthServices.login(
                                   _passwordController.text.trim(),
                                   _aadharController.text.trim(),
-                                ).then(
-                                  (val) async {
-                                    if (val.hasError) {
-                                      showSnackBar(
-                                          context, false, val.errorMsg);
-                                    } else {
-                                      hiveObj
-                                          .put('isLoggedIn', true)
-                                          .then((_) => Navigator.of(context)
-                                              .pushNamedAndRemoveUntil(
-                                                  '/home',
-                                                  (Route<dynamic> route) =>
-                                                      false))
-                                          .then((_) => showSnackBar(
-                                              context, false, 'loggedIn'.tr()));
-                                    }
-                                  },
                                 );
+                                if (resp.hasError) {
+                                  // ignore: use_build_context_synchronously
+                                  showSnackBar(context, false, resp.errorMsg);
+                                } else {
+                                  hiveObj
+                                      .put('isLoggedIn', true)
+                                      .then((_) => Navigator.of(context)
+                                          .pushNamedAndRemoveUntil('/home',
+                                              (Route<dynamic> route) => false))
+                                      .then((_) => showSnackBar(
+                                          context, false, 'loggedIn'.tr()));
+                                }
                               }
                               innerState(() {
                                 isLoading = false;

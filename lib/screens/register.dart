@@ -36,6 +36,7 @@ class _RegisterState extends State<Register> {
   bool isLoadingSubmit = false;
   bool _obscureText1 = true;
   bool _obscureText2 = true;
+  bool isAadharUploaded = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,35 +78,52 @@ class _RegisterState extends State<Register> {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 14.0, right: 14),
-                  child: MaterialButton(
-                    color: Colors.red.shade400,
-                    minWidth: MediaQuery.of(context).size.width,
-                    shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(20))),
-                    child: SizedBox(
-                      height: 60,
-                      child: Center(
-                        child: isLoading
-                            ? const CircularProgressIndicator(
-                                color: Colors.white,
-                                strokeWidth: 6,
-                              )
-                            : Text(
-                                "uploadAadhar".tr(),
+                  child: isLoading
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Lottie.asset(
+                              'assets/lottie/loader.json',
+                              height: 50,
+                              width: 50,
+                            ),
+                            const Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Text('Please wait, extracting info'),
+                            )
+                          ],
+                        )
+                      : MaterialButton(
+                          color: Colors.red.shade400,
+                          minWidth: MediaQuery.of(context).size.width,
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                          ),
+                          child: SizedBox(
+                            height: 60,
+                            child: Center(
+                              child: Text(
+                                isAadharUploaded
+                                    ? "uploadAgain".tr()
+                                    : "uploadAadhar".tr(),
                                 style: ThemeConfig.textStyle,
                               ),
-                      ),
-                    ),
-                    onPressed: () async {
-                      await handleAutoFill();
-                    },
-                  ),
+                            ),
+                          ),
+                          onPressed: () async {
+                            await handleAutoFill();
+                          },
+                        ),
                 ),
                 SizedBox(
                   height: MediaQuery.of(context).size.height / 40,
                 ),
                 Container(
-                  decoration: boxDecoration,
+                  decoration: boxDecoration.copyWith(
+                    color: hiveObj.get('isDarkTheme')
+                        ? const Color.fromARGB(255, 67, 67, 67)
+                        : Colors.white,
+                  ),
                   width: MediaQuery.of(context).size.width - 28,
                   child: Padding(
                     padding: const EdgeInsets.only(left: 8, right: 8),
@@ -126,7 +144,11 @@ class _RegisterState extends State<Register> {
                   height: MediaQuery.of(context).size.height / 60,
                 ),
                 Container(
-                  decoration: boxDecoration,
+                  decoration: boxDecoration.copyWith(
+                    color: hiveObj.get('isDarkTheme')
+                        ? const Color.fromARGB(255, 67, 67, 67)
+                        : Colors.white,
+                  ),
                   width: MediaQuery.of(context).size.width - 28,
                   child: Padding(
                     padding: const EdgeInsets.only(left: 8, right: 8),
@@ -146,7 +168,11 @@ class _RegisterState extends State<Register> {
                   height: MediaQuery.of(context).size.height / 60,
                 ),
                 Container(
-                  decoration: boxDecoration,
+                  decoration: boxDecoration.copyWith(
+                    color: hiveObj.get('isDarkTheme')
+                        ? const Color.fromARGB(255, 67, 67, 67)
+                        : Colors.white,
+                  ),
                   width: MediaQuery.of(context).size.width - 28,
                   child: Padding(
                     padding: const EdgeInsets.only(left: 8, right: 8),
@@ -186,7 +212,11 @@ class _RegisterState extends State<Register> {
                   height: MediaQuery.of(context).size.height / 60,
                 ),
                 Container(
-                  decoration: boxDecoration,
+                  decoration: boxDecoration.copyWith(
+                    color: hiveObj.get('isDarkTheme')
+                        ? const Color.fromARGB(255, 67, 67, 67)
+                        : Colors.white,
+                  ),
                   width: MediaQuery.of(context).size.width - 28,
                   child: Padding(
                     padding: const EdgeInsets.only(left: 8, right: 8),
@@ -197,6 +227,7 @@ class _RegisterState extends State<Register> {
                             if (val.toString() != _passwordController.text) {
                               return 'Passwords do not match';
                             }
+                            return null;
                           },
                           cursorColor: Colors.redAccent,
                           controller: _retypePasswordController,
@@ -212,7 +243,7 @@ class _RegisterState extends State<Register> {
                                     },
                                   );
                                 },
-                                child: Icon(_obscureText1
+                                child: Icon(_obscureText2
                                     ? Icons.visibility
                                     : Icons.visibility_off),
                               )),
@@ -226,7 +257,8 @@ class _RegisterState extends State<Register> {
                 ),
                 StatefulBuilder(builder: (context, StateSetter innerState) {
                   return isLoadingSubmit
-                      ? Lottie.asset('assets/lottie/loader.json')
+                      ? Lottie.asset('assets/lottie/loader.json',
+                          height: 50, width: 50)
                       : Padding(
                           padding:
                               const EdgeInsets.only(left: 12.0, right: 12.0),
@@ -331,6 +363,7 @@ class _RegisterState extends State<Register> {
                 jsonDecode(resp.body)['aadhaarNumber'].toString();
             _nameController.text = jsonDecode(resp.body)['userName'];
             isLoading = false;
+            isAadharUploaded = true;
           });
         } else {
           setState(() {});
