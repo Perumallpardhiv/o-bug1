@@ -2,7 +2,6 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:hive/hive.dart';
-
 import 'login.dart';
 
 class Home extends StatefulWidget {
@@ -15,6 +14,8 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   bool isEng = true;
   final Box hiveObj = Hive.box('data');
+  List<String> languages = ['en', 'kn'];
+
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
@@ -28,12 +29,47 @@ class _HomeState extends State<Home> {
                   fontWeight: FontWeight.bold, color: Colors.white),
             ),
             flexibleSpace: Container(
-              decoration: const BoxDecoration(
+                alignment: Alignment.bottomRight,
+                decoration: const BoxDecoration(
                   gradient: LinearGradient(colors: [
-                Color.fromARGB(223, 227, 58, 58),
-                Color.fromARGB(224, 238, 90, 102)
-              ])),
-            ),
+                    Color.fromARGB(223, 227, 58, 58),
+                    Color.fromARGB(224, 238, 90, 102)
+                  ]),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 6, right: 12),
+                  child: DropdownButton(
+                    underline: SizedBox(),
+                    icon: const Icon(
+                      Icons.translate,
+                      color: Colors.white,
+                    ),
+                    items:
+                        languages.map<DropdownMenuItem<String>>((String value) {
+                      String lang = '';
+                      switch (value.toString()) {
+                        case 'kn':
+                          lang = 'ಕನ್ನಡ';
+                          break;
+
+                        case 'en':
+                          lang = 'English';
+                          break;
+                      }
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(lang),
+                      );
+                    }).toList(),
+                    onChanged: (v) {
+                      EasyLocalization.of(context)!.setLocale(
+                        Locale(
+                          v!.toString(),
+                        ),
+                      );
+                    },
+                  ),
+                )),
           ),
           drawer: Drawer(
             child: ListView(
@@ -69,16 +105,9 @@ class _HomeState extends State<Home> {
             child: Text('helloWorld'.tr()),
           ),
           floatingActionButton: FloatingActionButton.extended(
-              label: Text('changelang'.tr()),
-              onPressed: () {
-                if (isEng) {
-                  EasyLocalization.of(context)!.setLocale(const Locale('kn'));
-                  isEng = false;
-                } else {
-                  EasyLocalization.of(context)!.setLocale(const Locale('en'));
-                  isEng = true;
-                }
-              }),
+              backgroundColor: Colors.red,
+              label: Icon(Icons.mic),
+              onPressed: () {}),
         );
       },
     );

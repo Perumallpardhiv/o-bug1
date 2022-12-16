@@ -75,9 +75,10 @@ class _AppState extends State<App> {
       locale: context.locale,
       //define routes
       routes: {
-        '/': (context) => widget.hiveObj.get('isLoggedIn') == true
-            ? const Home()
-            : const Login(),
+        // '/': (context) => widget.hiveObj.get('isLoggedIn') == true
+        //     ? const Home()
+        //     : const Login(),
+        '/': (context) => const Home(),
         '/login': (context) => const Login(),
         '/register': (context) => const Register(),
         '/home': (context) => const Home()
