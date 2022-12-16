@@ -1,8 +1,16 @@
+import 'dart:convert';
+
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:hive/hive.dart';
+import 'package:just_audio/just_audio.dart';
+import 'package:lottie/lottie.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:o_health/theme_config/theme_config.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:record/record.dart';
 import 'login.dart';
 
 class Home extends StatefulWidget {
@@ -16,7 +24,7 @@ class _HomeState extends State<Home> {
   bool isEng = true;
   final Box hiveObj = Hive.box('data');
   List<String> languages = ['en', 'kn'];
-
+  var rec = Record();
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
@@ -180,11 +188,74 @@ class _HomeState extends State<Home> {
             child: Text('tellUs'.tr()),
           ),
           floatingActionButton: FloatingActionButton.extended(
-              backgroundColor: Colors.red,
-              label: Icon(Icons.mic),
-              onPressed: () {}),
+            backgroundColor: Colors.red,
+            label: const Icon(Icons.mic),
+            onPressed: () async {
+              await start(await getPath());
+              await showModalBottomSheet(
+                  context: context,
+                  builder: (context) {
+                    return Center(
+                      child: Center(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            // Lottie.asset('assets/lottie/active-recording.json',
+                            //     height: 80, width: 80),
+                            Icon(Icons.audio_file_rounded),
+                            Text('Recording ...'),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            MaterialButton(
+                              color: Colors.redAccent,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10)),
+                              onPressed: () async {
+                                stop().then((val) {
+                                  print('Value');
+                                }).then((_) {
+                                  Navigator.of(context).pop();
+                                });
+                              },
+                              child: const Text('Stop'),
+                            )
+                          ],
+                        ),
+                      ),
+                    );
+                  });
+              //stop if back button was clicked
+
+              stop();
+            },
+          ),
         );
       },
     );
+  }
+
+  getPath() async {
+    return (await getApplicationDocumentsDirectory()).path + '/temp.wav';
+  }
+
+  start(path) async {
+    await rec.start(path: path, encoder: AudioEncoder.wav);
+  }
+
+  stop() async {
+    String? savePath = await rec.stop();
+  }
+}
+
+askPermission() async {
+  if (!await Permission.storage.isGranted) {
+    await Permission.storage.request();
+  }
+  if (!await Permission.microphone.isGranted) {
+    await Permission.microphone.request();
+  }
+  if (!await Permission.location.isGranted) {
+    await Permission.location.request();
   }
 }
