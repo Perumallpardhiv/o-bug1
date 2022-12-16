@@ -48,6 +48,10 @@ dependencies:
   path_provider: 
   form_field_validator:
   lottie:
+  record:
+  just_audio: 
+  permission_handler: 
+  modal_bottom_sheet: 
   
 
 dev_dependencies:
