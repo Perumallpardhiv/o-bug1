@@ -18,5 +18,9 @@
     "noImageChosen": "No image chosen",
     "loggedIn": "Logged in successfully",
     "welcomeBack": "WELCOME BACK!",
-    "invalidAadharPswd": "Invalid aadhar name or password"
+    "invalidAadharPswd": "Invalid aadhar name or password",
+    "chooseLang" : "Choose language",
+    "nightMode" : "Night Mode",
+    "logout" : "Logout",
+    "tellUs" : "Tell us your symptoms"
 }

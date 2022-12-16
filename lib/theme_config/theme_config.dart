@@ -14,7 +14,8 @@ class ThemeConfig {
       thumbColor:
           MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
         if (states.contains(MaterialState.disabled)) {
-          return const Color.fromARGB(255, 255, 42, 0).withOpacity(.48);
+          // return const Color.fromARGB(255, 255, 42, 0).withOpacity(.48);
+          return Colors.yellow.shade300;
         }
         return const Color.fromARGB(255, 255, 42, 0);
       }),
