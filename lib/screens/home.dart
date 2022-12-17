@@ -12,6 +12,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:record/record.dart';
 import 'login.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -90,7 +91,7 @@ class _HomeState extends State<Home> {
                     child: CircleAvatar(
                       radius: 45,
                       child: Text(
-                        "J",
+                        "A",
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 40,
@@ -191,38 +192,52 @@ class _HomeState extends State<Home> {
             backgroundColor: Colors.red,
             label: const Icon(Icons.mic),
             onPressed: () async {
+              await askPermission();
               await start(await getPath());
+
               await showModalBottomSheet(
                   context: context,
                   builder: (context) {
-                    return Center(
-                      child: Center(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            // Lottie.asset('assets/lottie/active-recording.json',
-                            //     height: 80, width: 80),
-                            Icon(Icons.audio_file_rounded),
-                            Text('Recording ...'),
-                            const SizedBox(
-                              width: 10,
+                    return StatefulBuilder(
+                      builder: (BuildContext context, setState) {
+                        return Center(
+                          child: Center(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Lottie.asset('assets/lottie/recorder.json',
+                                    height: 80, width: 80),
+                                // Icon(Icons.audio_file_rounded),
+                                AnimatedTextKit(
+                                    repeatForever: true,
+                                    animatedTexts: [
+                                      WavyAnimatedText('Recording...',
+                                          speed:
+                                              const Duration(milliseconds: 200),
+                                          textStyle: TextStyle(
+                                            color: Colors.red,
+                                            fontSize: 20,
+                                          )),
+                                    ]),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                MaterialButton(
+                                  color: Colors.redAccent,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10)),
+                                  onPressed: () async {
+                                    stop().then((_) {
+                                      Navigator.of(context).pop();
+                                    });
+                                  },
+                                  child: const Text('Stop'),
+                                )
+                              ],
                             ),
-                            MaterialButton(
-                              color: Colors.redAccent,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10)),
-                              onPressed: () async {
-                                stop().then((val) {
-                                  print('Value');
-                                }).then((_) {
-                                  Navigator.of(context).pop();
-                                });
-                              },
-                              child: const Text('Stop'),
-                            )
-                          ],
-                        ),
-                      ),
+                          ),
+                        );
+                      },
                     );
                   });
               //stop if back button was clicked
@@ -245,6 +260,7 @@ class _HomeState extends State<Home> {
 
   stop() async {
     String? savePath = await rec.stop();
+    print('Stopped $savePath');
   }
 }
 
