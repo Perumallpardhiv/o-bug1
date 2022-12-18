@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +8,7 @@ import 'package:hive/hive.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:lottie/lottie.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:o_health/screens/video_call/invitation.dart';
 import 'package:o_health/theme_config/theme_config.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -188,62 +190,83 @@ class _HomeState extends State<Home> {
           body: Center(
             child: Text('tellUs'.tr()),
           ),
-          floatingActionButton: FloatingActionButton.extended(
-            backgroundColor: Colors.red,
-            label: const Icon(Icons.mic),
-            onPressed: () async {
-              await askPermission();
-              await start(await getPath());
+          floatingActionButton: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              FloatingActionButton.extended(
+                backgroundColor: Colors.red,
+                label: const Icon(Icons.mic),
+                onPressed: () async {
+                  await askPermission();
+                  await start(await getPath());
 
-              await showModalBottomSheet(
-                  context: context,
-                  builder: (context) {
-                    return StatefulBuilder(
-                      builder: (BuildContext context, setState) {
-                        return Center(
-                          child: Center(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Lottie.asset('assets/lottie/recorder.json',
-                                    height: 80, width: 80),
-                                // Icon(Icons.audio_file_rounded),
-                                AnimatedTextKit(
-                                    repeatForever: true,
-                                    animatedTexts: [
-                                      WavyAnimatedText('Recording...',
-                                          speed:
-                                              const Duration(milliseconds: 200),
-                                          textStyle: TextStyle(
-                                            color: Colors.red,
-                                            fontSize: 20,
-                                          )),
-                                    ]),
-                                const SizedBox(
-                                  width: 10,
+                  await showModalBottomSheet(
+                      context: context,
+                      builder: (context) {
+                        return StatefulBuilder(
+                          builder: (BuildContext context, setState) {
+                            return Center(
+                              child: Center(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Lottie.asset('assets/lottie/recorder.json',
+                                        height: 80, width: 80),
+                                    // Icon(Icons.audio_file_rounded),
+                                    AnimatedTextKit(
+                                        repeatForever: true,
+                                        animatedTexts: [
+                                          WavyAnimatedText('Recording...',
+                                              speed: const Duration(
+                                                  milliseconds: 200),
+                                              textStyle: TextStyle(
+                                                color: Colors.red,
+                                                fontSize: 20,
+                                              )),
+                                        ]),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    MaterialButton(
+                                      color: Colors.redAccent,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10)),
+                                      onPressed: () async {
+                                        stop().then((_) {
+                                          Navigator.of(context).pop();
+                                        });
+                                      },
+                                      child: const Text('Stop'),
+                                    )
+                                  ],
                                 ),
-                                MaterialButton(
-                                  color: Colors.redAccent,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10)),
-                                  onPressed: () async {
-                                    stop().then((_) {
-                                      Navigator.of(context).pop();
-                                    });
-                                  },
-                                  child: const Text('Stop'),
-                                )
-                              ],
-                            ),
-                          ),
+                              ),
+                            );
+                          },
                         );
-                      },
-                    );
-                  });
-              //stop if back button was clicked
+                      });
+                  //stop if back button was clicked
 
-              stop();
-            },
+                  stop();
+                },
+              ),
+              FloatingActionButton.extended(
+                backgroundColor: Colors.red,
+                onPressed: () {
+                  var random = Random();
+                  String id = '${random.nextInt(10000)}';
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return CallInvitationPage(localUserID: id);
+                      },
+                    ),
+                  );
+                },
+                label: const Text('Call Doc'),
+              )
+            ],
           ),
         );
       },
