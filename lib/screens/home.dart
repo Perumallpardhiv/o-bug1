@@ -1,17 +1,12 @@
-import 'dart:convert';
+import 'dart:io';
 import 'dart:math';
-
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:hive/hive.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:lottie/lottie.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:o_health/screens/video_call/invitation.dart';
 import 'package:o_health/screens/video_player/video_player.dart';
-import 'package:o_health/theme_config/theme_config.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:o_health/services/audio_services.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:record/record.dart';
 import 'login.dart';
@@ -28,7 +23,7 @@ class _HomeState extends State<Home> {
   bool isEng = true;
   final Box hiveObj = Hive.box('data');
   List<String> languages = ['en', 'kn'];
-  var rec = Record();
+  AudioServices audioServices = AudioServices();
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
@@ -137,15 +132,6 @@ class _HomeState extends State<Home> {
                   title: Text("chooseLang".tr()),
                   trailing: DropdownButton(
                     underline: SizedBox(),
-                    // hint: Text(
-                    //   "Choose Language",
-                    //   style: TextStyle(
-                    //     fontSize: 14,
-                    //     color: hiveObj.get('isDarkTheme')
-                    //         ? Colors.white
-                    //         : Colors.black,
-                    //   ),
-                    // ),
                     items:
                         languages.map<DropdownMenuItem<String>>((String value) {
                       String lang = '';
@@ -195,12 +181,11 @@ class _HomeState extends State<Home> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               FloatingActionButton.extended(
+                heroTag: '1',
                 backgroundColor: Colors.red,
                 label: const Icon(Icons.mic),
                 onPressed: () async {
-                  await askPermission();
-                  await start(await getPath());
-
+                  await audioServices.start();
                   await showModalBottomSheet(
                       context: context,
                       builder: (context) {
@@ -234,7 +219,7 @@ class _HomeState extends State<Home> {
                                           borderRadius:
                                               BorderRadius.circular(10)),
                                       onPressed: () async {
-                                        stop().then((_) {
+                                        audioServices.stop().then((_) {
                                           Navigator.of(context).pop();
                                         });
                                       },
@@ -249,22 +234,26 @@ class _HomeState extends State<Home> {
                       });
                   //stop if back button was clicked
 
-                  stop();
-
+                  var path = await audioServices.stop();
+                  print(path);
+                  print(await audioServices.sendAudioFile(File(path)));
                   // ignore: use_build_context_synchronously
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return const VideoScreen(
-                          videoURL:
-                              'https://ik.imagekit.io/uf0e6z5hc/Eng_-_Fever_uSDIAUoT4.mp4?ik-sdk-version=javascript-1.4.3&updatedAt=1667771216097',
-                        );
-                      },
-                    ),
-                  );
+
+                  // todo send link dynamically
+                  // Navigator.of(context).push(
+                  //   MaterialPageRoute(
+                  //     builder: (context) {
+                  //       return const VideoScreen(
+                  //         videoURL:
+                  //             'https://ik.imagekit.io/uf0e6z5hc/Eng_-_Fever_uSDIAUoT4.mp4?ik-sdk-version=javascript-1.4.3&updatedAt=1667771216097',
+                  //       );
+                  //     },
+                  //   ),
+                  // );
                 },
               ),
               FloatingActionButton.extended(
+                heroTag: '2',
                 backgroundColor: Colors.red,
                 onPressed: () {
                   var random = Random();
@@ -277,30 +266,5 @@ class _HomeState extends State<Home> {
         );
       },
     );
-  }
-
-  getPath() async {
-    return (await getApplicationDocumentsDirectory()).path + '/temp.wav';
-  }
-
-  start(path) async {
-    await rec.start(path: path, encoder: AudioEncoder.wav);
-  }
-
-  stop() async {
-    String? savePath = await rec.stop();
-    print('Stopped $savePath');
-  }
-}
-
-askPermission() async {
-  if (!await Permission.storage.isGranted) {
-    await Permission.storage.request();
-  }
-  if (!await Permission.microphone.isGranted) {
-    await Permission.microphone.request();
-  }
-  if (!await Permission.location.isGranted) {
-    await Permission.location.request();
   }
 }

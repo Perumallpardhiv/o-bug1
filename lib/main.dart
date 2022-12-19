@@ -10,6 +10,7 @@ import 'package:flutter/services.dart';
 import 'package:o_health/screens/home.dart';
 import 'package:o_health/screens/login.dart';
 import 'package:o_health/screens/register.dart';
+import 'package:o_health/services/ask_permission.dart';
 import 'package:o_health/services/certificate.dart';
 import 'package:o_health/theme_config/theme_config.dart';
 import 'package:hive/hive.dart';
@@ -26,6 +27,8 @@ void main() async {
     final license = await rootBundle.loadString('google_fonts/OFL.txt');
     yield LicenseEntryWithLineBreaks(['google_fonts'], license);
   });
+  //ask permissions
+  await HandlePermissions.askPermission();
   // Initialize hive db;
   Hive.init((await getApplicationDocumentsDirectory()).path);
   //Create hive box

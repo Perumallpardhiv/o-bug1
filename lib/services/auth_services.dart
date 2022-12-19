@@ -1,5 +1,3 @@
-// ignore_for_file: depend_on_referenced_packages
-
 import 'dart:convert';
 import 'dart:io';
 
@@ -11,16 +9,16 @@ import 'package:mime/mime.dart';
 import 'package:http_parser/http_parser.dart';
 
 class AuthServices {
-  static register(username, password, aadharNumber) async {
+  static register(String username, String password, String aadharNumber) async {
     try {
       var resp = await http.post(
         Uri.parse(
             "https://health-conscious.in/api/user/register/userRegistration"),
         headers: {'Content-Type': 'application/json'},
         body: json.encode({
-          "user_name": 'abh',
-          "user_aadhar_number": '123123123123',
-          "user_password": 'password'
+          "user_name": username.trim(),
+          "user_aadhar_number": aadharNumber.trim(),
+          "user_password": password.trim()
         }),
       );
       return resp;
