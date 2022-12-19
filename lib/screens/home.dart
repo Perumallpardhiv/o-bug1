@@ -9,6 +9,7 @@ import 'package:just_audio/just_audio.dart';
 import 'package:lottie/lottie.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:o_health/screens/video_call/invitation.dart';
+import 'package:o_health/screens/video_player/video_player.dart';
 import 'package:o_health/theme_config/theme_config.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -249,6 +250,18 @@ class _HomeState extends State<Home> {
                   //stop if back button was clicked
 
                   stop();
+
+                  // ignore: use_build_context_synchronously
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return const VideoScreen(
+                          videoURL:
+                              'https://ik.imagekit.io/uf0e6z5hc/Eng_-_Fever_uSDIAUoT4.mp4?ik-sdk-version=javascript-1.4.3&updatedAt=1667771216097',
+                        );
+                      },
+                    ),
+                  );
                 },
               ),
               FloatingActionButton.extended(
@@ -256,13 +269,6 @@ class _HomeState extends State<Home> {
                 onPressed: () {
                   var random = Random();
                   String id = '${random.nextInt(10000)}';
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return CallInvitationPage(localUserID: id);
-                      },
-                    ),
-                  );
                 },
                 label: const Text('Call Doc'),
               )
