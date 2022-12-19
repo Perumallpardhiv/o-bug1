@@ -10,6 +10,7 @@ class AudioServices {
   static var rec = Record();
 
   static getPath() async {
+    // todo generate random file name
     return '${(await getApplicationDocumentsDirectory()).path}/temp.wav';
   }
 

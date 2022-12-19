@@ -11,6 +11,8 @@ import 'package:o_health/methods/methods.dart';
 import 'package:o_health/services/auth_services.dart';
 import 'package:o_health/theme_config/theme_config.dart';
 import 'package:form_field_validator/form_field_validator.dart';
+import '../models/user_model.dart';
+import 'home.dart';
 import 'login.dart';
 
 // enum ImageSourceType { gallery, camera }
@@ -37,6 +39,7 @@ class _RegisterState extends State<Register> {
   bool _obscureText1 = true;
   bool _obscureText2 = true;
   bool isAadharUploaded = false;
+  late StateSetter st;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -256,6 +259,7 @@ class _RegisterState extends State<Register> {
                   height: MediaQuery.of(context).size.height / 40,
                 ),
                 StatefulBuilder(builder: (context, StateSetter innerState) {
+                  st = innerState;
                   return isLoadingSubmit
                       ? Lottie.asset('assets/lottie/loader.json',
                           height: 50, width: 50)
@@ -264,27 +268,7 @@ class _RegisterState extends State<Register> {
                               const EdgeInsets.only(left: 12.0, right: 12.0),
                           child: GestureDetector(
                             onTap: () async {
-                              innerState(() {
-                                isLoadingSubmit = true;
-                              });
-
-                              if (_key.currentState!.validate()) {
-                                var resp = await AuthServices.register(
-                                  _nameController.text.trim(),
-                                  _passwordController.text.trim(),
-                                  _aadharController.text.trim(),
-                                );
-
-                                if (resp != null) {
-                                  hiveObj.put('isLoggedInt', true);
-                                } else {
-                                  // ignore: use_build_context_synchronously
-                                  showSnackBar(context, true, 'Some error');
-                                }
-                              }
-                              innerState(() {
-                                isLoadingSubmit = false;
-                              });
+                              handleRegister();
                             },
                             child: Card(
                               color: Colors.red,
@@ -376,5 +360,43 @@ class _RegisterState extends State<Register> {
       // ignore: use_build_context_synchronously
       showSnackBar(context, true, 'noImageChosen'.tr());
     }
+  }
+
+  handleRegister() async {
+    st(() {
+      isLoadingSubmit = true;
+    });
+
+    if (_key.currentState!.validate()) {
+      var resp = await AuthServices.register(
+        _nameController.text.trim(),
+        _passwordController.text.trim(),
+        _aadharController.text.trim(),
+      );
+
+      if (resp != null) {
+        hiveObj.put('isLoggedIn', true);
+        User user = User.fromJson(resp);
+        hiveObj.put('userData', {
+          'userName': user.userName,
+          'aadhar': user.userAadharNumber,
+          'language': user.defaultLang,
+          'role': user.userRole
+        });
+
+        // ignore: use_build_context_synchronously
+        Navigator.of(context)
+            .pushAndRemoveUntil(
+                MaterialPageRoute(builder: (context) => const Home()),
+                (Route<dynamic> route) => false)
+            .then((_) => showSnackBar(context, false, 'loggedIn'.tr()));
+      } else {
+        // ignore: use_build_context_synchronously
+        showSnackBar(context, true, 'Some error');
+      }
+    }
+    st(() {
+      isLoadingSubmit = false;
+    });
   }
 }

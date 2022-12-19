@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:hive/hive.dart';
 import 'package:lottie/lottie.dart';
+import 'package:o_health/screens/home.dart';
 import 'package:o_health/screens/register.dart';
 import '../constants/decorations.dart';
 import '../methods/methods.dart';
+import '../models/user_model.dart';
 import '../services/auth_services.dart';
 import '../theme_config/theme_config.dart';
 
@@ -23,6 +25,7 @@ class _LoginState extends State<Login> {
   final Box hiveObj = Hive.box('data');
   bool isLoading = false;
   bool _obscureText = true;
+  late StateSetter innerState;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -119,7 +122,8 @@ class _LoginState extends State<Login> {
                 SizedBox(
                   height: MediaQuery.of(context).size.width / 10,
                 ),
-                StatefulBuilder(builder: (builder, StateSetter innerState) {
+                StatefulBuilder(builder: (builder, StateSetter st) {
+                  innerState = st;
                   return isLoading
                       ? Center(
                           child: Lottie.asset('assets/lottie/loader.json',
@@ -128,30 +132,7 @@ class _LoginState extends State<Login> {
                           padding: const EdgeInsets.only(left: 14.0, right: 14),
                           child: GestureDetector(
                             onTap: () async {
-                              innerState(() {
-                                isLoading = true;
-                              });
-                              if (_key.currentState!.validate()) {
-                                var resp = await AuthServices.login(
-                                  _passwordController.text.trim(),
-                                  _aadharController.text.trim(),
-                                );
-                                if (resp.hasError) {
-                                  // ignore: use_build_context_synchronously
-                                  showSnackBar(context, false, resp.errorMsg);
-                                } else {
-                                  hiveObj
-                                      .put('isLoggedIn', true)
-                                      .then((_) => Navigator.of(context)
-                                          .pushNamedAndRemoveUntil('/home',
-                                              (Route<dynamic> route) => false))
-                                      .then((_) => showSnackBar(
-                                          context, false, 'loggedIn'.tr()));
-                                }
-                              }
-                              innerState(() {
-                                isLoading = false;
-                              });
+                              handleLogin();
                             },
                             child: Card(
                               color: Colors.red,
@@ -216,5 +197,40 @@ class _LoginState extends State<Login> {
         ),
       ),
     );
+  }
+
+  handleLogin() async {
+    innerState(() {
+      isLoading = true;
+    });
+    if (_key.currentState!.validate()) {
+      var resp = await AuthServices.login(
+        _passwordController.text.trim(),
+        _aadharController.text.trim(),
+      );
+      if (resp.hasError) {
+        // ignore: use_build_context_synchronously
+        showSnackBar(context, false, resp.errorMsg);
+      } else {
+        hiveObj.put('isLoggedIn', true);
+        User user = User.fromJson(resp.data);
+        hiveObj.put('userData', {
+          'userName': user.userName,
+          'aadhar': user.userAadharNumber,
+          'language': user.defaultLang,
+          'role': user.userRole
+        });
+
+        // ignore: use_build_context_synchronously
+        Navigator.of(context)
+            .pushAndRemoveUntil(
+                MaterialPageRoute(builder: (context) => const Home()),
+                (Route<dynamic> route) => false)
+            .then((_) => showSnackBar(context, false, 'loggedIn'.tr()));
+      }
+    }
+    innerState(() {
+      isLoading = false;
+    });
   }
 }
