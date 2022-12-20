@@ -342,6 +342,13 @@ class _PatientHomeState extends State<PatientHome> {
                   ))
             ],
           )),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+                return CallInvitationPage();
+              }));
+            },
+          ),
         );
       },
     );

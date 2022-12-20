@@ -62,6 +62,9 @@ dependencies:
   # flutter_screenutil: 
   # zego_uikit_prebuilt_call:
   # zego_uikit_signaling_plugin:
+  flutter_screenutil: 
+  zego_uikit_prebuilt_call:
+  zego_uikit_signaling_plugin:
   
 
 dev_dependencies:
