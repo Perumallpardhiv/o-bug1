@@ -18,9 +18,9 @@ class AuthServices {
             "https://health-conscious.in/api/user/register/userRegistration"),
         headers: {'Content-Type': 'application/json'},
         body: json.encode({
-          "user_name": 'username'.trim(),
-          "user_aadhar_number": '1231313'.trim(),
-          "user_password": '121313'.trim()
+          "user_name": username.trim(),
+          "user_aadhar_number": aadharNumber.trim(),
+          "user_password": password.trim()
         }),
       );
       return jsonDecode(resp.body);
