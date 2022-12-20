@@ -10,6 +10,7 @@ import 'package:o_health/screens/video_player/video_player.dart';
 import 'package:o_health/services/audio_services.dart';
 import 'login.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class PatientHome extends StatefulWidget {
   const PatientHome({super.key});
@@ -36,6 +37,19 @@ class _PatientHomeState extends State<PatientHome> {
       builder: (_, AdaptiveThemeMode mode, __) {
         return Scaffold(
           appBar: AppBar(
+            leading: Builder(builder: (BuildContext context) {
+              return IconButton(
+                icon: const Icon(
+                  Icons.menu_sharp,
+                  color: Colors.white,
+                  size: 30,
+                ),
+                onPressed: () {
+                  Scaffold.of(context).openDrawer();
+                },
+                tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+              );
+            }),
             title: Text(
               'o-health'.tr(),
               style: const TextStyle(
@@ -51,39 +65,6 @@ class _PatientHomeState extends State<PatientHome> {
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: 6, right: 12),
-                  child: DropdownButton(
-                    underline: SizedBox(),
-                    icon: const Icon(
-                      Icons.translate,
-                      color: Colors.white,
-                    ),
-                    items:
-                        languages.map<DropdownMenuItem<String>>((String value) {
-                      String lang = '';
-                      switch (value.toString()) {
-                        case 'kn':
-                          lang = 'ಕನ್ನಡ';
-                          break;
-                        case 'en':
-                          lang = 'English';
-
-                          // todo add new lang
-                          // case 'eg': lang='example'break;
-                          break;
-                      }
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(lang),
-                      );
-                    }).toList(),
-                    onChanged: (v) {
-                      EasyLocalization.of(context)!.setLocale(
-                        Locale(
-                          v!.toString(),
-                        ),
-                      );
-                    },
-                  ),
                 )),
           ),
           drawer: Drawer(
@@ -149,7 +130,6 @@ class _PatientHomeState extends State<PatientHome> {
                         case 'kn':
                           lang = 'ಕನ್ನಡ';
                           break;
-
                         case 'en':
                           lang = 'English';
                           break;
