@@ -21,6 +21,9 @@ class PatientHome extends StatefulWidget {
 class _PatientHomeState extends State<PatientHome> {
   bool isEng = true;
   final Box hiveObj = Hive.box('data');
+
+  //todo add lang id as string
+
   List<String> languages = ['en', 'kn'];
   AudioServices audioServices = AudioServices();
   bool isVideoEnabled = false;
@@ -61,9 +64,11 @@ class _PatientHomeState extends State<PatientHome> {
                         case 'kn':
                           lang = 'ಕನ್ನಡ';
                           break;
-
                         case 'en':
                           lang = 'English';
+
+                          // todo add new lang
+                          // case 'eg': lang='example'break;
                           break;
                       }
                       return DropdownMenuItem<String>(
