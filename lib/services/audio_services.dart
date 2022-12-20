@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:mime/mime.dart';
 import 'package:path_provider/path_provider.dart';
@@ -11,7 +12,9 @@ class AudioServices {
 
   static getPath() async {
     // todo generate random file name
-    return '${(await getApplicationDocumentsDirectory()).path}/temp.wav';
+    var rnd = Random();
+    String name = '${rnd.nextInt(100000)}+${DateTime.now()}';
+    return '${(await getApplicationDocumentsDirectory()).path}/$name.wav';
   }
 
   start() async {

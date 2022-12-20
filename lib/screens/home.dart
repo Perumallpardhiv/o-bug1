@@ -37,10 +37,8 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
         sendAppStatus('online');
         break;
       case AppLifecycleState.paused:
-        sendAppStatus('background');
-        break;
       case AppLifecycleState.inactive:
-        sendAppStatus('inactive');
+        sendAppStatus('background');
         break;
       case AppLifecycleState.detached:
         sendAppStatus('offline');
@@ -68,8 +66,9 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
   }
 
   Future<void> sendAppStatus(String status) async {
-    http.post(Uri.parse('http://localhost:3000/userState'),
+    var user = hiveObj.get('userData');
+    http.post(Uri.parse('https://health-conscious.in/api/user/login/userCheck'),
         headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({'state': status}));
+        body: jsonEncode({'state': status, 'aadhar': user['aadhar']}));
   }
 }
