@@ -7,9 +7,11 @@ import 'package:flutter/material.dart';
 // ignore: depend_on_referenced_packages
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter/services.dart';
+import 'package:o_health/screens/forget_password.dart';
 import 'package:o_health/screens/home.dart';
 import 'package:o_health/screens/login.dart';
 import 'package:o_health/screens/register.dart';
+import 'package:o_health/screens/reset_password.dart';
 import 'package:o_health/services/ask_permission.dart';
 import 'package:o_health/services/certificate.dart';
 import 'package:o_health/theme_config/theme_config.dart';
@@ -90,7 +92,9 @@ class _AppState extends State<App> {
         // '/': (context) => const Home(),
         '/login': (context) => const Login(),
         '/register': (context) => const Register(),
-        '/home': (context) => const Home()
+        '/home': (context) => const Home(),
+        '/forgot-password': (context) => const ForgotPasswordScreen(),
+        '/reset-password': (context) => const ResetPasswordScreen(),
       },
     );
   }

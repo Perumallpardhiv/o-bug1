@@ -22,5 +22,9 @@
     "chooseLang" : "Choose language",
     "nightMode" : "Night Mode",
     "logout" : "Logout",
-    "tellUs" : "Tell us your symptoms"
+    "tellUs" : "Tell us your symptoms",
+    "resetPassword" : "Reset Password",
+    "newPassword" : "New Password",
+    "forgetPassword?" : "Forgot password?",
+    "otpSent" : "OTP has been sent to"
 }

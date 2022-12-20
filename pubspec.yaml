@@ -56,6 +56,7 @@ dependencies:
   video_player: ^2.4.10
   flutter_styled_toast: 
   videosdk: ^1.0.9
+  flutter_otp_text_field: ^1.1.1
   
   # flutter_screenutil: 
   # zego_uikit_prebuilt_call:
