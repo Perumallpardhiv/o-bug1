@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:hive/hive.dart';
 import 'package:lottie/lottie.dart';
+import 'package:o_health/screens/video_call/video_call.dart';
 import 'package:o_health/screens/video_player/video_player.dart';
 import 'package:o_health/services/audio_services.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -241,29 +242,31 @@ class _PatientHomeState extends State<PatientHome> {
                   //stop if back button was clicked
 
                   var path = await audioServices.stop();
-                  print(path);
-                  print(await audioServices.sendAudioFile(File(path)));
+
+                  await audioServices.sendAudioFile(File(path));
                   // ignore: use_build_context_synchronously
 
                   // todo send link dynamically
-                  // Navigator.of(context).push(
-                  //   MaterialPageRoute(
-                  //     builder: (context) {
-                  //       return const VideoScreen(
-                  //         videoURL:
-                  //             'https://ik.imagekit.io/uf0e6z5hc/Eng_-_Fever_uSDIAUoT4.mp4?ik-sdk-version=javascript-1.4.3&updatedAt=1667771216097',
-                  //       );
-                  //     },
-                  //   ),
-                  // );
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return const VideoScreen(
+                          videoURL:
+                              'https://ik.imagekit.io/uf0e6z5hc/Eng_-_Fever_uSDIAUoT4.mp4?ik-sdk-version=javascript-1.4.3&updatedAt=1667771216097',
+                        );
+                      },
+                    ),
+                  );
                 },
               ),
               FloatingActionButton.extended(
                 heroTag: '2',
                 backgroundColor: Colors.red,
                 onPressed: () {
-                  var random = Random();
-                  String id = '${random.nextInt(10000)}';
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (context) {
+                    return VideoSDKQuickStart();
+                  }));
                 },
                 label: const Text('Call Doc'),
               )
