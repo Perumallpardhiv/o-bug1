@@ -8,8 +8,6 @@ import 'package:lottie/lottie.dart';
 import 'package:o_health/screens/video_call/video_call.dart';
 import 'package:o_health/screens/video_player/video_player.dart';
 import 'package:o_health/services/audio_services.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:record/record.dart';
 import 'login.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 
@@ -25,7 +23,8 @@ class _PatientHomeState extends State<PatientHome> {
   final Box hiveObj = Hive.box('data');
   List<String> languages = ['en', 'kn'];
   AudioServices audioServices = AudioServices();
-
+  bool isVideoEnabled = false;
+  bool isLoading = false;
   @override
   Widget build(BuildContext context) {
     var user = hiveObj.get('userData');
@@ -114,12 +113,12 @@ class _PatientHomeState extends State<PatientHome> {
                     user['aadhar'].toString(),
                   ),
                 ),
-                Divider(
+                const Divider(
                   height: 15,
                   thickness: 2,
                 ),
                 ListTile(
-                  leading: Icon(Icons.nightlight_round),
+                  leading: const Icon(Icons.nightlight_round),
                   title: Text('nightMode'.tr()),
                   trailing: Switch(
                     value: hiveObj.get('isDarkTheme') ? true : false,
@@ -134,10 +133,10 @@ class _PatientHomeState extends State<PatientHome> {
                   ),
                 ),
                 ListTile(
-                  leading: Icon(Icons.translate_rounded),
+                  leading: const Icon(Icons.translate_rounded),
                   title: Text("chooseLang".tr()),
                   trailing: DropdownButton(
-                    underline: SizedBox(),
+                    underline: const SizedBox(),
                     items:
                         languages.map<DropdownMenuItem<String>>((String value) {
                       String lang = '';
@@ -167,7 +166,7 @@ class _PatientHomeState extends State<PatientHome> {
                 // ListTile(),
                 // ListTile(),
                 ListTile(
-                  leading: Icon(Icons.logout_rounded),
+                  leading: const Icon(Icons.logout_rounded),
                   title: Text('logout'.tr()),
                   onTap: () {
                     hiveObj.delete('userData');
@@ -182,96 +181,182 @@ class _PatientHomeState extends State<PatientHome> {
             ),
           ),
           body: Center(
-            child: Text('tellUs'.tr()),
-          ),
-          floatingActionButton: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+              child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              FloatingActionButton.extended(
-                heroTag: '1',
-                backgroundColor: Colors.red,
-                label: const Icon(Icons.mic),
-                onPressed: () async {
-                  await audioServices.start();
-                  await showModalBottomSheet(
-                      context: context,
-                      builder: (context) {
-                        return StatefulBuilder(
-                          builder: (BuildContext context, setState) {
-                            return Center(
-                              child: Center(
+              Expanded(
+                flex: 1,
+                child: Center(
+                  child: isVideoEnabled
+                      ? const VideoScreen(
+                          videoURL:
+                              'https://ik.imagekit.io/uf0e6z5hc/Eng_-_Fever_uSDIAUoT4.mp4?ik-sdk-version=javascript-1.4.3&updatedAt=1667771216097',
+                        )
+                      : Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Card(
+                              child: Lottie.asset('assets/lottie/doctor.json',
+                                  height: 240),
+                            ),
+                            Text('tellUs'.tr())
+                          ],
+                        ),
+                ),
+              ),
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Divider(
+                  thickness: 1.8,
+                ),
+              ),
+              Expanded(
+                  flex: 1,
+                  child: Center(
+                    child: isLoading
+                        ? Lottie.asset('assets/lottie/loader.json', height: 80)
+                        : Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                width: 200,
+                                height: 40,
+                                decoration: const BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      Color.fromARGB(255, 234, 108, 108),
+                                      Colors.red,
+                                    ],
+                                  ),
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(16),
+                                  ),
+                                ),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Lottie.asset('assets/lottie/recorder.json',
-                                        height: 80, width: 80),
-                                    // Icon(Icons.audio_file_rounded),
-                                    AnimatedTextKit(
-                                        repeatForever: true,
-                                        animatedTexts: [
-                                          WavyAnimatedText('Recording...',
-                                              speed: const Duration(
-                                                  milliseconds: 200),
-                                              textStyle: TextStyle(
-                                                color: Colors.red,
-                                                fontSize: 20,
-                                              )),
-                                        ]),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    MaterialButton(
-                                      color: Colors.redAccent,
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10)),
-                                      onPressed: () async {
-                                        audioServices.stop().then((_) {
-                                          Navigator.of(context).pop();
+                                    GestureDetector(
+                                      child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            const Icon(
+                                              Icons.mic,
+                                              color: Colors.white,
+                                            ),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: Text(
+                                                'tapToRecord'.tr(),
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                            ),
+                                          ]),
+                                      onTap: () async {
+                                        setState(() {
+                                          isVideoEnabled = false;
+                                        });
+                                        await audioServices.start();
+                                        await showModalBottomSheet(
+                                            context: context,
+                                            builder: (context) {
+                                              return StatefulBuilder(
+                                                builder: (BuildContext context,
+                                                    setState) {
+                                                  return Center(
+                                                    child: Center(
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          Lottie.asset(
+                                                              'assets/lottie/recorder.json',
+                                                              height: 80,
+                                                              width: 80),
+                                                          // Icon(Icons.audio_file_rounded),
+                                                          AnimatedTextKit(
+                                                              repeatForever:
+                                                                  true,
+                                                              animatedTexts: [
+                                                                WavyAnimatedText(
+                                                                    'Recording...',
+                                                                    speed: const Duration(
+                                                                        milliseconds:
+                                                                            200),
+                                                                    textStyle:
+                                                                        const TextStyle(
+                                                                      color: Colors
+                                                                          .red,
+                                                                      fontSize:
+                                                                          20,
+                                                                    )),
+                                                              ]),
+                                                          const SizedBox(
+                                                            width: 10,
+                                                          ),
+                                                          MaterialButton(
+                                                            color: Colors
+                                                                .redAccent,
+                                                            shape: RoundedRectangleBorder(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            10)),
+                                                            onPressed:
+                                                                () async {
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .pop();
+                                                            },
+                                                            child: const Text(
+                                                                'Stop'),
+                                                          )
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                              );
+                                            });
+
+                                        setState(() {
+                                          isLoading = true;
+                                        });
+                                        //stop if back button was clicked
+                                        var path = await audioServices.stop();
+                                        await audioServices
+                                            .sendAudioFile(File(path));
+                                        // ignore: use_build_context_synchronously
+                                        setState(() {
+                                          isVideoEnabled = true;
+                                          isLoading = false;
                                         });
                                       },
-                                      child: const Text('Stop'),
-                                    )
+                                    ),
                                   ],
                                 ),
                               ),
-                            );
-                          },
-                        );
-                      });
-                  //stop if back button was clicked
-
-                  var path = await audioServices.stop();
-
-                  await audioServices.sendAudioFile(File(path));
-                  // ignore: use_build_context_synchronously
-
-                  // todo send link dynamically
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return const VideoScreen(
-                          videoURL:
-                              'https://ik.imagekit.io/uf0e6z5hc/Eng_-_Fever_uSDIAUoT4.mp4?ik-sdk-version=javascript-1.4.3&updatedAt=1667771216097',
-                        );
-                      },
-                    ),
-                  );
-                },
-              ),
-              FloatingActionButton.extended(
-                heroTag: '2',
-                backgroundColor: Colors.red,
-                onPressed: () {
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (context) {
-                    return VideoSDKQuickStart();
-                  }));
-                },
-                label: const Text('Call Doc'),
-              )
+                              const SizedBox(
+                                width: 20,
+                              ),
+                              IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    isVideoEnabled = false;
+                                  });
+                                },
+                                icon: const Icon(
+                                  Icons.refresh,
+                                  size: 40,
+                                ),
+                              )
+                            ],
+                          ),
+                  ))
             ],
-          ),
+          )),
         );
       },
     );
