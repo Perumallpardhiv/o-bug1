@@ -120,7 +120,19 @@ class _LoginState extends State<Login> {
                   ),
                 ),
                 SizedBox(
-                  height: MediaQuery.of(context).size.width / 10,
+                  height: MediaQuery.of(context).size.width / 20,
+                ),
+                GestureDetector(
+                  child: Text(
+                    "forgetPassword?".tr(),
+                    style: TextStyle(color: Colors.red),
+                  ),
+                  onTap: () {
+                    Navigator.of(context)..pushNamed('/forgot-password');
+                  },
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.width / 20,
                 ),
                 StatefulBuilder(builder: (builder, StateSetter st) {
                   innerState = st;
