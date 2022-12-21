@@ -70,6 +70,7 @@ class _LoginState extends State<Login> {
                   child: Padding(
                     padding: const EdgeInsets.only(left: 8, right: 8),
                     child: TextFormField(
+                      keyboardType: TextInputType.number,
                       validator: RequiredValidator(
                           errorText: 'Aadhar number is required'),
                       cursorColor: Colors.redAccent,
