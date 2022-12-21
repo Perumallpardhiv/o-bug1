@@ -1,18 +1,22 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:hive/hive.dart';
+import 'package:lottie/lottie.dart';
+import 'package:o_health/theme_config/theme_config.dart';
 import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 import 'package:zego_uikit_signaling_plugin/zego_uikit_signaling_plugin.dart';
 
-class CallInvitationPage extends StatefulWidget {
-  const CallInvitationPage({Key? key}) : super(key: key);
+class CallInvitationScreen extends StatefulWidget {
+  final String docID;
+  const CallInvitationScreen({Key? key, required this.docID}) : super(key: key);
 
   @override
-  State<CallInvitationPage> createState() => _CallInvitationPageState();
+  State<CallInvitationScreen> createState() => _CallInvitationScreenState();
 }
 
-class _CallInvitationPageState extends State<CallInvitationPage> {
+class _CallInvitationScreenState extends State<CallInvitationScreen> {
   final TextEditingController inviteeUsersIDTextCtrl = TextEditingController();
   Box hive = Hive.box('data');
 
@@ -20,7 +24,25 @@ class _CallInvitationPageState extends State<CallInvitationPage> {
   Widget build(BuildContext context) {
     String localUserID = hive.get('userData')['aadhar'];
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text(
+          'Doctor consultation',
+          style: ThemeConfig.textStyle,
+        ),
+        leading: const BackButton(color: Colors.white),
+        flexibleSpace: Container(
+          alignment: Alignment.bottomRight,
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(colors: [
+              Color.fromARGB(223, 227, 58, 58),
+              Color.fromARGB(224, 238, 90, 102)
+            ]),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: 6, right: 12),
+          ),
+        ),
+      ),
       body: ZegoUIKitPrebuiltCallWithInvitation(
         appID: 241031027,
         appSign:
@@ -41,15 +63,21 @@ class _CallInvitationPageState extends State<CallInvitationPage> {
           body: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text('Your userID: $localUserID'),
+              Lottie.asset('assets/lottie/dr-consultation.json', height: 250),
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Divider(
+                  thickness: 2.5,
+                ),
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const SizedBox(width: 10),
-                  inviteeUserIDInput(),
+                  // inviteeUserIDInput(),
                   const SizedBox(width: 5),
                   callButton(false),
-                  const SizedBox(width: 5),
+                  const SizedBox(width: 20),
                   callButton(true),
                   const SizedBox(width: 10),
                 ],
@@ -61,66 +89,75 @@ class _CallInvitationPageState extends State<CallInvitationPage> {
     );
   }
 
-  Widget inviteeUserIDInput() {
-    return Expanded(
-      child: TextFormField(
-        controller: inviteeUsersIDTextCtrl,
-        inputFormatters: [
-          FilteringTextInputFormatter.allow(RegExp('[0-9,]')),
-        ],
-        decoration: const InputDecoration(
-          isDense: true,
-          hintText: "Please Enter Invitees ID",
-          labelText: "Invitees ID, Separate ids by ','",
-        ),
-      ),
-    );
-  }
+  // Widget inviteeUserIDInput() {
+  //   return Expanded(
+  //     child: TextFormField(
+  //       controller: inviteeUsersIDTextCtrl,
+  //       inputFormatters: [
+  //         FilteringTextInputFormatter.allow(RegExp('[0-9,]')),
+  //       ],
+  //       decoration: const InputDecoration(
+  //         isDense: true,
+  //         hintText: "Please Enter Invitees ID",
+  //         labelText: "Invitees ID, Separate ids by ','",
+  //       ),
+  //     ),
+  //   );
+  // }
 
   Widget callButton(bool isVideoCall) {
     return ValueListenableBuilder<TextEditingValue>(
       valueListenable: inviteeUsersIDTextCtrl,
       builder: (context, inviteeUserID, _) {
-        var invitees = getInvitesFromTextCtrl(inviteeUsersIDTextCtrl.text);
+        var invitees = getInvitesFromTextCtrl(widget.docID);
 
-        return ZegoStartCallInvitationButton(
-          isVideoCall: isVideoCall,
-          invitees: invitees,
-          iconSize: const Size(40, 40),
-          buttonSize: const Size(50, 50),
-          onPressed: (String code, String message, List<String> errorInvitees) {
-            if (errorInvitees.isNotEmpty) {
-              String userIDs = "";
-              for (int index = 0; index < errorInvitees.length; index++) {
-                if (index >= 5) {
-                  userIDs += '... ';
-                  break;
+        return Column(
+          children: [
+            ZegoStartCallInvitationButton(
+              isVideoCall: isVideoCall,
+              invitees: invitees,
+              iconSize: const Size(60, 60),
+              buttonSize: const Size(80, 80),
+              onPressed:
+                  (String code, String message, List<String> errorInvitees) {
+                if (errorInvitees.isNotEmpty) {
+                  String userIDs = "";
+                  for (int index = 0; index < errorInvitees.length; index++) {
+                    if (index >= 5) {
+                      userIDs += '... ';
+                      break;
+                    }
+
+                    var userID = errorInvitees.elementAt(index);
+                    userIDs += userID + ' ';
+                  }
+                  if (userIDs.isNotEmpty) {
+                    userIDs = userIDs.substring(0, userIDs.length - 1);
+                  }
+
+                  var message = 'User doesn\'t exist or is offline: $userIDs';
+                  if (code.isNotEmpty) {
+                    message += ', code: $code, message:$message';
+                  }
+                  showToast(
+                    message,
+                    position: StyledToastPosition.top,
+                    context: context,
+                  );
+                } else if (code.isNotEmpty) {
+                  showToast(
+                    'code: $code, message:$message',
+                    position: StyledToastPosition.top,
+                    context: context,
+                  );
                 }
-
-                var userID = errorInvitees.elementAt(index);
-                userIDs += userID + ' ';
-              }
-              if (userIDs.isNotEmpty) {
-                userIDs = userIDs.substring(0, userIDs.length - 1);
-              }
-
-              var message = 'User doesn\'t exist or is offline: $userIDs';
-              if (code.isNotEmpty) {
-                message += ', code: $code, message:$message';
-              }
-              showToast(
-                message,
-                position: StyledToastPosition.top,
-                context: context,
-              );
-            } else if (code.isNotEmpty) {
-              showToast(
-                'code: $code, message:$message',
-                position: StyledToastPosition.top,
-                context: context,
-              );
-            }
-          },
+              },
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            isVideoCall ? Text('videoCall'.tr()) : Text('voiceCall'.tr())
+          ],
         );
       },
     );

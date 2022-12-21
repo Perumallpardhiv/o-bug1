@@ -29,6 +29,7 @@ class _PatientHomeState extends State<PatientHome> {
   AudioServices audioServices = AudioServices();
   bool isVideoEnabled = false;
   bool isLoading = false;
+  String? docID;
   @override
   Widget build(BuildContext context) {
     var user = hiveObj.get('userData');
@@ -56,16 +57,17 @@ class _PatientHomeState extends State<PatientHome> {
                   fontWeight: FontWeight.bold, color: Colors.white),
             ),
             flexibleSpace: Container(
-                alignment: Alignment.bottomRight,
-                decoration: const BoxDecoration(
-                  gradient: LinearGradient(colors: [
-                    Color.fromARGB(223, 227, 58, 58),
-                    Color.fromARGB(224, 238, 90, 102)
-                  ]),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: 6, right: 12),
-                )),
+              alignment: Alignment.bottomRight,
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(colors: [
+                  Color.fromARGB(223, 227, 58, 58),
+                  Color.fromARGB(224, 238, 90, 102)
+                ]),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 6, right: 12),
+              ),
+            ),
           ),
           drawer: Drawer(
             child: ListView(
@@ -173,10 +175,10 @@ class _PatientHomeState extends State<PatientHome> {
                 flex: 1,
                 child: Center(
                   child: isVideoEnabled
-                      ? const VideoScreen(
+                      ? VideoScreen(
                           videoURL:
                               'https://ik.imagekit.io/uf0e6z5hc/Eng_-_Fever_uSDIAUoT4.mp4?ik-sdk-version=javascript-1.4.3&updatedAt=1667771216097',
-                        )
+                          docID: docID)
                       : Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -311,12 +313,14 @@ class _PatientHomeState extends State<PatientHome> {
                                         });
                                         //stop if back button was clicked
                                         var path = await audioServices.stop();
-                                        await audioServices
+                                        var resp = await audioServices
                                             .sendAudioFile(File(path));
                                         // ignore: use_build_context_synchronously
                                         setState(() {
                                           isVideoEnabled = true;
                                           isLoading = false;
+                                          // docID = resp.body['id'];
+                                          docID = '123123123125';
                                         });
                                       },
                                     ),
@@ -342,13 +346,6 @@ class _PatientHomeState extends State<PatientHome> {
                   ))
             ],
           )),
-          floatingActionButton: FloatingActionButton(
-            onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-                return CallInvitationPage();
-              }));
-            },
-          ),
         );
       },
     );
