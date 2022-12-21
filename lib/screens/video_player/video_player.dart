@@ -5,8 +5,14 @@ import 'package:video_player/video_player.dart';
 // ignore: must_be_immutable
 class VideoScreen extends StatefulWidget {
   final String videoURL;
+  final bool redirect;
   String? docID;
-  VideoScreen({super.key, required this.videoURL, this.docID});
+  VideoScreen({
+    super.key,
+    required this.videoURL,
+    this.docID,
+    required this.redirect,
+  });
 
   @override
   // ignore: library_private_types_in_public_api
@@ -89,13 +95,15 @@ class _VideoScreenState extends State<VideoScreen> {
   navigateToCallOnEnd() async {
     if (_controller.value.isInitialized &&
         (_controller.value.position == _controller.value.duration)) {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) {
-            return CallInvitationScreen(docID: widget.docID!);
-          },
-        ),
-      );
+      if (widget.redirect) {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) {
+              return CallInvitationScreen(docID: widget.docID!);
+            },
+          ),
+        );
+      }
       _controller.removeListener(navigateToCallOnEnd);
     }
   }

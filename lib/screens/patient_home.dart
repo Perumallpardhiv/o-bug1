@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 import 'package:adaptive_theme/adaptive_theme.dart';
@@ -5,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:hive/hive.dart';
 import 'package:lottie/lottie.dart';
+import 'package:o_health/methods/methods.dart';
+import 'package:o_health/models/audio_resp.dart';
 import 'package:o_health/screens/video_call/video_call.dart';
 import 'package:o_health/screens/video_player/video_player.dart';
 import 'package:o_health/services/audio_services.dart';
@@ -29,7 +32,9 @@ class _PatientHomeState extends State<PatientHome> {
   AudioServices audioServices = AudioServices();
   bool isVideoEnabled = false;
   bool isLoading = false;
+  bool redirect = false;
   String? docID;
+  String? url;
   @override
   Widget build(BuildContext context) {
     var user = hiveObj.get('userData');
@@ -64,8 +69,8 @@ class _PatientHomeState extends State<PatientHome> {
                   Color.fromARGB(224, 238, 90, 102)
                 ]),
               ),
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 6, right: 12),
+              child: const Padding(
+                padding: EdgeInsets.only(bottom: 6, right: 12),
               ),
             ),
           ),
@@ -176,9 +181,10 @@ class _PatientHomeState extends State<PatientHome> {
                 child: Center(
                   child: isVideoEnabled
                       ? VideoScreen(
-                          videoURL:
-                              'https://ik.imagekit.io/uf0e6z5hc/Eng_-_Fever_uSDIAUoT4.mp4?ik-sdk-version=javascript-1.4.3&updatedAt=1667771216097',
-                          docID: docID)
+                          videoURL: url!,
+                          docID: docID,
+                          redirect: redirect,
+                        )
                       : Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -245,84 +251,10 @@ class _PatientHomeState extends State<PatientHome> {
                                           isVideoEnabled = false;
                                         });
                                         await audioServices.start();
-                                        await showModalBottomSheet(
-                                            context: context,
-                                            builder: (context) {
-                                              return StatefulBuilder(
-                                                builder: (BuildContext context,
-                                                    setState) {
-                                                  return Center(
-                                                    child: Center(
-                                                      child: Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
-                                                        children: [
-                                                          Lottie.asset(
-                                                              'assets/lottie/recorder.json',
-                                                              height: 80,
-                                                              width: 80),
-                                                          // Icon(Icons.audio_file_rounded),
-                                                          AnimatedTextKit(
-                                                              repeatForever:
-                                                                  true,
-                                                              animatedTexts: [
-                                                                WavyAnimatedText(
-                                                                    'recording'
-                                                                        .tr(),
-                                                                    speed: const Duration(
-                                                                        milliseconds:
-                                                                            200),
-                                                                    textStyle:
-                                                                        const TextStyle(
-                                                                      color: Colors
-                                                                          .red,
-                                                                      fontSize:
-                                                                          20,
-                                                                    )),
-                                                              ]),
-                                                          const SizedBox(
-                                                            width: 10,
-                                                          ),
-                                                          MaterialButton(
-                                                            color: Colors
-                                                                .redAccent,
-                                                            shape: RoundedRectangleBorder(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            10)),
-                                                            onPressed:
-                                                                () async {
-                                                              Navigator.of(
-                                                                      context)
-                                                                  .pop();
-                                                            },
-                                                            child: Text(
-                                                                'stop'.tr()),
-                                                          )
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  );
-                                                },
-                                              );
-                                            });
+                                        await displayModalBottomSheet();
+                                        await handleAudioProcessing();
 
-                                        setState(() {
-                                          isLoading = true;
-                                        });
-                                        //stop if back button was clicked
-                                        var path = await audioServices.stop();
-                                        var resp = await audioServices
-                                            .sendAudioFile(File(path));
                                         // ignore: use_build_context_synchronously
-                                        setState(() {
-                                          isVideoEnabled = true;
-                                          isLoading = false;
-                                          // docID = resp.body['id'];
-                                          docID = '123123123125';
-                                        });
                                       },
                                     ),
                                   ],
@@ -350,5 +282,82 @@ class _PatientHomeState extends State<PatientHome> {
         );
       },
     );
+  }
+
+  Future<void> displayModalBottomSheet() async {
+    await showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return StatefulBuilder(
+            builder: (BuildContext context, setState) {
+              return Center(
+                child: Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Lottie.asset('assets/lottie/recorder.json',
+                          height: 80, width: 80),
+                      // Icon(Icons.audio_file_rounded),
+                      AnimatedTextKit(repeatForever: true, animatedTexts: [
+                        WavyAnimatedText('Recording...',
+                            speed: const Duration(milliseconds: 200),
+                            textStyle: const TextStyle(
+                              color: Colors.red,
+                              fontSize: 20,
+                            )),
+                      ]),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      MaterialButton(
+                        color: Colors.redAccent,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)),
+                        onPressed: () async {
+                          Navigator.of(context).pop();
+                        },
+                        child: const Text('Stop'),
+                      )
+                    ],
+                  ),
+                ),
+              );
+            },
+          );
+        });
+  }
+
+  handleAudioResp(resp) {
+    if (resp != null) {
+      url = resp['videoURL'];
+      setState(() {
+        isVideoEnabled = true;
+        isLoading = false;
+        if (resp['redirectToVideoCall']) {
+          docID = resp['doctorId'].toString();
+          redirect = true;
+        }
+      });
+    } else {
+      setState(() {
+        isLoading = false;
+        showSnackBar(context, true, 'Try again');
+      });
+    }
+  }
+
+  Future<void> handleAudioProcessing() async {
+    setState(() {
+      isLoading = true;
+    });
+    var audioFilePath = await audioServices.stop();
+    var resp = await audioServices.sendAudioFile(
+      File(audioFilePath),
+      // ignore: use_build_context_synchronously
+      EasyLocalization.of(context)!.currentLocale!.languageCode,
+    );
+
+    ///[based on response decide routing]
+    handleAudioResp(resp);
   }
 }
