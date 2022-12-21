@@ -1,19 +1,11 @@
 import 'dart:convert';
-import 'dart:io';
-import 'dart:math';
-import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:hive/hive.dart';
-import 'package:lottie/lottie.dart';
 import 'package:o_health/screens/doctor_home.dart';
 import 'package:o_health/screens/patient_home.dart';
-import 'package:o_health/screens/video_player/video_player.dart';
+
 import 'package:o_health/services/audio_services.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:record/record.dart';
-import 'login.dart';
-import 'package:animated_text_kit/animated_text_kit.dart';
+
 import 'package:http/http.dart' as http;
 
 class Home extends StatefulWidget {
@@ -24,12 +16,9 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> with WidgetsBindingObserver {
-  bool isEng = true;
   final Box hiveObj = Hive.box('data');
-  List<String> languages = ['en', 'kn'];
   AudioServices audioServices = AudioServices();
 
-  AppLifecycleState? _notification;
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     switch (state) {
@@ -67,8 +56,15 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
 
   Future<void> sendAppStatus(String status) async {
     var user = hiveObj.get('userData');
-    http.post(Uri.parse('https://health-conscious.in/api/user/login/userCheck'),
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({'state': status, 'aadhar': user['aadhar']}));
+    http.post(
+      Uri.parse('https://health-conscious.in/api/user/status/userStatusUpdate'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(
+        {
+          'user_active_status': status,
+          'user_aadhar_number': user['aadhar'],
+        },
+      ),
+    );
   }
 }
