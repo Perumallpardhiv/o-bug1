@@ -26,5 +26,9 @@
     "resetPassword" : "Reset Password",
     "newPassword" : "New Password",
     "forgetPassword?" : "Forgot password?",
-    "otpSent" : "OTP has been sent to"
+    "otpSent" : "OTP has been sent to",
+    "uploadFullAadhar" : "Upload a full Aadhar image in the proper format like above image(.png,.jpg,.jpeg)",
+    "camera" : "Camera",
+    "gallery" : "Gallery",
+    "forgotPassword" :"Forgot Password"
 }

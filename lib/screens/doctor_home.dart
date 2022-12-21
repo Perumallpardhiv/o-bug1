@@ -24,6 +24,7 @@ class _DoctorHomeState extends State<DoctorHome> {
     var user = hive.get('userData');
     String localUserID = user['aadhar'];
     return Scaffold(
+      appBar: AppBar(),
       drawer: Drawer(
         child: ListView(
           children: [
