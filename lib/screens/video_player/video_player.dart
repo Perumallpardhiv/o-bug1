@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:o_health/screens/video_call/video_call.dart';
 import 'package:video_player/video_player.dart';
 
+// ignore: must_be_immutable
 class VideoScreen extends StatefulWidget {
   final String videoURL;
-  const VideoScreen({super.key, required this.videoURL});
+  String? docID;
+  VideoScreen({super.key, required this.videoURL, this.docID});
 
   @override
+  // ignore: library_private_types_in_public_api
   _VideoScreenState createState() => _VideoScreenState();
 }
 
@@ -20,11 +24,12 @@ class _VideoScreenState extends State<VideoScreen> {
         // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
         setState(() {});
       });
+    _controller.play();
+    _controller.addListener(navigateToCallOnEnd);
   }
 
   @override
   Widget build(BuildContext context) {
-    _controller.play();
     return Scaffold(
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -79,6 +84,20 @@ class _VideoScreenState extends State<VideoScreen> {
         ],
       ),
     );
+  }
+
+  navigateToCallOnEnd() async {
+    if (_controller.value.isInitialized &&
+        (_controller.value.position == _controller.value.duration)) {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) {
+            return CallInvitationScreen(docID: widget.docID!);
+          },
+        ),
+      );
+      _controller.removeListener(navigateToCallOnEnd);
+    }
   }
 
   @override
