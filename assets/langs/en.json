@@ -30,5 +30,18 @@
     "uploadFullAadhar" : "Upload a full Aadhar image in the proper format like above image(.png,.jpg,.jpeg)",
     "camera" : "Camera",
     "gallery" : "Gallery",
-    "forgotPassword" :"Forgot Password"
+    "forgotPassword" :"Forgot Password",
+    "passwordRequired" : "Password is required",
+    "minimumLength" : "Minimum length must be 8",
+    "pleaseWait" : "Please wait, extracting info",
+"aadharReq" : "Aadhar number is required",
+"fullNameReq" : "Full name is required",
+"notMatch" : "Passwords do not match",
+"error" : "Error",
+"tapToRecord" : "Tap to record",
+"recording" : "Recording...",
+"stop" : "Stop",
+"userDoesntExist" : "User doesn't exist or is offline:",
+"videoCall" : "Video Call",
+"voiceCall" :"Voice Call"
 }

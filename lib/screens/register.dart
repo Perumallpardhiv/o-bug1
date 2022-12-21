@@ -90,9 +90,9 @@ class _RegisterState extends State<Register> {
                               height: 50,
                               width: 50,
                             ),
-                            const Padding(
+                            Padding(
                               padding: EdgeInsets.all(8.0),
-                              child: Text('Please wait, extracting info'),
+                              child: Text('pleaseWait'.tr()),
                             )
                           ],
                         )
@@ -132,8 +132,7 @@ class _RegisterState extends State<Register> {
                     padding: const EdgeInsets.only(left: 8, right: 8),
                     child: TextFormField(
                       enabled: false,
-                      validator: RequiredValidator(
-                          errorText: 'Aadhar number is required'),
+                      validator: RequiredValidator(errorText: 'aadharReq'.tr()),
                       cursorColor: Colors.redAccent,
                       controller: _aadharController,
                       decoration: inputDecoration.copyWith(
@@ -157,7 +156,7 @@ class _RegisterState extends State<Register> {
                     padding: const EdgeInsets.only(left: 8, right: 8),
                     child: TextFormField(
                       validator:
-                          RequiredValidator(errorText: 'Full name is required'),
+                          RequiredValidator(errorText: 'fullNameReq'.tr()),
                       enabled: false,
                       cursorColor: Colors.redAccent,
                       controller: _nameController,
@@ -184,9 +183,9 @@ class _RegisterState extends State<Register> {
                         return TextFormField(
                           validator: MultiValidator([
                             RequiredValidator(
-                                errorText: 'Password is required'),
+                                errorText: 'passwordRequired'.tr()),
                             MinLengthValidator(6,
-                                errorText: 'Minimum length is 8'),
+                                errorText: 'minimumLength'.tr()),
                           ]),
                           cursorColor: Colors.redAccent,
                           controller: _passwordController,
@@ -228,7 +227,7 @@ class _RegisterState extends State<Register> {
                         return TextFormField(
                           validator: (val) {
                             if (val.toString() != _passwordController.text) {
-                              return 'Passwords do not match';
+                              return 'notMatch'.tr();
                             }
                             return null;
                           },
@@ -314,7 +313,7 @@ class _RegisterState extends State<Register> {
                             height: 36,
                             child: Center(
                               child: Text(
-                                "Log-In".tr(),
+                                "logIn".tr(),
                                 style: ThemeConfig.textStyle
                                     .copyWith(fontWeight: FontWeight.bold),
                               ),
@@ -396,7 +395,7 @@ class _RegisterState extends State<Register> {
             .then((_) => showSnackBar(context, false, 'loggedIn'.tr()));
       } else {
         // ignore: use_build_context_synchronously
-        showSnackBar(context, true, 'Some error');
+        showSnackBar(context, true, 'error'.tr());
       }
     }
     st(() {

@@ -79,7 +79,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                         context: context,
                         builder: (context) {
                           return AlertDialog(
-                            title: Text("Verification Code"),
+                            title: Text("verificationCode".tr()),
                             content: Text('Code entered is $verificationCode'),
                           );
                         });
