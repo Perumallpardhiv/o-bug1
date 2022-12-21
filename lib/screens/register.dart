@@ -375,13 +375,17 @@ class _RegisterState extends State<Register> {
       );
 
       if (resp != null) {
-        hiveObj.put('isLoggedIn', true);
-        User user = User.fromJson(resp);
-        hiveObj.put('userData', {
-          'userName': user.userName,
-          'aadhar': user.userAadharNumber,
-          'language': user.defaultLang,
-          'role': user.userRole
+        hiveObj.put('isLoggedIn', true).then((_) {
+          User user = User.fromJson(resp);
+          hiveObj.put('userData', {
+            'userName': user.userName,
+            'aadhar': user.userAadharNumber,
+            'language': user.defaultLang,
+            'role': user.userRole
+          });
+          EasyLocalization.of(context)!.setLocale(
+            Locale(user.defaultLang),
+          );
         });
 
         // ignore: use_build_context_synchronously
