@@ -135,7 +135,7 @@ class _CallInvitationScreenState extends State<CallInvitationScreen> {
                     userIDs = userIDs.substring(0, userIDs.length - 1);
                   }
 
-                  var message = 'User doesn\'t exist or is offline: $userIDs';
+                  var message = "${'userDoesntExist'.tr()} $userIDs";
                   if (code.isNotEmpty) {
                     message += ', code: $code, message:$message';
                   }

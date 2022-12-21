@@ -90,9 +90,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                           obscureText: _obscureText1,
                           validator: MultiValidator([
                             RequiredValidator(
-                                errorText: 'Password is required'),
+                                errorText: 'passwordRequired'.tr()),
                             MinLengthValidator(6,
-                                errorText: 'Minimum length is 8'),
+                                errorText: 'minimumLength'.tr()),
                           ]),
                           decoration: inputDecoration.copyWith(
                               hintText: 'newPassword'.tr(),
@@ -131,9 +131,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                         return TextFormField(
                           validator: MultiValidator([
                             RequiredValidator(
-                                errorText: 'Password is required'),
+                                errorText: 'passwordRequired'.tr()),
                             MinLengthValidator(6,
-                                errorText: 'Minimum length is 8'),
+                                errorText: 'minimumLength'.tr()),
                           ]),
                           cursorColor: Colors.redAccent,
                           controller: _newretypePasswordController,

@@ -71,8 +71,7 @@ class _LoginState extends State<Login> {
                     padding: const EdgeInsets.only(left: 8, right: 8),
                     child: TextFormField(
                       keyboardType: TextInputType.number,
-                      validator: RequiredValidator(
-                          errorText: 'Aadhar number is required'),
+                      validator: RequiredValidator(errorText: 'aadharReq'.tr()),
                       cursorColor: Colors.redAccent,
                       controller: _aadharController,
                       decoration: inputDecoration.copyWith(
@@ -97,7 +96,7 @@ class _LoginState extends State<Login> {
                       builder: (BuildContext context, StateSetter innerState) {
                         return TextFormField(
                           validator: RequiredValidator(
-                              errorText: 'Password is required'),
+                              errorText: 'passwordRequired'.tr()),
                           cursorColor: Colors.redAccent,
                           controller: _passwordController,
                           obscureText: _obscureText,

@@ -268,7 +268,8 @@ class _PatientHomeState extends State<PatientHome> {
                                                                   true,
                                                               animatedTexts: [
                                                                 WavyAnimatedText(
-                                                                    'Recording...',
+                                                                    'recording'
+                                                                        .tr(),
                                                                     speed: const Duration(
                                                                         milliseconds:
                                                                             200),
@@ -297,8 +298,8 @@ class _PatientHomeState extends State<PatientHome> {
                                                                       context)
                                                                   .pop();
                                                             },
-                                                            child: const Text(
-                                                                'Stop'),
+                                                            child: Text(
+                                                                'stop'.tr()),
                                                           )
                                                         ],
                                                       ),
