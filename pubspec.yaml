@@ -49,19 +49,13 @@ dependencies:
   form_field_validator:
   lottie:
   record:
-  just_audio: 
   permission_handler: 
   modal_bottom_sheet: 
   animated_text_kit: ^4.2.2
   video_player: ^2.4.10
   flutter_styled_toast: 
-  videosdk: ^1.0.9
   flutter_otp_text_field: ^1.1.1
   flutter_svg: ^1.1.6
-  
-  # flutter_screenutil: 
-  # zego_uikit_prebuilt_call:
-  # zego_uikit_signaling_plugin:
   flutter_screenutil: 
   zego_uikit_prebuilt_call:
   zego_uikit_signaling_plugin:

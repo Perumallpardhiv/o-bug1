@@ -1,19 +1,14 @@
-import 'dart:convert';
 import 'dart:io';
-import 'dart:math';
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:hive/hive.dart';
 import 'package:lottie/lottie.dart';
 import 'package:o_health/methods/methods.dart';
-import 'package:o_health/models/audio_resp.dart';
-import 'package:o_health/screens/video_call/video_call.dart';
 import 'package:o_health/screens/video_player/video_player.dart';
 import 'package:o_health/services/audio_services.dart';
 import 'login.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class PatientHome extends StatefulWidget {
   const PatientHome({super.key});
@@ -253,7 +248,6 @@ class _PatientHomeState extends State<PatientHome> {
                                         await audioServices.start();
                                         await displayModalBottomSheet();
                                         await handleAudioProcessing();
-
                                         // ignore: use_build_context_synchronously
                                       },
                                     ),
