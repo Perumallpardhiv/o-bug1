@@ -7,11 +7,11 @@ import 'package:flutter/material.dart';
 // ignore: depend_on_referenced_packages
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter/services.dart';
-import 'package:o_health/screens/forget_password.dart';
+import 'package:o_health/screens/auth/login.dart';
+import 'package:o_health/screens/auth/register.dart';
+import 'package:o_health/screens/auth/forget_password.dart';
 import 'package:o_health/screens/home.dart';
 import 'package:o_health/screens/intros/initial_intro.dart';
-import 'package:o_health/screens/login.dart';
-import 'package:o_health/screens/register.dart';
 import 'package:o_health/screens/reset_password.dart';
 import 'package:o_health/services/ask_permission.dart';
 import 'package:o_health/services/certificate.dart';
