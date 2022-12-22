@@ -4,6 +4,7 @@ import 'package:form_field_validator/form_field_validator.dart';
 import 'package:hive/hive.dart';
 import 'package:lottie/lottie.dart';
 import 'package:o_health/screens/home.dart';
+import 'package:o_health/screens/intros/login_intro.dart';
 import 'package:o_health/screens/register.dart';
 import '../constants/decorations.dart';
 import '../methods/methods.dart';
@@ -234,11 +235,21 @@ class _LoginState extends State<Login> {
         });
 
         // ignore: use_build_context_synchronously
-        Navigator.of(context)
-            .pushAndRemoveUntil(
-                MaterialPageRoute(builder: (context) => const Home()),
-                (Route<dynamic> route) => false)
-            .then((_) => showSnackBar(context, false, 'loggedIn'.tr()));
+        if (hiveObj.get('isLoginIntroSeen')) {
+          // ignore: use_build_context_synchronously
+          Navigator.of(context)
+              .pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) => const Home()),
+                  (Route<dynamic> route) => false)
+              .then((_) => showSnackBar(context, false, 'loggedIn'.tr()));
+        } else {
+          // ignore: use_build_context_synchronously
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                builder: (context) => const LoginIntroVideo(),
+              ),
+              (Route<dynamic> route) => false);
+        }
       }
     }
     innerState(() {

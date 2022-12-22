@@ -59,6 +59,9 @@ dependencies:
   flutter_screenutil: 
   zego_uikit_prebuilt_call:
   zego_uikit_signaling_plugin:
+  introscreenonboarding: ^0.1.0
+  intro_screen_onboarding_flutter: ^1.0.0
+  introduction_screen: ^3.1.1
   
 
 dev_dependencies:
@@ -93,6 +96,7 @@ flutter:
     - assets/images/
     - assets/lottie/
     - assets/svg/
+    - assets/intro/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 

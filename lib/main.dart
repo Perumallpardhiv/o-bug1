@@ -9,6 +9,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter/services.dart';
 import 'package:o_health/screens/forget_password.dart';
 import 'package:o_health/screens/home.dart';
+import 'package:o_health/screens/intros/initial_intro.dart';
 import 'package:o_health/screens/login.dart';
 import 'package:o_health/screens/register.dart';
 import 'package:o_health/screens/reset_password.dart';
@@ -35,8 +36,12 @@ void main() async {
   Hive.init((await getApplicationDocumentsDirectory()).path);
   //Create hive box
   Box hive = await Hive.openBox('data');
-  hive.get('isDarkTheme') ?? hive.put('isDarkTheme', false);
-  hive.get('isLoggedIn') ?? hive.put('isLoggedIn', false);
+  hive.get('isDarkTheme') ?? await hive.put('isDarkTheme', false);
+  hive.get('isLoggedIn') ?? await hive.put('isLoggedIn', false);
+  // for initial animation
+  hive.get('isIntroSeen') ?? await hive.put('isIntroSeen', false);
+  // for intro video after first login
+  hive.get('isLoginIntroSeen') ?? await hive.put('isLoginIntroSeen', false);
   runApp(
     EasyLocalization(
       supportedLocales: const [Locale('en'), Locale('kn')],
@@ -88,8 +93,11 @@ class _AppState extends State<App> {
       routes: {
         '/': (context) => widget.hiveObj.get('isLoggedIn') == true
             ? const Home()
-            : const Login(),
+            : widget.hiveObj.get('isIntroSeen') == true
+                ? const Login()
+                : const InitialIntroVideo(),
         // '/': (context) => const Home(),
+        '/initial-intro': ((context) => const InitialIntroVideo()),
         '/login': (context) => const Login(),
         '/register': (context) => const Register(),
         '/home': (context) => const Home(),
