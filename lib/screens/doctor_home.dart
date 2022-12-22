@@ -5,9 +5,7 @@ import 'package:hive/hive.dart';
 import 'package:lottie/lottie.dart';
 import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 import 'package:zego_uikit_signaling_plugin/zego_uikit_signaling_plugin.dart';
-
-import '../models/user_model.dart';
-import 'login.dart';
+import 'auth/login.dart';
 
 class DoctorHome extends StatefulWidget {
   const DoctorHome({super.key});
@@ -168,12 +166,21 @@ class _DoctorHomeState extends State<DoctorHome> {
               plugins: [ZegoUIKitSignalingPlugin()],
               child: Center(
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Card(
-                      child: Lottie.asset('assets/lottie/doctor.json',
-                          height: 240),
+                      child: Lottie.asset(
+                        'assets/lottie/doctor-home.json',
+                        height: 320,
+                      ),
                     ),
-                    Text('Your ID is $localUserID'),
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text(
+                        'You will get calls from patients when you are online',
+                        textAlign: TextAlign.center,
+                      ),
+                    )
                   ],
                 ),
               ),

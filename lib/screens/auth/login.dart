@@ -1,16 +1,17 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:hive/hive.dart';
 import 'package:lottie/lottie.dart';
+import 'package:o_health/screens/auth/register.dart';
 import 'package:o_health/screens/home.dart';
 import 'package:o_health/screens/intros/login_intro.dart';
-import 'package:o_health/screens/register.dart';
-import '../constants/decorations.dart';
-import '../methods/methods.dart';
-import '../models/user_model.dart';
-import '../services/auth_services.dart';
-import '../theme_config/theme_config.dart';
+import '../../constants/decorations.dart';
+import '../../methods/methods.dart';
+import '../../models/user_model.dart';
+import '../../services/auth_services.dart';
+import '../../theme_config/theme_config.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -55,7 +56,9 @@ class _LoginState extends State<Login> {
                   height: MediaQuery.of(context).size.width / 5,
                 ),
                 Image.asset(
-                  'assets/images/logo.png',
+                  AdaptiveTheme.of(context).mode.isDark
+                      ? 'assets/images/logo_dark.png'
+                      : 'assets/images/logo.png',
                   height: 68,
                 ),
                 SizedBox(

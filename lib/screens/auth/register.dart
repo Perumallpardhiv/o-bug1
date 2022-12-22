@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
@@ -8,11 +9,11 @@ import 'package:image_picker/image_picker.dart';
 import 'package:lottie/lottie.dart';
 import 'package:o_health/constants/decorations.dart';
 import 'package:o_health/methods/methods.dart';
+import 'package:o_health/models/user_model.dart';
 import 'package:o_health/services/auth_services.dart';
 import 'package:o_health/theme_config/theme_config.dart';
 import 'package:form_field_validator/form_field_validator.dart';
-import '../models/user_model.dart';
-import 'home.dart';
+import '../home.dart';
 import 'login.dart';
 
 // enum ImageSourceType { gallery, camera }
@@ -70,7 +71,9 @@ class _RegisterState extends State<Register> {
             child: Column(
               children: [
                 Image.asset(
-                  'assets/images/logo.png',
+                  AdaptiveTheme.of(context).mode.isDark
+                      ? 'assets/images/logo_dark.png'
+                      : 'assets/images/logo.png',
                   height: 60,
                 ),
                 SizedBox(
@@ -104,13 +107,22 @@ class _RegisterState extends State<Register> {
                           ),
                           child: SizedBox(
                             height: 60,
-                            child: Center(
-                              child: Text(
-                                isAadharUploaded
-                                    ? "uploadAgain".tr()
-                                    : "uploadAadhar".tr(),
-                                style: ThemeConfig.textStyle,
-                              ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                const Icon(Icons.camera),
+                                const SizedBox(
+                                  width: 60,
+                                ),
+                                Center(
+                                  child: Text(
+                                    isAadharUploaded
+                                        ? "uploadAgain".tr()
+                                        : "uploadAadhar".tr(),
+                                    style: ThemeConfig.textStyle,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                           onPressed: () async {

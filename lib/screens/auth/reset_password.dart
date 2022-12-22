@@ -1,3 +1,4 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
@@ -6,8 +7,8 @@ import 'package:form_field_validator/form_field_validator.dart';
 import 'package:hive/hive.dart';
 import 'package:lottie/lottie.dart';
 
-import '../constants/decorations.dart';
-import '../theme_config/theme_config.dart';
+import '../../constants/decorations.dart';
+import '../../theme_config/theme_config.dart';
 import 'login.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
@@ -67,7 +68,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   height: MediaQuery.of(context).size.width / 5,
                 ),
                 Image.asset(
-                  'assets/images/logo.png',
+                  AdaptiveTheme.of(context).mode.isDark
+                      ? 'assets/images/logo_dark.png'
+                      : 'assets/images/logo.png',
                   height: 68,
                 ),
                 SizedBox(

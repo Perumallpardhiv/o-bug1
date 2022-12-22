@@ -1,3 +1,4 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
@@ -5,7 +6,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:o_health/methods/methods.dart';
 
-import '../theme_config/theme_config.dart';
+import '../../theme_config/theme_config.dart';
 import 'login.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
@@ -56,7 +57,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   height: MediaQuery.of(context).size.width / 5,
                 ),
                 Image.asset(
-                  'assets/images/logo.png',
+                  AdaptiveTheme.of(context).mode.isDark
+                      ? 'assets/images/logo_dark.png'
+                      : 'assets/images/logo.png',
                   height: 68,
                 ),
                 SizedBox(
