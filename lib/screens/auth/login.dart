@@ -1,3 +1,4 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
@@ -55,7 +56,9 @@ class _LoginState extends State<Login> {
                   height: MediaQuery.of(context).size.width / 5,
                 ),
                 Image.asset(
-                  'assets/images/logo.png',
+                  AdaptiveTheme.of(context).mode.isDark
+                      ? 'assets/images/logo_dark.png'
+                      : 'assets/images/logo.png',
                   height: 68,
                 ),
                 SizedBox(

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
@@ -70,7 +71,9 @@ class _RegisterState extends State<Register> {
             child: Column(
               children: [
                 Image.asset(
-                  'assets/images/logo.png',
+                  AdaptiveTheme.of(context).mode.isDark
+                      ? 'assets/images/logo_dark.png'
+                      : 'assets/images/logo.png',
                   height: 60,
                 ),
                 SizedBox(

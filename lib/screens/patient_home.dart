@@ -10,6 +10,7 @@ import 'package:o_health/services/audio_services.dart';
 import 'package:o_health/theme_config/theme_config.dart';
 import 'auth/login.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:vibration/vibration.dart';
 
 class PatientHome extends StatefulWidget {
   const PatientHome({super.key});
@@ -237,6 +238,10 @@ class _PatientHomeState extends State<PatientHome> {
                                         ),
                                       ]),
                                   onTap: () async {
+                                    if ((await Vibration.hasVibrator()) ==
+                                        true) {
+                                      Vibration.vibrate();
+                                    }
                                     setState(() {
                                       isVideoEnabled = false;
                                     });
@@ -304,6 +309,9 @@ class _PatientHomeState extends State<PatientHome> {
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10)),
                         onPressed: () async {
+                          if ((await Vibration.hasVibrator()) == true) {
+                            Vibration.vibrate();
+                          }
                           Navigator.of(context).pop();
                         },
                         child: const Text('Stop'),
