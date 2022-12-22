@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:hive/hive.dart';
 import 'package:lottie/lottie.dart';
+import 'package:o_health/screens/home.dart';
 import 'package:o_health/theme_config/theme_config.dart';
 import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 import 'package:zego_uikit_signaling_plugin/zego_uikit_signaling_plugin.dart';
@@ -29,7 +30,15 @@ class _CallInvitationScreenState extends State<CallInvitationScreen> {
           'Doctor consultation',
           style: ThemeConfig.textStyle,
         ),
-        leading: const BackButton(color: Colors.white),
+        leading: BackButton(
+          color: Colors.white,
+          onPressed: () {
+            Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (context) {
+              return const Home();
+            }), (route) => false);
+          },
+        ),
         flexibleSpace: Container(
           alignment: Alignment.bottomRight,
           decoration: const BoxDecoration(
@@ -38,8 +47,8 @@ class _CallInvitationScreenState extends State<CallInvitationScreen> {
               Color.fromARGB(224, 238, 90, 102)
             ]),
           ),
-          child: Padding(
-            padding: const EdgeInsets.only(bottom: 6, right: 12),
+          child: const Padding(
+            padding: EdgeInsets.only(bottom: 6, right: 12),
           ),
         ),
       ),
@@ -64,12 +73,6 @@ class _CallInvitationScreenState extends State<CallInvitationScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Lottie.asset('assets/lottie/dr-consultation.json', height: 250),
-              const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Divider(
-                  thickness: 2.5,
-                ),
-              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -88,22 +91,6 @@ class _CallInvitationScreenState extends State<CallInvitationScreen> {
       ),
     );
   }
-
-  // Widget inviteeUserIDInput() {
-  //   return Expanded(
-  //     child: TextFormField(
-  //       controller: inviteeUsersIDTextCtrl,
-  //       inputFormatters: [
-  //         FilteringTextInputFormatter.allow(RegExp('[0-9,]')),
-  //       ],
-  //       decoration: const InputDecoration(
-  //         isDense: true,
-  //         hintText: "Please Enter Invitees ID",
-  //         labelText: "Invitees ID, Separate ids by ','",
-  //       ),
-  //     ),
-  //   );
-  // }
 
   Widget callButton(bool isVideoCall) {
     return ValueListenableBuilder<TextEditingValue>(

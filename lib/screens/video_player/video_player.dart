@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:o_health/screens/video_call/video_call.dart';
 import 'package:video_player/video_player.dart';
 
+import '../../methods/methods.dart';
+
 // ignore: must_be_immutable
 class VideoScreen extends StatefulWidget {
   final String videoURL;
@@ -34,11 +36,13 @@ class _VideoScreenState extends State<VideoScreen> {
     _controller.addListener(navigateToCallOnEnd);
   }
 
+  bool isPaused = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Center(
@@ -51,42 +55,17 @@ class _VideoScreenState extends State<VideoScreen> {
           ),
           VideoProgressIndicator(_controller, allowScrubbing: true),
           Center(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                MaterialButton(
-                  onPressed: () {
-                    _controller.play();
-                  },
-                  child: Column(
-                    children: const [
-                      Icon(
-                        Icons.play_circle,
-                        // color: Colors.amberAccent,
-                        size: 42,
-                      ),
-                      Text('Play')
-                    ],
-                  ),
-                ),
-                MaterialButton(
-                  onPressed: () {
-                    _controller.pause();
-                  },
-                  child: Column(
-                    children: const [
-                      Icon(
-                        Icons.pause_circle,
-                        // color: Colors.redAccent,
-                        size: 42,
-                      ),
-                      Text('Stop')
-                    ],
-                  ),
-                ),
-              ],
+            child: IconButton(
+              icon: Icon(isPaused ? Icons.play_arrow_rounded : Icons.pause),
+              onPressed: () {
+                setState(() {
+                  isPaused ? _controller.play() : _controller.pause();
+                  isPaused = !isPaused;
+                });
+              },
             ),
-          )
+          ),
+          isPaused ? const Text('Play') : const Text('Pause'),
         ],
       ),
     );
@@ -103,6 +82,8 @@ class _VideoScreenState extends State<VideoScreen> {
             },
           ),
         );
+      } else {
+        showSnackBar(context, true, 'No doctor available at the moment');
       }
       _controller.removeListener(navigateToCallOnEnd);
     }

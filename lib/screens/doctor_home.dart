@@ -166,12 +166,21 @@ class _DoctorHomeState extends State<DoctorHome> {
               plugins: [ZegoUIKitSignalingPlugin()],
               child: Center(
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Card(
-                      child: Lottie.asset('assets/lottie/doctor.json',
-                          height: 240),
+                      child: Lottie.asset(
+                        'assets/lottie/doctor-home.json',
+                        height: 320,
+                      ),
                     ),
-                    Text('Your ID is $localUserID'),
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text(
+                        'You will get calls from patients when you are online',
+                        textAlign: TextAlign.center,
+                      ),
+                    )
                   ],
                 ),
               ),

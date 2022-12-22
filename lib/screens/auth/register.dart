@@ -104,13 +104,22 @@ class _RegisterState extends State<Register> {
                           ),
                           child: SizedBox(
                             height: 60,
-                            child: Center(
-                              child: Text(
-                                isAadharUploaded
-                                    ? "uploadAgain".tr()
-                                    : "uploadAadhar".tr(),
-                                style: ThemeConfig.textStyle,
-                              ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                const Icon(Icons.camera),
+                                const SizedBox(
+                                  width: 60,
+                                ),
+                                Center(
+                                  child: Text(
+                                    isAadharUploaded
+                                        ? "uploadAgain".tr()
+                                        : "uploadAadhar".tr(),
+                                    style: ThemeConfig.textStyle,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                           onPressed: () async {

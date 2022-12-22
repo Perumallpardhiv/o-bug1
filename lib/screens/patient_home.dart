@@ -7,6 +7,7 @@ import 'package:lottie/lottie.dart';
 import 'package:o_health/methods/methods.dart';
 import 'package:o_health/screens/video_player/video_player.dart';
 import 'package:o_health/services/audio_services.dart';
+import 'package:o_health/theme_config/theme_config.dart';
 import 'auth/login.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 
@@ -171,106 +172,101 @@ class _PatientHomeState extends State<PatientHome> {
               child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Expanded(
-                flex: 1,
-                child: Center(
-                  child: isVideoEnabled
-                      ? VideoScreen(
-                          videoURL: url!,
-                          docID: docID,
-                          redirect: redirect,
-                        )
-                      : Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Card(
-                              child: Lottie.asset('assets/lottie/doctor.json',
-                                  height: 240),
-                            ),
-                            Text('tellUs'.tr())
-                          ],
-                        ),
-                ),
-              ),
-              const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Divider(
-                  thickness: 1.8,
-                ),
-              ),
-              Expanded(
-                  flex: 1,
-                  child: Center(
-                    child: isLoading
-                        ? Lottie.asset('assets/lottie/loader.json', height: 80)
-                        : Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                width: 200,
-                                height: 40,
-                                decoration: const BoxDecoration(
-                                  gradient: LinearGradient(
-                                    colors: [
-                                      Color.fromARGB(255, 234, 108, 108),
-                                      Colors.red,
-                                    ],
-                                  ),
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(16),
-                                  ),
-                                ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    GestureDetector(
-                                      child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            const Icon(
-                                              Icons.mic,
-                                              color: Colors.white,
-                                            ),
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: Text(
-                                                'tapToRecord'.tr(),
-                                                overflow: TextOverflow.ellipsis,
-                                              ),
-                                            ),
-                                          ]),
-                                      onTap: () async {
-                                        setState(() {
-                                          isVideoEnabled = false;
-                                        });
-                                        await audioServices.start();
-                                        await displayModalBottomSheet();
-                                        await handleAudioProcessing();
-                                        // ignore: use_build_context_synchronously
-                                      },
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 20,
-                              ),
-                              IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    isVideoEnabled = false;
-                                  });
-                                },
-                                icon: const Icon(
-                                  Icons.refresh,
-                                  size: 40,
-                                ),
-                              )
-                            ],
+              Container(
+                height: MediaQuery.of(context).size.height / 2,
+                alignment: Alignment.topCenter,
+                child: isVideoEnabled
+                    ? VideoScreen(
+                        videoURL: url!,
+                        docID: docID,
+                        redirect: redirect,
+                      )
+                    : Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Card(
+                            child: Lottie.asset('assets/lottie/doctor.json',
+                                height: 240),
                           ),
-                  ))
+                          Text('tellUs'.tr())
+                        ],
+                      ),
+              ),
+              const SizedBox(
+                height: 80,
+              ),
+              Center(
+                child: isLoading
+                    ? Lottie.asset('assets/lottie/loader.json', height: 80)
+                    : Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: 200,
+                            height: 40,
+                            decoration: const BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  Color.fromARGB(255, 234, 108, 108),
+                                  Colors.red,
+                                ],
+                              ),
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(16),
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                GestureDetector(
+                                  child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        const Icon(
+                                          Icons.mic,
+                                          color: Colors.white,
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text(
+                                            'tapToRecord'.tr(),
+                                            style: ThemeConfig.textStyle,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ),
+                                      ]),
+                                  onTap: () async {
+                                    setState(() {
+                                      isVideoEnabled = false;
+                                    });
+                                    await audioServices.start();
+                                    await displayModalBottomSheet();
+                                    await handleAudioProcessing();
+                                    // ignore: use_build_context_synchronously
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 20,
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              setState(() {
+                                isVideoEnabled = false;
+                              });
+                            },
+                            icon: const Icon(
+                              Icons.refresh,
+                              size: 40,
+                              color: Colors.red,
+                            ),
+                          )
+                        ],
+                      ),
+              )
             ],
           )),
         );
