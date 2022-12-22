@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:o_health/screens/home.dart';
-import 'package:o_health/screens/login.dart';
 import 'package:o_health/theme_config/theme_config.dart';
 import 'package:video_player/video_player.dart';
 

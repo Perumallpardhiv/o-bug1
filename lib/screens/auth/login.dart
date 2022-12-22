@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:hive/hive.dart';
 import 'package:lottie/lottie.dart';
+import 'package:o_health/screens/auth/register.dart';
 import 'package:o_health/screens/home.dart';
 import 'package:o_health/screens/intros/login_intro.dart';
-import 'package:o_health/screens/register.dart';
-import '../constants/decorations.dart';
-import '../methods/methods.dart';
-import '../models/user_model.dart';
-import '../services/auth_services.dart';
-import '../theme_config/theme_config.dart';
+import '../../constants/decorations.dart';
+import '../../methods/methods.dart';
+import '../../models/user_model.dart';
+import '../../services/auth_services.dart';
+import '../../theme_config/theme_config.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});

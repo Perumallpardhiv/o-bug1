@@ -8,11 +8,11 @@ import 'package:image_picker/image_picker.dart';
 import 'package:lottie/lottie.dart';
 import 'package:o_health/constants/decorations.dart';
 import 'package:o_health/methods/methods.dart';
+import 'package:o_health/models/user_model.dart';
 import 'package:o_health/services/auth_services.dart';
 import 'package:o_health/theme_config/theme_config.dart';
 import 'package:form_field_validator/form_field_validator.dart';
-import '../models/user_model.dart';
-import 'home.dart';
+import '../home.dart';
 import 'login.dart';
 
 // enum ImageSourceType { gallery, camera }

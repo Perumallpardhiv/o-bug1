@@ -7,7 +7,7 @@ import 'package:lottie/lottie.dart';
 import 'package:o_health/methods/methods.dart';
 import 'package:o_health/screens/video_player/video_player.dart';
 import 'package:o_health/services/audio_services.dart';
-import 'login.dart';
+import 'auth/login.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 
 class PatientHome extends StatefulWidget {

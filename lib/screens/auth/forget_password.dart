@@ -5,7 +5,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:o_health/methods/methods.dart';
 
-import '../theme_config/theme_config.dart';
+import '../../theme_config/theme_config.dart';
 import 'login.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
