@@ -6,8 +6,8 @@ import 'package:form_field_validator/form_field_validator.dart';
 import 'package:hive/hive.dart';
 import 'package:lottie/lottie.dart';
 
-import '../constants/decorations.dart';
-import '../theme_config/theme_config.dart';
+import '../../constants/decorations.dart';
+import '../../theme_config/theme_config.dart';
 import 'login.dart';
 
 class ResetPasswordScreen extends StatefulWidget {

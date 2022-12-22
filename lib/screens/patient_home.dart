@@ -169,7 +169,7 @@ class _PatientHomeState extends State<PatientHome> {
           ),
           body: Center(
               child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Expanded(
                 flex: 1,
