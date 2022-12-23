@@ -32,7 +32,7 @@
     "gallery": "Gallery",
     "forgotPassword": "Forgot Password",
     "passwordRequired": "Password is required",
-    "minimumLength": "Minimum length must be 8",
+    "minimumLength": "Minimum length must be 6",
     "pleaseWait": "Please wait, extracting info",
     "aadharReq": "Aadhar number is required",
     "fullNameReq": "Full name is required",
@@ -43,5 +43,6 @@
     "stop": "Stop",
     "userDoesntExist": "User doesn't exist or is offline:",
     "videoCall": "Video Call",
-    "voiceCall": "Voice Call"
+    "voiceCall": "Voice Call",
+    "doctorHomeTxt": "You will get calls from patients when you are online"
 }

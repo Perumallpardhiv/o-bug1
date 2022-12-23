@@ -4,6 +4,7 @@ import 'package:introduction_screen/introduction_screen.dart';
 import 'package:o_health/screens/home.dart';
 import 'package:o_health/theme_config/theme_config.dart';
 import 'package:video_player/video_player.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 
 class LoginIntroVideo extends StatefulWidget {
   const LoginIntroVideo({super.key});
@@ -38,7 +39,14 @@ class _LoginIntroVideoState extends State<LoginIntroVideo> {
           AspectRatio(
             aspectRatio: MediaQuery.of(context).size.width /
                 MediaQuery.of(context).size.height,
-            child: VideoPlayer(_playerController),
+            child: VisibilityDetector(
+                key: UniqueKey(),
+                onVisibilityChanged: ((info) {
+                  if (info.visibleFraction == 0) {
+                    _playerController.dispose();
+                  }
+                }),
+                child: VideoPlayer(_playerController)),
           ),
           Positioned(
             bottom: 10,
@@ -46,6 +54,8 @@ class _LoginIntroVideoState extends State<LoginIntroVideo> {
             child: GestureDetector(
               onTap: () {
                 box.put('isLoginIntroSeen', true);
+                _playerController.pause();
+                _playerController.removeListener(routeToHome);
                 Navigator.of(context).pushAndRemoveUntil(
                     MaterialPageRoute(builder: (context) => const Home()),
                     (Route<dynamic> route) => false);
@@ -80,12 +90,19 @@ class _LoginIntroVideoState extends State<LoginIntroVideo> {
     );
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+    _playerController.pause();
+  }
+
   routeToHome() {
     if (_playerController.value.isInitialized &&
         (_playerController.value.position ==
             _playerController.value.duration)) {
       _playerController.removeListener(routeToHome);
       box.put('isLoginIntroSeen', true);
+      _playerController.pause();
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (context) => const Home()),
           (Route<dynamic> route) => false);

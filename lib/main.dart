@@ -13,11 +13,13 @@ import 'package:o_health/screens/auth/forget_password.dart';
 import 'package:o_health/screens/auth/reset_password.dart';
 import 'package:o_health/screens/home.dart';
 import 'package:o_health/screens/intros/initial_intro.dart';
+import 'package:o_health/screens/intros/login_intro.dart';
 import 'package:o_health/services/ask_permission.dart';
 import 'package:o_health/services/certificate.dart';
 import 'package:o_health/theme_config/theme_config.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:flutter_displaymode/flutter_displaymode.dart';
 
 void main() async {
   var widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -32,6 +34,9 @@ void main() async {
   });
   //ask permissions
   await HandlePermissions.askPermission();
+  try {
+    await FlutterDisplayMode.setHighRefreshRate();
+  } catch (_) {}
   // Initialize hive db;
   Hive.init((await getApplicationDocumentsDirectory()).path);
   //Create hive box
@@ -97,7 +102,8 @@ class _AppState extends State<App> {
                 ? const Login()
                 : const InitialIntroVideo(),
         // '/': (context) => const Home(),
-        '/initial-intro': ((context) => const InitialIntroVideo()),
+        '/initial-intro': (context) => const InitialIntroVideo(),
+        '/login-intro': (context) => const LoginIntroVideo(),
         '/login': (context) => const Login(),
         '/register': (context) => const Register(),
         '/home': (context) => const Home(),
