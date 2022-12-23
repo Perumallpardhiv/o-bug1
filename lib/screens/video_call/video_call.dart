@@ -27,7 +27,7 @@ class _CallInvitationScreenState extends State<CallInvitationScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Doctor consultation',
+          'consult'.tr(),
           style: ThemeConfig.textStyle,
         ),
         leading: BackButton(

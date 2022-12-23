@@ -44,5 +44,6 @@
     "userDoesntExist": "User doesn't exist or is offline:",
     "videoCall": "Video Call",
     "voiceCall": "Voice Call",
-    "doctorHomeTxt": "You will get calls from patients when you are online"
+    "doctorHomeTxt": "You will get calls from patients when you are online",
+    "consult": "Doctor consultation"
 }
