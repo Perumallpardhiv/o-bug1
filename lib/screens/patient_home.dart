@@ -310,8 +310,10 @@ class _PatientHomeState extends State<PatientHome> {
                             borderRadius: BorderRadius.circular(10)),
                         onPressed: () async {
                           if ((await Vibration.hasVibrator()) == true) {
-                            Vibration.vibrate()
-                                .then((value) => Navigator.of(context).pop);
+                            Vibration.vibrate().then((value) {
+                              audioServices.stop();
+                              Navigator.of(context).pop();
+                            });
                           } else {
                             Navigator.of(context).pop();
                           }

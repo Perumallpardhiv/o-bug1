@@ -108,11 +108,11 @@ class _RegisterState extends State<Register> {
                           child: SizedBox(
                             height: 60,
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                const Icon(Icons.camera),
+                                const Icon(Icons.camera, color: Colors.white),
                                 const SizedBox(
-                                  width: 60,
+                                  width: 20,
                                 ),
                                 Center(
                                   child: Text(
