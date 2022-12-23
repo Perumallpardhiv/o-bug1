@@ -174,10 +174,10 @@ class _DoctorHomeState extends State<DoctorHome> {
                         height: 320,
                       ),
                     ),
-                    const Padding(
+                    Padding(
                       padding: EdgeInsets.all(8.0),
                       child: Text(
-                        'You will get calls from patients when you are online',
+                        'doctorHomeTxt'.tr(),
                         textAlign: TextAlign.center,
                       ),
                     )

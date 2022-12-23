@@ -203,7 +203,7 @@ class _PatientHomeState extends State<PatientHome> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Container(
-                            width: 200,
+                            width: 260,
                             height: 40,
                             decoration: const BoxDecoration(
                               gradient: LinearGradient(
@@ -310,9 +310,11 @@ class _PatientHomeState extends State<PatientHome> {
                             borderRadius: BorderRadius.circular(10)),
                         onPressed: () async {
                           if ((await Vibration.hasVibrator()) == true) {
-                            Vibration.vibrate();
+                            Vibration.vibrate()
+                                .then((value) => Navigator.of(context).pop);
+                          } else {
+                            Navigator.of(context).pop();
                           }
-                          Navigator.of(context).pop();
                         },
                         child: const Text('Stop'),
                       )
