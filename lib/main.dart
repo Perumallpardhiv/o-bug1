@@ -49,7 +49,7 @@ void main() async {
   hive.get('isLoginIntroSeen') ?? await hive.put('isLoginIntroSeen', false);
   runApp(
     EasyLocalization(
-      supportedLocales: const [Locale('en'), Locale('kn')],
+      supportedLocales: const [Locale('en'), Locale('kn'), Locale('hi'), Locale('ml')],
       path: 'assets/langs',
       fallbackLocale: const Locale('en', 'US'),
       child: AdaptiveTheme(
@@ -99,7 +99,7 @@ class _AppState extends State<App> {
         '/': (context) => widget.hiveObj.get('isLoggedIn') == true
             ? const Home()
             : widget.hiveObj.get('isIntroSeen') == true
-                ? const Login()
+                ? const InitialIntroVideo()
                 : const InitialIntroVideo(),
         // '/': (context) => const Home(),
         '/initial-intro': (context) => const InitialIntroVideo(),

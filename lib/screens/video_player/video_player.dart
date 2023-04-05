@@ -83,7 +83,10 @@ class _VideoScreenState extends State<VideoScreen> {
           ),
         );
       } else {
-        showSnackBar(context, true, 'No doctor available at the moment');
+        setState(() {
+            isPaused = !isPaused;
+        });
+        //showSnackBar(context, true, 'No doctor available at the moment');
       }
       _controller.removeListener(navigateToCallOnEnd);
     }

@@ -100,7 +100,7 @@ class _CallInvitationScreenState extends State<CallInvitationScreen> {
 
         return Column(
           children: [
-            ZegoStartCallInvitationButton(
+            ZegoSendCallInvitationButton(
               isVideoCall: isVideoCall,
               invitees: invitees,
               iconSize: const Size(60, 60),

@@ -53,6 +53,9 @@
 		<array>
 			<string>en</string>
 			<string>kn</string>
+			<string>hi</string>
+			<!-- <string>ur</string> -->
+			<string>ml</string>
 		</array>
 		<key>UIStatusBarHidden</key>
 		<false/>

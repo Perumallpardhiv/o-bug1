@@ -3,9 +3,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:lottie/lottie.dart';
-import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 import 'package:zego_uikit_signaling_plugin/zego_uikit_signaling_plugin.dart';
 import 'auth/login.dart';
+import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
+import 'package:zego_uikit_signaling_plugin/zego_uikit_signaling_plugin.dart';
 
 class DoctorHome extends StatefulWidget {
   const DoctorHome({super.key});
@@ -16,7 +17,7 @@ class DoctorHome extends StatefulWidget {
 
 class _DoctorHomeState extends State<DoctorHome> {
   Box hive = Hive.box('data');
-  List<String> languages = ['en', 'kn'];
+  List<String> languages = ['en', 'kn', 'hi', /* 'ur', */ 'ml'];
 
   @override
   Widget build(BuildContext context) {
@@ -121,9 +122,17 @@ class _DoctorHomeState extends State<DoctorHome> {
                           case 'kn':
                             lang = 'ಕನ್ನಡ';
                             break;
-
                           case 'en':
                             lang = 'English';
+                            break;
+                          case 'hi':
+                            lang = 'हिंदी';
+                            break;
+                          // case 'ur':
+                          //   lang = 'اردو';
+                          //   break;
+                          case 'ml':
+                            lang = 'डोगरी';
                             break;
                         }
                         return DropdownMenuItem<String>(

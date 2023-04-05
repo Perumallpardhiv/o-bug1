@@ -25,7 +25,7 @@ class _PatientHomeState extends State<PatientHome> {
 
   //todo add lang id as string
 
-  List<String> languages = ['en', 'kn'];
+  List<String> languages = ['en', 'kn', 'hi', /* 'ur', */ 'ml'];
   AudioServices audioServices = AudioServices();
   bool isVideoEnabled = false;
   bool isLoading = false;
@@ -136,6 +136,15 @@ class _PatientHomeState extends State<PatientHome> {
                           break;
                         case 'en':
                           lang = 'English';
+                          break;
+                        case 'hi':
+                          lang = 'हिंदी';
+                          break;
+                        // case 'ur':
+                        //   lang = 'اردو';
+                        //   break;
+                        case 'ml':
+                          lang = 'डोगरी';
                           break;
                       }
                       return DropdownMenuItem<String>(
@@ -330,7 +339,12 @@ class _PatientHomeState extends State<PatientHome> {
   }
 
   handleAudioResp(resp) {
-    if (resp != null) {
+    if (resp != null && resp["error"] == "Not able to recoginse... Try again...!") {
+      setState(() {
+        isLoading = false;
+        showSnackBar(context, true, 'Not able to recoginse... Try again...!');
+      });
+    } else if (resp != null) {
       url = resp['videoURL'];
       setState(() {
         isVideoEnabled = true;
@@ -343,7 +357,7 @@ class _PatientHomeState extends State<PatientHome> {
     } else {
       setState(() {
         isLoading = false;
-        showSnackBar(context, true, 'Try again');
+        showSnackBar(context, true, 'Not able to recoginse... Try again...!');
       });
     }
   }

@@ -40,6 +40,8 @@ class _RegisterState extends State<Register> {
   bool _obscureText1 = true;
   bool _obscureText2 = true;
   bool isAadharUploaded = false;
+  String defaultLanguage = "en";
+
   late StateSetter st;
   @override
   Widget build(BuildContext context) {
@@ -351,18 +353,27 @@ class _RegisterState extends State<Register> {
     if (xFile != null) {
       try {
         var resp = await AuthServices.sendAadharImage(File(xFile.path));
-
         if (resp != null) {
-          setState(() {
+          if(resp.statusCode == 500){
+            setState(() {
+              isLoading = false;
+            });
+            //isLoading = false;
+            var errMsg = jsonDecode(resp.body);
+            // ignore: use_build_context_synchronously
+            showSnackBar(context, true, errMsg["error"]);
+
+          }else{
+            setState(() {
             _aadharController.text =
                 jsonDecode(resp.body)['aadhaarNumber'].toString();
             _nameController.text = jsonDecode(resp.body)['userName'];
+            defaultLanguage = jsonDecode(resp.body)['default_language'];
             isLoading = false;
             isAadharUploaded = true;
           });
-        } else {
-          setState(() {});
-        }
+         } 
+        }      
       } catch (_) {}
     } else {
       setState(() {
@@ -383,10 +394,11 @@ class _RegisterState extends State<Register> {
         _nameController.text.trim(),
         _passwordController.text.trim(),
         _aadharController.text.trim(),
+        defaultLanguage.trim()
       );
 
       if (resp != null) {
-        hiveObj.put('isLoggedIn', true).then((_) {
+        hiveObj.put('isLoggedIn', true); 
           User user = User.fromJson(resp);
           hiveObj.put('userData', {
             'userName': user.userName,
@@ -397,7 +409,7 @@ class _RegisterState extends State<Register> {
           EasyLocalization.of(context)!.setLocale(
             Locale(user.defaultLang),
           );
-        });
+        
 
         // ignore: use_build_context_synchronously
         Navigator.of(context)

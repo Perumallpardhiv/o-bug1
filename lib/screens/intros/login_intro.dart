@@ -21,7 +21,7 @@ class _LoginIntroVideoState extends State<LoginIntroVideo> {
   late VideoPlayerController _playerController;
   @override
   void initState() {
-    _playerController = VideoPlayerController.asset('assets/intro/intro.mp4');
+    _playerController = VideoPlayerController.asset('assets/intro/4.mkv');
     _playerController.initialize().then((value) {
       setState(() {});
     });
@@ -94,6 +94,7 @@ class _LoginIntroVideoState extends State<LoginIntroVideo> {
   void dispose() {
     super.dispose();
     _playerController.pause();
+    _playerController.dispose();
   }
 
   routeToHome() {

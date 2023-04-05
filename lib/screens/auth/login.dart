@@ -236,6 +236,9 @@ class _LoginState extends State<Login> {
           'language': user.defaultLang,
           'role': user.userRole
         });
+        EasyLocalization.of(context)!.setLocale(
+          Locale(user.defaultLang),
+        );
 
         // ignore: use_build_context_synchronously
         if (hiveObj.get('isLoginIntroSeen')) {
@@ -249,7 +252,7 @@ class _LoginState extends State<Login> {
           // ignore: use_build_context_synchronously
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
-                builder: (context) => const LoginIntroVideo(),
+                builder: (context) => const Home(),
               ),
               (Route<dynamic> route) => false);
         }

@@ -11,7 +11,7 @@ import 'package:http_parser/http_parser.dart';
 import '../models/login_model.dart';
 
 class AuthServices {
-  static register(String username, String password, String aadharNumber) async {
+  static register(String username, String password, String aadharNumber, String defaultLanguage) async {
     try {
       var resp = await http.post(
         Uri.parse(
@@ -20,7 +20,8 @@ class AuthServices {
         body: json.encode({
           "user_name": username.trim(),
           "user_aadhar_number": aadharNumber.trim(),
-          "user_password": password.trim()
+          "user_password": password.trim(),
+          "default_language":defaultLanguage.trim()
         }),
       );
       return jsonDecode(resp.body);
