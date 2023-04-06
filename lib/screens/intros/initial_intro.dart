@@ -18,14 +18,19 @@ class _InitialIntroVideoState extends State<InitialIntroVideo> {
   final introKey = GlobalKey<IntroductionScreenState>();
   Box box = Hive.box('data');
 
+  late Future<void> _initalizeVideoPlayer;
+
   late VideoPlayerController _playerController;
   @override
   void initState() {
     _playerController = VideoPlayerController.asset('assets/intro/4.mkv');
-    _playerController.initialize().then((value) {
-      setState(() {});
-    });
-    _playerController.addListener(routeToLoginOnEnd);
+    _initalizeVideoPlayer = _playerController.initialize();
+    _playerController.setLooping(true);
+    _playerController.setVolume(1.0);
+    // _playerController.initialize().then((value) {
+    //   setState(() {});
+    // });
+    // _playerController.addListener(routeToLoginOnEnd);
     _playerController.play();
     super.initState();
   }
@@ -36,21 +41,31 @@ class _InitialIntroVideoState extends State<InitialIntroVideo> {
       child: Stack(
         alignment: Alignment.center,
         children: [
-          AspectRatio(
-            aspectRatio: MediaQuery.of(context).size.width /
-                MediaQuery.of(context).size.height,
-            child: VisibilityDetector(
-              onVisibilityChanged: (info) {
-                if (info.visibleFraction == 0) {
-                  _playerController.dispose();
+          FutureBuilder(
+              future: _initalizeVideoPlayer,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  return AspectRatio(
+                    aspectRatio: MediaQuery.of(context).size.width /
+                        MediaQuery.of(context).size.height,
+                    child: VisibilityDetector(
+                      onVisibilityChanged: (info) {
+                        if (info.visibleFraction == 0) {
+                          _playerController.dispose();
+                        }
+                      },
+                      key: UniqueKey(),
+                      child: VideoPlayer(
+                        _playerController,
+                      ),
+                    ),
+                  );
+                } else {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
                 }
-              },
-              key: UniqueKey(),
-              child: VideoPlayer(
-                _playerController,
-              ),
-            ),
-          ),
+              }),
           Positioned(
             bottom: 10,
             right: 8,
@@ -96,8 +111,8 @@ class _InitialIntroVideoState extends State<InitialIntroVideo> {
   @override
   void dispose() {
     super.dispose();
-     _playerController.pause();
-     _playerController.dispose();
+    _playerController.pause();
+    _playerController.dispose();
   }
 
   routeToLoginOnEnd() {
