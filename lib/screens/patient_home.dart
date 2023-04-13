@@ -161,8 +161,13 @@ class _PatientHomeState extends State<PatientHome> {
                     },
                   ),
                 ),
-                // ListTile(),
-                // ListTile(),
+                ListTile(
+                  leading: const Icon(Icons.upload_file_outlined),
+                  title: Text('Upload Documents'.tr()),
+                  onTap: () {
+                    Navigator.pushNamed(context, '/upload-files');
+                  },
+                ),
                 ListTile(
                   leading: const Icon(Icons.logout_rounded),
                   title: Text('logout'.tr()),
@@ -339,7 +344,8 @@ class _PatientHomeState extends State<PatientHome> {
   }
 
   handleAudioResp(resp) {
-    if (resp != null && resp["error"] == "Not able to recoginse... Try again...!") {
+    if (resp != null &&
+        resp["error"] == "Not able to recoginse... Try again...!") {
       setState(() {
         isLoading = false;
         showSnackBar(context, true, 'Not able to recoginse... Try again...!');

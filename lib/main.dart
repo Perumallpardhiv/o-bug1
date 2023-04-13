@@ -14,6 +14,7 @@ import 'package:o_health/screens/auth/reset_password.dart';
 import 'package:o_health/screens/home.dart';
 import 'package:o_health/screens/intros/initial_intro.dart';
 import 'package:o_health/screens/intros/login_intro.dart';
+import 'package:o_health/screens/upload_files.dart';
 import 'package:o_health/services/ask_permission.dart';
 import 'package:o_health/services/certificate.dart';
 import 'package:o_health/theme_config/theme_config.dart';
@@ -49,7 +50,12 @@ void main() async {
   hive.get('isLoginIntroSeen') ?? await hive.put('isLoginIntroSeen', false);
   runApp(
     EasyLocalization(
-      supportedLocales: const [Locale('en'), Locale('kn'), Locale('hi'), Locale('ml')],
+      supportedLocales: const [
+        Locale('en'),
+        Locale('kn'),
+        Locale('hi'),
+        Locale('ml')
+      ],
       path: 'assets/langs',
       fallbackLocale: const Locale('en', 'US'),
       child: AdaptiveTheme(
@@ -109,6 +115,7 @@ class _AppState extends State<App> {
         '/home': (context) => const Home(),
         '/forgot-password': (context) => const ForgotPasswordScreen(),
         '/reset-password': (context) => const ResetPasswordScreen(),
+        '/upload-files': (context) => const Uploadfiles(),
       },
     );
   }
