@@ -41,6 +41,8 @@ dependencies:
   adaptive_theme: 
   easy_localization: 
   image_picker: 
+  file_picker: ^4.1.3
+  open_file: ^3.2.1
   http:
   mime: ^1.0.3
   dio: ^4.0.6
