@@ -40,19 +40,22 @@ class _PatientHomeState extends State<PatientHome> {
       builder: (_, AdaptiveThemeMode mode, __) {
         return Scaffold(
           appBar: AppBar(
-            leading: Builder(builder: (BuildContext context) {
-              return IconButton(
-                icon: const Icon(
-                  Icons.menu_sharp,
-                  color: Colors.white,
-                  size: 30,
-                ),
-                onPressed: () {
-                  Scaffold.of(context).openDrawer();
-                },
-                tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
-              );
-            }),
+            leading: Builder(
+              builder: (BuildContext context) {
+                return IconButton(
+                  icon: const Icon(
+                    Icons.menu_sharp,
+                    color: Colors.white,
+                    size: 30,
+                  ),
+                  onPressed: () {
+                    Scaffold.of(context).openDrawer();
+                  },
+                  tooltip:
+                      MaterialLocalizations.of(context).openAppDrawerTooltip,
+                );
+              },
+            ),
             title: Text(
               'o-health'.tr(),
               style: const TextStyle(
@@ -67,9 +70,36 @@ class _PatientHomeState extends State<PatientHome> {
                 ]),
               ),
               child: const Padding(
-                padding: EdgeInsets.only(bottom: 6, right: 12),
+                padding: EdgeInsets.only(
+                  bottom: 6,
+                  right: 12,
+                ),
               ),
             ),
+            actions: [
+              TextButton(
+                child: Row(
+                  children: const [
+                    Icon(
+                      Icons.cloud_upload_outlined,
+                      size: 18,
+                      color: Colors.white,
+                    ),
+                    Text(
+                      '  UPLOAD',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 13,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/upload-files');
+                },
+              ),
+            ],
           ),
           drawer: Drawer(
             child: ListView(
@@ -161,13 +191,13 @@ class _PatientHomeState extends State<PatientHome> {
                     },
                   ),
                 ),
-                ListTile(
-                  leading: const Icon(Icons.upload_file_outlined),
-                  title: Text('Upload Documents'.tr()),
-                  onTap: () {
-                    Navigator.pushNamed(context, '/upload-files');
-                  },
-                ),
+                // ListTile(
+                //   leading: const Icon(Icons.upload_file_outlined),
+                //   title: Text('Upload Documents'.tr()),
+                //   onTap: () {
+                //     Navigator.pushNamed(context, '/upload-files');
+                //   },
+                // ),
                 ListTile(
                   leading: const Icon(Icons.logout_rounded),
                   title: Text('logout'.tr()),
