@@ -11,6 +11,7 @@ import 'package:o_health/screens/auth/login.dart';
 import 'package:o_health/screens/auth/register.dart';
 import 'package:o_health/screens/auth/forget_password.dart';
 import 'package:o_health/screens/auth/reset_password.dart';
+import 'package:o_health/screens/description.dart';
 import 'package:o_health/screens/home.dart';
 import 'package:o_health/screens/intros/initial_intro.dart';
 import 'package:o_health/screens/intros/login_intro.dart';
@@ -116,6 +117,7 @@ class _AppState extends State<App> {
         '/forgot-password': (context) => const ForgotPasswordScreen(),
         '/reset-password': (context) => const ResetPasswordScreen(),
         '/upload-files': (context) => const Uploadfiles(),
+        '/description': (context) => const Description(),
       },
     );
   }

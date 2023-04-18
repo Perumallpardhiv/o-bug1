@@ -27,20 +27,22 @@ class _DoctorHomeState extends State<DoctorHome> {
       valueListenable: AdaptiveTheme.of(context).modeChangeNotifier,
       builder: ((context, mode, _) => Scaffold(
             appBar: AppBar(
-              leading: Builder(builder: (BuildContext context) {
-                return IconButton(
-                  icon: const Icon(
-                    Icons.menu_sharp,
-                    color: Colors.white,
-                    size: 30,
-                  ),
-                  onPressed: () {
-                    Scaffold.of(context).openDrawer();
-                  },
-                  tooltip:
-                      MaterialLocalizations.of(context).openAppDrawerTooltip,
-                );
-              }),
+              leading: Builder(
+                builder: (BuildContext context) {
+                  return IconButton(
+                    icon: const Icon(
+                      Icons.menu_sharp,
+                      color: Colors.white,
+                      size: 30,
+                    ),
+                    onPressed: () {
+                      Scaffold.of(context).openDrawer();
+                    },
+                    tooltip:
+                        MaterialLocalizations.of(context).openAppDrawerTooltip,
+                  );
+                },
+              ),
               title: Text(
                 'o-health'.tr(),
                 style: const TextStyle(
@@ -58,6 +60,30 @@ class _DoctorHomeState extends State<DoctorHome> {
                   padding: EdgeInsets.only(bottom: 6, right: 12),
                 ),
               ),
+              actions: [
+                TextButton(
+                  child: Row(
+                    children: const [
+                      Icon(
+                        Icons.edit_outlined,
+                        size: 18,
+                        color: Colors.white,
+                      ),
+                      Text(
+                        ' Description',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 13,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/description');
+                  },
+                ),
+              ],
             ),
             drawer: Drawer(
               child: ListView(
