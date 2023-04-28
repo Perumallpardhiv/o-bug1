@@ -122,6 +122,15 @@ class _DoctorHomeState extends State<DoctorHome> {
                     thickness: 2,
                   ),
                   ListTile(
+                    leading: const Icon(Icons.medication),
+                    title: Text('Tablets'.tr()),
+                    trailing: Icon(
+                      Icons.arrow_forward_ios,
+                      size: 15,
+                      color: Colors.black,
+                    ),
+                  ),
+                  ListTile(
                     leading: const Icon(Icons.nightlight_round),
                     title: Text('nightMode'.tr()),
                     trailing: Switch(
@@ -175,8 +184,6 @@ class _DoctorHomeState extends State<DoctorHome> {
                       },
                     ),
                   ),
-                  // ListTile(),
-                  // ListTile(),
                   ListTile(
                     leading: const Icon(Icons.logout_rounded),
                     title: Text('logout'.tr()),

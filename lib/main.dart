@@ -15,6 +15,7 @@ import 'package:o_health/screens/description.dart';
 import 'package:o_health/screens/home.dart';
 import 'package:o_health/screens/intros/initial_intro.dart';
 import 'package:o_health/screens/intros/login_intro.dart';
+import 'package:o_health/screens/responces_from_doctor.dart';
 import 'package:o_health/screens/upload_files.dart';
 import 'package:o_health/services/ask_permission.dart';
 import 'package:o_health/services/certificate.dart';
@@ -117,6 +118,7 @@ class _AppState extends State<App> {
         '/forgot-password': (context) => const ForgotPasswordScreen(),
         '/reset-password': (context) => const ResetPasswordScreen(),
         '/upload-files': (context) => const Uploadfiles(),
+        '/responces': (context) => const ResponcesFromDoctor(),
         '/description': (context) => const Description(),
       },
     );

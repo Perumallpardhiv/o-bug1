@@ -191,23 +191,24 @@ class _PatientHomeState extends State<PatientHome> {
                     },
                   ),
                 ),
-                // ListTile(
-                //   leading: const Icon(Icons.upload_file_outlined),
-                //   title: Text('Upload Documents'.tr()),
-                //   onTap: () {
-                //     Navigator.pushNamed(context, '/upload-files');
-                //   },
-                // ),
+                ListTile(
+                  leading: const Icon(Icons.upload_file_outlined),
+                  title: Text('Responses from Doctors'.tr()),
+                  onTap: () {
+                    Navigator.pushNamed(context, '/responces');
+                  },
+                ),
                 ListTile(
                   leading: const Icon(Icons.logout_rounded),
                   title: Text('logout'.tr()),
                   onTap: () {
                     hiveObj.delete('userData');
-                    hiveObj.put('isLoggedIn', false).then((value) =>
-                        Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(
-                                builder: (context) => const Login()),
-                            (route) => false));
+                    hiveObj.put('isLoggedIn', false).then(
+                          (value) => Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(
+                                  builder: (context) => const Login()),
+                              (route) => false),
+                        );
                   },
                 ),
               ],
