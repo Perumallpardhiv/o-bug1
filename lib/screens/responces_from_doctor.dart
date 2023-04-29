@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:o_health/constants/constants.dart';
+import 'package:o_health/screens/doctor_responce.dart';
 
 class ResponcesFromDoctor extends StatefulWidget {
   const ResponcesFromDoctor({super.key});
@@ -12,21 +13,15 @@ class ResponcesFromDoctor extends StatefulWidget {
 }
 
 class _ResponcesFromDoctorState extends State<ResponcesFromDoctor> {
-  Future<void> getResponcesFromDoctor() async {
-    var res = await rootBundle.loadString('assets/json/json.json');
-    var resJsons = await json.decode(res);
-    responces = resJsons["responces"];
-    for (var i in responces) {
-      print(i['doctorName']);
-    }
-    print("1111111");
-    setState(() {});
-  }
-
   @override
   void initState() {
     super.initState();
-    getResponcesFromDoctor();
+    reloadDetails();
+  }
+
+  reloadDetails() async {
+    await getResponcesFromDoctor();
+    setState(() {});
   }
 
   @override
@@ -64,7 +59,7 @@ class _ResponcesFromDoctorState extends State<ResponcesFromDoctor> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(12),
-        child: responces.isEmpty
+        child: responces11.isEmpty
             ? const Center(
                 child: Text("No Doctor Responded"),
               )
@@ -83,32 +78,44 @@ class _ResponcesFromDoctorState extends State<ResponcesFromDoctor> {
                       scrollDirection: Axis.vertical,
                       shrinkWrap: true,
                       primary: true,
-                      itemCount: responces.length,
+                      itemCount: responces11.length,
                       itemBuilder: (context, index) {
                         return Padding(
                           padding: const EdgeInsets.symmetric(
-                              vertical: 5, horizontal: 2),
-                          child: Card(
-                            elevation: 2,
-                            child: Padding(
-                              padding: const EdgeInsets.all(15),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    responces[index]['date'],
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 10),
-                                  ),
-                                  const SizedBox(height: 8),
-                                  Text(
-                                    "Doctor Name: ${responces[index]['doctorName']}",
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: 14),
-                                  ),
-                                ],
+                            vertical: 5,
+                            horizontal: 2,
+                          ),
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => DoctorResponce(index),
+                                ),
+                              );
+                            },
+                            child: Card(
+                              elevation: 2,
+                              child: Padding(
+                                padding: const EdgeInsets.all(15),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      responces11[index]['date'],
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 10),
+                                    ),
+                                    const SizedBox(height: 8),
+                                    Text(
+                                      "Doctor Name: ${responces11[index]['doctorName']}",
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 14),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),

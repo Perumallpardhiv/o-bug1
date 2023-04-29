@@ -3,57 +3,32 @@
         {
             "date" : "24-07-2019",
             "doctorName" : "Rahul",
-            "description" : "Your health is perfectly all right"
+            "description" : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vel egestas dolor, nec dignissim metus"
         },
         {
             "date" : "24-07-2019",
             "doctorName" : "Rahul",
-            "description" : "Your health is perfectly all right"
-        },
-        {
-            "date" : "24-07-2019",
-            "doctorName" : "Rahul",
-            "description" : "Your health is perfectly all right"
+            "description" : "Donec augue elit, rhoncus ac sodales id, porttitor vitae est. Donec laoreet rutrum libero sed pharetra"
         },
         {
             "date" : "04-01-2021",
             "doctorName" : "Sparsh",
-            "description" : "Your health is perfectly all right"
+            "description" : "Donec laoreet rutrum libero sed pharetra."
         },
         {
             "date" : "13-08-2020",
             "doctorName" : "Govind",
-            "description" : "Your health is perfectly all right"
+            "description" : "Duis a arcu convallis, gravida purus eget, mollis diam."
         },
         {
             "date" : "14-09-2021",
             "doctorName" : "Komali",
-            "description" : "Your health is perfectly all right"
+            "description" : "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
         },
         {
             "date" : "14-09-2021",
             "doctorName" : "Komali",
-            "description" : "Your health is perfectly all right"
-        },
-        {
-            "date" : "14-09-2021",
-            "doctorName" : "Komali",
-            "description" : "Your health is perfectly all right"
-        },
-        {
-            "date" : "14-09-2021",
-            "doctorName" : "Komali",
-            "description" : "Your health is perfectly all right"
-        },
-        {
-            "date" : "14-09-2021",
-            "doctorName" : "Komali",
-            "description" : "Your health is perfectly all right"
-        },
-        {
-            "date" : "14-09-2021",
-            "doctorName" : "Komali",
-            "description" : "Your health is perfectly all right"
+            "description" : "It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged"
         }
     ]
 }
