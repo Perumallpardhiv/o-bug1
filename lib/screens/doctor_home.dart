@@ -122,13 +122,16 @@ class _DoctorHomeState extends State<DoctorHome> {
                     thickness: 2,
                   ),
                   ListTile(
-                    leading: const Icon(Icons.medication),
-                    title: Text('Tablets'.tr()),
+                    leading: const Icon(Icons.local_hospital_outlined),
+                    title: Text('Patients'.tr()),
                     trailing: Icon(
                       Icons.arrow_forward_ios,
                       size: 15,
                       color: Colors.black,
                     ),
+                    onTap: () {
+                      Navigator.pushNamed(context, '/patientsList');
+                    },
                   ),
                   ListTile(
                     leading: const Icon(Icons.nightlight_round),

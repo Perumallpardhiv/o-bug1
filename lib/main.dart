@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
@@ -15,6 +14,7 @@ import 'package:o_health/screens/description.dart';
 import 'package:o_health/screens/home.dart';
 import 'package:o_health/screens/intros/initial_intro.dart';
 import 'package:o_health/screens/intros/login_intro.dart';
+import 'package:o_health/screens/patients_list.dart';
 import 'package:o_health/screens/responces_from_doctor.dart';
 import 'package:o_health/screens/upload_files.dart';
 import 'package:o_health/services/ask_permission.dart';
@@ -119,6 +119,7 @@ class _AppState extends State<App> {
         '/reset-password': (context) => const ResetPasswordScreen(),
         '/upload-files': (context) => const Uploadfiles(),
         '/responces': (context) => const ResponcesFromDoctor(),
+        '/patientsList': (context) => const patients_list(),
         '/description': (context) => const Description(),
       },
     );

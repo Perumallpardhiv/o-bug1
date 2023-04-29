@@ -2,16 +2,15 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:o_health/constants/constants.dart';
 
-class DoctorResponce extends StatefulWidget {
+class patientFiles extends StatefulWidget {
   int index;
-  DoctorResponce(this.index, {super.key});
+  patientFiles(this.index, {super.key});
 
   @override
-  State<DoctorResponce> createState() => _DoctorResponceState();
+  State<patientFiles> createState() => _patientFilesState();
 }
 
-class _DoctorResponceState extends State<DoctorResponce> {
-
+class _patientFilesState extends State<patientFiles> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size.height;
@@ -47,10 +46,10 @@ class _DoctorResponceState extends State<DoctorResponce> {
         ),
       ),
       body: SingleChildScrollView(
+        physics: ScrollPhysics(),
         child: Padding(
           padding: const EdgeInsets.all(20),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Wrap(
@@ -59,7 +58,7 @@ class _DoctorResponceState extends State<DoctorResponce> {
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 3),
                     child: Text(
-                      "Doctor Name: ${responces11[widget.index]['doctorName']}",
+                      "Patient Name: ${patien[widget.index]['patientName']}",
                       textAlign: TextAlign.center,
                       style: TextStyle(fontSize: 20),
                     ),
@@ -67,7 +66,7 @@ class _DoctorResponceState extends State<DoctorResponce> {
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 3),
                     child: Text(
-                      responces11[widget.index]['date'],
+                      patien[widget.index]['date'],
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 13,
@@ -77,7 +76,7 @@ class _DoctorResponceState extends State<DoctorResponce> {
                 ],
               ),
               Padding(
-                padding: EdgeInsets.symmetric(vertical: size * 0.08),
+                padding: EdgeInsets.symmetric(vertical: size * 0.05),
                 child: Column(
                   children: [
                     Text(
@@ -86,9 +85,8 @@ class _DoctorResponceState extends State<DoctorResponce> {
                       style: TextStyle(fontSize: 17),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(15),
                       child: Container(
-                        height: MediaQuery.of(context).size.height * 0.5,
                         width: MediaQuery.of(context).size.width,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
@@ -97,7 +95,7 @@ class _DoctorResponceState extends State<DoctorResponce> {
                         child: Padding(
                           padding: EdgeInsets.all(10),
                           child: Text(
-                            responces11[widget.index]['description'],
+                            patien[widget.index]['patientProblem'],
                             style: TextStyle(fontSize: 18, color: Colors.black),
                           ),
                         ),
@@ -106,44 +104,36 @@ class _DoctorResponceState extends State<DoctorResponce> {
                   ],
                 ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  RawMaterialButton(
-                    shape: RoundedRectangleBorder(
-                      side: const BorderSide(color: Colors.red),
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    onPressed: () {},
-                    child: const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 8),
-                      child: Text(
-                        'Share',
-                        style: TextStyle(
-                          color: Colors.red,
+              ListView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: patien[widget.index]['documentsCount'],
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: EdgeInsets.symmetric(vertical: 5),
+                    child: Card(
+                      elevation: 2,
+                      child: Padding(
+                        padding: const EdgeInsets.all(15),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "File.png",
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w700,
+                                fontSize: 14,
+                              ),
+                            ),
+                            Icon(Icons.download_rounded,
+                                color: Colors.grey.shade700)
+                          ],
                         ),
                       ),
                     ),
-                  ),
-                  RawMaterialButton(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    onPressed: () {},
-                    fillColor: Colors.red.shade700,
-                    focusColor: Colors.red.shade700,
-                    child: const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 8),
-                      child: Text(
-                        "Print",
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+                  );
+                },
+              )
             ],
           ),
         ),
